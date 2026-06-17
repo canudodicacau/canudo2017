@@ -293,12 +293,40 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const DOC = db.collection("sistema").doc("dados");
 
-// Salvar no Firebase
+// Mescla arrays por id (nunca perde itens de nenhum dos dois lados)
+function mergeArrPorId(remoteArr, localArr) {
+  const byId = new Map();
+  (remoteArr||[]).forEach(item => byId.set(item.id, item));
+  (localArr||[]).forEach(item => byId.set(item.id, item)); // local prevalece em caso de edição no mesmo id
+  return Array.from(byId.values()).sort((a,b)=>(a.id>b.id?1:-1));
+}
+
+// Mescla o estado remoto (Firebase) com o local antes de salvar
+function mergeEstado(remote, local) {
+  const merged = {...local};
+  ['clientes','pedidos','regioes','perdas'].forEach(k => {
+    merged[k] = mergeArrPorId(remote[k], local[k]);
+  });
+  return merged;
+}
+
+// Salvar no Firebase (lê o estado atual, mescla, e só então grava — nunca sobrescreve às cegas)
 window.fbSave = async (data) => {
   const el = document.getElementById('sync-status');
   if(el) el.innerHTML='🔄';
   try {
-    await DOC.set({ json: JSON.stringify(data) });
+    const snap = await DOC.get();
+    let toSave = data;
+    if (snap.exists) {
+      try {
+        const remote = JSON.parse(snap.data().json);
+        toSave = mergeEstado(remote, data);
+      } catch(e) { console.warn("Merge error, salvando local mesmo assim:", e); }
+    }
+    toSave._ts = Date.now();
+    window._localTs = toSave._ts;
+    await DOC.set({ json: JSON.stringify(toSave) });
+    if (typeof S !== 'undefined') Object.assign(S, toSave);
     if(el) el.innerHTML='🔥 <span style="color:var(--gr)">salvo</span>';
     setTimeout(()=>{ if(el) el.innerHTML='🔥'; },2000);
   } catch(e) {

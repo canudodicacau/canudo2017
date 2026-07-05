@@ -294,18 +294,24 @@ const db = firebase.firestore();
 const DOC = db.collection("sistema").doc("dados");
 
 // Mescla arrays por id (nunca perde itens de nenhum dos dois lados)
-function mergeArrPorId(remoteArr, localArr) {
+function mergeArrPorId(remoteArr, localArr, deletedIds) {
+  const deleted = new Set(deletedIds || []);
   const byId = new Map();
-  (remoteArr||[]).forEach(item => byId.set(item.id, item));
-  (localArr||[]).forEach(item => byId.set(item.id, item)); // local prevalece em caso de edição no mesmo id
+  (remoteArr||[]).forEach(item => {
+    if (!deleted.has(item.id)) byId.set(item.id, item);
+  });
+  (localArr||[]).forEach(item => byId.set(item.id, item));
+  deleted.forEach(id => byId.delete(id));
   return Array.from(byId.values()).sort((a,b)=>(a.id>b.id?1:-1));
 }
 
 // Mescla o estado remoto (Firebase) com o local antes de salvar
 function mergeEstado(remote, local) {
   const merged = {...local};
+  const allDeleted = Array.from(new Set([...(local._deletedIds||[]), ...(remote._deletedIds||[])]));
+  merged._deletedIds = allDeleted;
   ['clientes','pedidos','regioes','perdas'].forEach(k => {
-    merged[k] = mergeArrPorId(remote[k], local[k]);
+    merged[k] = mergeArrPorId(remote[k], local[k], allDeleted);
   });
   return merged;
 }
@@ -1114,7 +1120,7 @@ function sP(){
   S.pedidos.push({id:uid(),tipo:S.pdTipo,clienteId:cId,nome:nm,qtd:q,preco:pr,desconto:descPct,total:totalFinal,entrega:en,entregaIG:igEn,mes:mesPedido,ts:Date.now(),status:st,dataPedido:dp,dataEntrega:de,dataProducao:dpr});
   svS();fM('pedido');S.pdTipo==='revenda'?rPD():rIG();rDash();rOp();atualizarBadges();toast('Pedido salvo! ✓');
 }
-function dP(id){if(!confirm('Excluir este pedido?'))return;S.pedidos=S.pedidos.filter(p=>p.id!==id);svS();rPD();rIG();rDash();rOp();toast('Pedido excluído')}
+function dP(id){if(!confirm('Excluir este pedido?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.pedidos=S.pedidos.filter(p=>p.id!==id);svS();rPD();rIG();rDash();rOp();toast('Pedido excluído')}
 function saCl(){
   const nm=document.getElementById('cl-n').value.trim();if(!nm){toast('Informe o nome');return}
   const obj={nome:nm,tel:document.getElementById('cl-t').value.trim(),end:document.getElementById('cl-e').value.trim(),regiao:document.getElementById('cl-r').value};
@@ -1122,7 +1128,7 @@ function saCl(){
   else S.clientes.push({id:uid(),...obj});
   svS();fM('cliente');rCL();toast('Cliente salvo! ✓');
 }
-function dCl(id){if(!confirm('Excluir este cliente?'))return;S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
+function dCl(id){if(!confirm('Excluir este cliente?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
 function saRg(){const nm=document.getElementById('rg-n').value.trim();if(!nm){toast('Informe o nome');return}S.regioes.push({id:uid(),nome:nm,valor:parseFloat(document.getElementById('rg-v').value)||0});svS();fM('regiao');rEnt();toast('Região salva! ✓');}
 function dRg(id){if(!confirm('Excluir esta região?'))return;S.regioes=S.regioes.filter(r=>r.id!==id);svS();rEnt();toast('Região excluída');}
 function sC(){
@@ -1170,7 +1176,7 @@ function regPerda(){
   svS();rPerdas();rDash();toast('Perda registrada');
   document.getElementById('perda-qtd').value='';document.getElementById('perda-obs').value='';
 }
-function dPerda(id){if(!confirm('Excluir esta perda?'))return;S.perdas=S.perdas.filter(p=>p.id!==id);svS();rPerdas();rDash();toast('Perda excluída');}
+function dPerda(id){if(!confirm('Excluir esta perda?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.perdas=S.perdas.filter(p=>p.id!==id);svS();rPerdas();rDash();toast('Perda excluída');}
 
 // ── BADGES SIDEBAR ──
 function atualizarBadges(){

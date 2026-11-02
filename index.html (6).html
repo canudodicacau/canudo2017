@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title id="doc-title">Minha Fábrica</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F7F5F2;--s:#FFF;--s2:#EFECE8;--s3:#E8E4DF;
+  --t:#1A1814;--t2:#6B6760;--t3:#A8A49F;
+  --b:#E2DED8;--b2:#CBC7C0;
+  --pu:#6D28D9;--pu2:#5B21B6;--pubg:#EDE9FE;--putx:#5B21B6;
+  --am:#D97706;--ambg:#FEF3C7;--amtx:#92400E;
+  --gr:#059669;--grbg:#D1FAE5;--grtx:#065F46;
+  --re:#DC2626;--rebg:#FEE2E2;--retx:#991B1B;
+  --pk:#DB2777;--pkbg:#FCE7F3;--pktx:#9D174D;
+  --bl:#2563EB;--blbg:#DBEAFE;--bltx:#1E40AF;
+  --or:#EA580C;--orbg:#FED7AA;--ortx:#9A3412;
+  --ck:#A0522D;--ckbg:#F6E7D8;--cktx:#7A3E14;
+  --f:'DM Sans',system-ui,sans-serif;
+  --sw:245px;--rl:14px;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t);font-size:14px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+#app{display:flex;min-height:100vh}
+#sb{width:var(--sw);background:var(--s);border-right:1px solid var(--b);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;overflow-y:auto;transition:transform .28s cubic-bezier(.4,0,.2,1);-webkit-overflow-scrolling:touch}
+.sl{padding:18px 16px 14px;border-bottom:1px solid var(--b)}
+.sl-logo{display:flex;align-items:center;gap:10px}
+.sl-ic{font-size:26px;line-height:1}
+.sl-nm{font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--t);user-select:none}
+.sl-nm:hover .ei{opacity:1}
+.ei{font-size:11px;opacity:0;color:var(--t3);transition:opacity .2s}
+.sl-sb{font-size:11px;color:var(--t3);margin-top:2px}
+.ns{padding:8px 0 2px}
+.nl{font-size:10px;color:var(--t3);padding:4px 16px 3px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 8px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--t2);transition:background .12s,color .12s;user-select:none;min-height:44px}
+.ni:active{background:var(--s2)}
+.ni.active{background:var(--pubg);color:var(--putx);font-weight:600}
+.nicon{width:20px;text-align:center;font-size:16px;flex-shrink:0}
+.nb{display:inline-flex;align-items:center;justify-content:center;background:var(--re);color:#fff;border-radius:20px;font-size:10px;font-weight:700;min-width:18px;height:18px;padding:0 5px;margin-left:auto;flex-shrink:0}
+#mn{margin-left:var(--sw);flex:1;min-height:100vh;min-width:0}
+.tb{background:var(--s);border-bottom:1px solid var(--b);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:10px}
+.tbl{display:flex;align-items:center;gap:10px;min-width:0}
+.tb h1{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbr{display:flex;gap:8px;align-items:center;flex-shrink:0}
+#mbt{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--t2);padding:4px 6px;border-radius:8px;min-width:40px;min-height:40px;align-items:center;justify-content:center;flex-shrink:0}
+#obg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:150;backdrop-filter:blur(1px)}
+#obg.open{display:block}
+.pg{padding:16px;display:none}
+.pg.active{display:block}
+/* BUTTONS — uniform style, no red backgrounds */
+.btn{padding:9px 16px;border-radius:9px;border:1.5px solid var(--b2);background:var(--s);color:var(--t);cursor:pointer;font-size:13px;font-family:var(--f);font-weight:500;transition:all .12s;white-space:nowrap;min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--pu);border-color:var(--pu);color:#fff}
+.bp:hover{background:var(--pu2)}
+.bsm{padding:6px 12px;font-size:12px;min-height:34px}
+/* Excluir button — same outline style as add, just red text */
+.bex{color:var(--re);border-color:var(--b2);background:var(--s)}
+.bex:hover{background:var(--rebg);border-color:var(--re)}
+.big{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border:none;color:#fff}
+.bgr2{background:var(--gr);border-color:var(--gr);color:#fff}
+.bw{width:100%}
+.bou{border:1.5px solid var(--b2);background:transparent}
+/* METRIC CARDS */
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.mc{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:14px 16px;position:relative}
+.mc .lb{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.mc .vl{font-size:22px;font-weight:700;line-height:1;letter-spacing:-.3px}
+.mc .sb{font-size:11px;color:var(--t3);margin-top:5px}
+.mc.ok{background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border-color:#6EE7B7}
+.mc.ok .lb,.mc.ok .sb{color:var(--grtx)}.mc.ok .vl{color:var(--grtx)}
+.mc.warn{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-color:#FCD34D}
+.mc.warn .lb,.mc.warn .sb{color:var(--amtx)}.mc.warn .vl{color:var(--amtx)}
+.mc.bad{background:linear-gradient(135deg,#FEE2E2,#FECACA);border-color:#FCA5A5}
+.mc.bad .lb,.mc.bad .sb{color:var(--retx)}.mc.bad .vl{color:var(--retx)}
+.mc.pu{background:var(--pubg);border-color:#C4B5FD}
+.mc.pu .vl{color:var(--putx)}.mc.pu .lb{color:var(--putx)}
+.trend{font-size:11px;margin-top:4px;font-weight:500}
+.up{color:var(--gr)}.dn{color:var(--re)}
+/* Tooltip */
+.tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(0,0,0,.12);color:var(--t2);font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;position:relative}
+.tip:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 6px);background:#1A1814;color:#fff;font-size:11px;font-weight:400;padding:7px 11px;border-radius:8px;white-space:normal;width:220px;z-index:99;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:16px;margin-bottom:14px}
+.card:last-child{margin-bottom:0}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.ct{font-size:14px;font-weight:600}
+/* SAÚDE */
+.saude{border-radius:var(--rl);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.saude.ok{background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border:1.5px solid #6EE7B7}
+.saude.warn{background:linear-gradient(135deg,#FEF9C3,#FDE68A);border:1.5px solid #FCD34D}
+.saude.bad{background:linear-gradient(135deg,#FEE2E2,#FECACA);border:1.5px solid #FCA5A5}
+.saude-ico{font-size:28px}
+.saude-txt{flex:1}
+.saude-txt h3{font-size:14px;font-weight:700;margin-bottom:2px}
+.saude-txt p{font-size:12px;opacity:.8}
+.saude-val{font-size:20px;font-weight:700}
+/* PE BAR */
+.pe-bar{background:var(--s2);border-radius:var(--rl);padding:12px 14px;margin-bottom:16px;border:1px solid var(--b)}
+.pe-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pe-pct{font-size:18px;font-weight:700}
+.prog{height:8px;background:var(--s3);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.pf{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.pf-pu{background:var(--pu)}.pf-gr{background:var(--gr)}.pf-am{background:var(--am)}.pf-re{background:var(--re)}
+/* ALERTS */
+.alert{border-radius:var(--rl);padding:12px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;border:1px solid}
+.alert.warn{background:var(--ambg);border-color:#FCD34D}
+.alert.bad{background:var(--rebg);border-color:#FCA5A5}
+.alert.ok{background:var(--grbg);border-color:#6EE7B7}
+.alert.info{background:var(--blbg);border-color:#93C5FD}
+.alert-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-txt strong{font-size:13px;font-weight:600;display:block;margin-bottom:2px}
+.alert-txt span{font-size:12px;color:var(--t2)}
+/* LIST */
+.li{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:14px;margin-bottom:10px}
+.li:last-child{margin-bottom:0}
+.li-h{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.li-nm{font-weight:600;font-size:14px;line-height:1.3}
+.li-sb{font-size:12px;color:var(--t3);margin-bottom:6px}
+.li-r{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:3px 0}
+.li-r .lbl{color:var(--t3)}.li-r .val{font-weight:500}
+.li-acts{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--b);flex-wrap:wrap}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.st-pen{background:#FEF3C7;color:#92400E}
+.st-pro{background:#DBEAFE;color:#1E40AF}
+.st-env{background:var(--orbg);color:var(--ortx)}
+.st-ent{background:var(--grbg);color:var(--grtx)}
+.st-can{background:var(--rebg);color:var(--retx)}
+.bpu{background:var(--pubg);color:var(--putx)}
+.bpk{background:var(--pkbg);color:var(--pktx)}
+.bbr{background:#FDE68A;color:#92400E}.bsi{background:#E5E7EB;color:#374151}.bgo{background:#FEF3C7;color:#B45309}
+.bgr3{background:var(--grbg);color:var(--grtx)}.bre{background:var(--rebg);color:var(--retx)}.bam2{background:var(--ambg);color:var(--amtx)}
+/* FORMS */
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:12px;color:var(--t2);margin-bottom:5px;font-weight:600}
+input[type=text],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--b2);border-radius:9px;background:var(--s);color:var(--t);font-size:14px;font-family:var(--f);transition:border-color .13s;min-height:44px;-webkit-appearance:none}
+input:focus,select:focus{outline:none;border-color:var(--pu);box-shadow:0 0 0 3px rgba(109,40,217,.1)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(2px)}
+.ov.open{display:flex}
+.md{background:var(--s);border-radius:22px 22px 0 0;padding:8px 20px 36px;width:100%;max-height:94vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.drag{width:44px;height:4px;background:var(--b2);border-radius:2px;margin:10px auto 16px}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mh h3{font-size:17px;font-weight:700}
+.mclose{background:none;border:none;font-size:22px;cursor:pointer;color:var(--t3);min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+/* LUCRO BOX */
+.lbox{background:var(--s2);border-radius:11px;padding:14px;margin-bottom:14px}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:13px}
+.lr.sub{padding:2px 0;font-size:12px;color:var(--t2);padding-left:12px}
+.lr.tot{border-top:1.5px solid var(--b2);padding-top:9px;margin-top:7px;font-weight:700;font-size:15px}
+/* BAR CHART */
+.bch{display:flex;align-items:flex-end;gap:4px;padding:0 2px}
+.bcc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bcb{width:100%;border-radius:5px 5px 0 0;min-height:4px}
+.bcl{font-size:8px;color:var(--t3);text-align:center;overflow:hidden;white-space:nowrap;width:100%}
+.bcv{font-size:8px;color:var(--t2);font-weight:500}
+/* DONUT */
+.dnut{display:flex;align-items:center;gap:20px;justify-content:center;padding:8px 0}
+.dleg{display:flex;flex-direction:column;gap:12px}
+.di{display:flex;align-items:center;gap:9px;font-size:13px}
+.dd{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+/* RANK */
+.ri{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--b)}
+.ri:last-child{border-bottom:none}
+.rn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.r1{background:#FEF3C7;color:#B45309}.r2{background:#F1F5F9;color:#475569}.r3{background:#FEE2E2;color:#B91C1C}.r0{background:var(--s2);color:var(--t3)}
+/* MONTH */
+.mga{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.mb{padding:9px 4px;text-align:center;border-radius:9px;cursor:pointer;font-size:12px;font-weight:500;border:1.5px solid var(--b);background:var(--s);color:var(--t2);min-height:40px;display:flex;align-items:center;justify-content:center;transition:all .13s;position:relative}
+.mb.active{background:var(--pu);border-color:var(--pu);color:#fff;font-weight:600}
+.mb-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--gr)}
+/* COMBOS */
+.combo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.combo-card{background:var(--s);border:1.5px solid var(--b);border-radius:var(--rl);padding:14px;text-align:center;cursor:pointer;transition:all .13s}
+.combo-card:active{transform:scale(.97)}
+.combo-card.sel{border-color:var(--pu);background:var(--pubg)}
+.combo-card .cc-ico{font-size:22px;margin-bottom:6px}
+.combo-card .cc-nm{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:4px}
+.combo-card .cc-vl{font-size:17px;font-weight:700;color:var(--pu)}
+.combo-card .cc-lu{font-size:11px;color:var(--gr);margin-top:3px}
+/* SIMULATOR */
+.scard{background:linear-gradient(135deg,#EDE9FE,#F0FDF4);border:1.5px solid var(--pu);border-radius:var(--rl);padding:18px;margin-bottom:14px}
+.scard h3{font-size:15px;font-weight:700;color:var(--putx);margin-bottom:14px}
+.sl2{margin-bottom:14px}
+.sl2 label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;margin-bottom:6px}
+.sl2 .sv{font-size:16px;font-weight:700;color:var(--pu);background:var(--pubg);padding:2px 10px;border-radius:20px}
+.sl2-inp{display:flex;align-items:center;gap:10px}
+.sl2-inp input[type=range]{flex:1;accent-color:var(--pu);height:6px;cursor:pointer}
+.sl2-inp .sv-in{width:80px;text-align:center;font-weight:700;font-size:15px;min-height:38px}
+.simr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.sri{background:var(--s);border-radius:11px;padding:12px;text-align:center;border:1px solid var(--b)}
+.sri .vl{font-size:17px;font-weight:700;color:var(--pu)}
+.sri .lb{font-size:10px;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+/* METAS */
+.mcard{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:14px;margin-bottom:10px}
+.mt2{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.mok{background:var(--grbg);color:var(--grtx);padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.mno{background:var(--ambg);color:var(--amtx);padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.mbad{background:var(--rebg);color:var(--retx);padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+
+/* COOKIES & SABORES */
+.ing-row{display:grid;grid-template-columns:1.6fr 1fr 1fr .8fr 34px;gap:6px;align-items:end;padding:8px 0;border-bottom:1px solid var(--b)}
+.ing-row:last-child{border-bottom:none}
+.ing-row input,.ing-row select,.rc-row input,.rc-row select{width:100%;padding:8px;border:1.5px solid var(--b2);border-radius:8px;font-family:var(--f);font-size:13px;background:var(--s);color:var(--t);min-height:38px}
+.ing-row label,.rc-row label{display:block;font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.ing-cg{font-size:11px;color:var(--t2);grid-column:1/-1;margin-top:-2px}
+.rc-row{display:grid;grid-template-columns:1.8fr 1fr 1fr 34px;gap:6px;align-items:end;margin-bottom:6px}
+.rc-cost{font-size:12px;font-weight:600;padding:9px 0;text-align:right;line-height:1.3}
+.xbtn{width:34px;height:38px;border-radius:8px;border:1.5px solid var(--b2);background:transparent;color:var(--re);cursor:pointer;font-size:14px}
+.pr-res{background:var(--s2);border-radius:10px;padding:12px;margin-top:12px}
+.pr-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.pr-k{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:10px;text-align:center}
+.pr-k .lb{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.pr-k .vl{font-size:18px;font-weight:700;margin-top:3px;white-space:nowrap}
+@media(max-width:768px){.pr-k{padding:9px 4px}.pr-k .vl{font-size:15px}}
+.pr-k.ok{background:var(--grbg);border-color:#6EE7B7}.pr-k.ok .vl{color:var(--grtx)}
+.pr-k.warn{background:var(--ambg);border-color:#FCD34D}.pr-k.warn .vl{color:var(--amtx)}
+.pr-k.bad{background:var(--rebg);border-color:#FCA5A5}.pr-k.bad .vl{color:var(--retx)}
+.pr-sug{margin-top:10px;font-size:12px;color:var(--putx);background:var(--pubg);border-radius:8px;padding:9px 10px;line-height:1.5}
+@media(max-width:768px){.ing-row{grid-template-columns:1fr 1fr .8fr 34px}.ing-row .ing-nm{grid-column:1/-1}.rc-row{grid-template-columns:1.5fr 1fr 34px}.rc-row .rc-cost{order:5;grid-column:1/-1;text-align:left;padding:0 0 6px;font-size:12px;color:var(--t2)}}
+/* ETIQUETAS CONE / COOKIE / COMBO */
+.tg{display:inline-flex;align-items:center;gap:3px;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;margin-right:3px;vertical-align:middle}
+.tg-co{background:var(--pubg);color:var(--putx)}
+.tg-ck{background:var(--ckbg);color:var(--cktx)}
+.tg-cb{background:var(--pkbg);color:var(--pktx)}
+.pf-ck{background:var(--ck)}
+.ck-c{color:var(--ck)!important}
+.seg{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.seg .btn{flex:1;min-width:0}
+.seg .btn.on{background:var(--pu);border-color:var(--pu);color:#fff}
+/* PEDIDO: COMBOS E COOKIES */
+.pi-box{background:var(--s2);border-radius:11px;padding:12px 12px 6px;margin-bottom:12px}
+.pi-hd{font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;display:flex;justify-content:space-between;align-items:baseline}
+.pi-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--b)}
+.pi-row:last-child{border-bottom:none}
+.pi-nm{min-width:0;font-size:13px;font-weight:600;line-height:1.3}
+.stp{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.stp button{width:36px;height:36px;border-radius:9px;border:1.5px solid var(--b2);background:var(--s);font-size:18px;line-height:1;cursor:pointer;color:var(--pu);font-family:var(--f)}
+.stp span{min-width:24px;text-align:center;font-weight:700;font-size:15px}
+.stp span.on{color:var(--pu)}
+/* CONES x COOKIES */
+.cx-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;font-size:13px}
+.cx-grid>div{padding:8px 4px;border-bottom:1px solid var(--b)}
+.cx-grid .h{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.04em}
+.cx-grid .n{text-align:right;font-weight:600}
+.cb-chk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);margin:2px 0 4px}
+.cb-chk input{width:18px;height:18px;min-height:0;accent-color:var(--pu)}
+/* CMV EXPLAINER */
+.cmv-box{background:var(--s2);border-radius:var(--rl);padding:14px;margin-bottom:16px;border:1px solid var(--b)}
+.cmv-box h4{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--t)}
+.cmv-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px}
+.cmv-row:last-child{border-bottom:none;font-weight:700;padding-top:8px}
+.cmv-lbl{color:var(--t2)}.cmv-val{font-weight:600}
+/* TICKET BOX */
+.ticket-box{background:linear-gradient(135deg,#EDE9FE,#FCE7F3);border:1.5px solid var(--pu);border-radius:var(--rl);padding:16px;margin-bottom:16px}
+.ticket-box h3{font-size:14px;font-weight:700;color:var(--putx);margin-bottom:12px}
+.ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ticket-item{background:rgba(255,255,255,.7);border-radius:10px;padding:12px;text-align:center}
+.ticket-item .tv{font-size:20px;font-weight:700;color:var(--pu)}
+.ticket-item .tl{font-size:10px;color:var(--t3);margin-top:3px;text-transform:uppercase;font-weight:600}
+/* PERDA */
+.perda-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--b)}
+.perda-item:last-child{border-bottom:none}
+/* AGENDA */
+.agenda-dia{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);margin-bottom:12px;overflow:hidden}
+.agenda-hdr{background:var(--s2);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:13px}
+.agenda-item{padding:10px 14px;border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;gap:10px}
+/* MISC */
+.fb{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.ts{font-size:12px;color:var(--t3)}.tsm{font-size:11px;color:var(--t3)}
+.empty{text-align:center;padding:32px 16px;color:var(--t3)}
+.empty .ico{font-size:32px;margin-bottom:8px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--pubg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--putx);flex-shrink:0}
+.av.ig{background:linear-gradient(135deg,#833ab4,#fd1d1d);color:#fff}
+.cprev{background:var(--pubg);border-radius:10px;padding:13px;margin-bottom:14px}
+.cprev .pv{font-size:24px;font-weight:700;color:var(--pu)}
+.cbadge{display:inline-flex;align-items:center;background:var(--pubg);color:var(--putx);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+.sw3{position:relative;margin-bottom:12px}
+.sw3 input{padding-left:36px}
+.si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;font-size:14px}
+.tag-hoje{background:var(--grbg);color:var(--grtx);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700}
+.tag-atr{background:var(--rebg);color:var(--retx);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1A1814;color:#fff;padding:11px 22px;border-radius:28px;font-size:13px;font-weight:500;z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw}
+.toast.show{opacity:1}
+.sep{height:1px;background:var(--b);margin:12px 0}
+.clickable-row{cursor:pointer;transition:background .13s}
+.clickable-row:hover{background:var(--s2)}
+@media(min-width:769px){
+  #mbt{display:none!important}
+  .pg{padding:24px}
+  .mg{grid-template-columns:repeat(3,1fr)}
+  .fr2{grid-template-columns:1fr 1fr}
+  .mga{grid-template-columns:repeat(6,1fr)}
+  .simr{grid-template-columns:repeat(3,1fr)}
+  .combo-grid{grid-template-columns:repeat(3,1fr)}
+  .md{border-radius:var(--rl);max-width:540px;margin:auto;max-height:90vh}
+  .ov{align-items:center;padding:16px}
+  .drag{display:none}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .bch{height:150px}
+  .ticket-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(min-width:1024px){
+  :root{--sw:250px}
+  .pg{padding:28px 32px}
+  .mg{grid-template-columns:repeat(4,1fr)}
+  .g2{gap:20px}
+  .bch{height:170px}
+  .simr{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1280px){.mg{grid-template-columns:repeat(6,1fr)}}
+@media(max-width:768px){
+  #sb{transform:translateX(-100%)}
+  #sb.open{transform:translateX(0)}
+  #mn{margin-left:0;width:100%}
+  #mbt{display:flex!important}
+  .tb{padding:10px 14px}
+  .tb h1{font-size:14px;max-width:150px}
+  .fr2{grid-template-columns:1fr}
+  .hide-m{display:none!important}
+  .g2{display:block}
+  .g2>.card{margin-bottom:14px}
+  .bch{height:110px}
+  .combo-grid{gap:8px}
+  .sl2-inp .sv-in{width:70px}
+}
+</style>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBu6LPeuWezz463KH1JjALFC00PmEARQ9E",
+  authDomain: "canudo-di-cacau.firebaseapp.com",
+  projectId: "canudo-di-cacau",
+  storageBucket: "canudo-di-cacau.firebasestorage.app",
+  messagingSenderId: "349459885197",
+  appId: "1:349459885197:web:1f455893a532546d8b86c4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const DOC = db.collection("sistema").doc("dados");
+
+// Mescla arrays por id (nunca perde itens de nenhum dos dois lados)
+function mergeArrPorId(remoteArr, localArr, deletedIds) {
+  const deleted = new Set(deletedIds || []);
+  const byId = new Map();
+  (remoteArr||[]).forEach(item => {
+    if (!deleted.has(item.id)) byId.set(item.id, item);
+  });
+  (localArr||[]).forEach(item => byId.set(item.id, item));
+  deleted.forEach(id => byId.delete(id));
+  return Array.from(byId.values()).sort((a,b)=>(a.id>b.id?1:-1));
+}
+
+// Mescla o estado remoto (Firebase) com o local antes de salvar
+function mergeEstado(remote, local) {
+  const merged = {...local};
+  const allDeleted = Array.from(new Set([...(local._deletedIds||[]), ...(remote._deletedIds||[])]));
+  merged._deletedIds = allDeleted;
+  ['clientes','pedidos','regioes','perdas','ingredientes','produtos','combosNovos'].forEach(k => {
+    merged[k] = mergeArrPorId(remote[k], local[k], allDeleted);
+  });
+  return merged;
+}
+
+// Salvar no Firebase (lê o estado atual, mescla, e só então grava — nunca sobrescreve às cegas)
+window.fbSave = async (data) => {
+  const el = document.getElementById('sync-status');
+  if(el) el.innerHTML='🔄';
+  try {
+    const snap = await DOC.get();
+    let toSave = data;
+    if (snap.exists) {
+      try {
+        const remote = JSON.parse(snap.data().json);
+        toSave = mergeEstado(remote, data);
+      } catch(e) { console.warn("Merge error, salvando local mesmo assim:", e); }
+    }
+    toSave._ts = Date.now();
+    window._localTs = toSave._ts;
+    await DOC.set({ json: JSON.stringify(toSave) });
+    if (typeof S !== 'undefined') Object.assign(S, toSave);
+    if(el) el.innerHTML='🔥 <span style="color:var(--gr)">salvo</span>';
+    setTimeout(()=>{ if(el) el.innerHTML='🔥'; },2000);
+  } catch(e) {
+    console.warn("Firebase save error:", e);
+    if(el) el.innerHTML='⚠️';
+  }
+};
+
+// Escutar mudanças em tempo real
+DOC.onSnapshot((snap) => {
+  if (!snap.exists) return;
+  try {
+    const remote = JSON.parse(snap.data().json);
+    if (remote._ts && window._localTs && remote._ts <= window._localTs) return;
+    window._localTs = remote._ts;
+    if (typeof S !== 'undefined') {
+      Object.assign(S, remote);
+      if (typeof apNm === 'function') apNm();
+      if (typeof rDash === 'function') rDash();
+      if (typeof atualizarBadges === 'function') atualizarBadges();
+      const pg = document.querySelector('.ni.active')?.dataset?.p;
+      const fns = {pedidos:rPD,instagram:rIG,clientes:rCL,mensal:rMensal,ranking:rRank,perdas:rPerdas,operacional:rOp,config:rCfg,produtos:rProd};
+      if (pg && fns[pg]) fns[pg]();
+      console.log("🔄 Sincronizado do Firebase");
+    }
+  } catch(e) { console.warn("Sync error:", e); }
+});
+
+// Carregar dados iniciais
+window.fbLoad = async () => {
+  try {
+    const snap = await DOC.get();
+    if (snap.exists) {
+      const remote = JSON.parse(snap.data().json);
+      window._localTs = remote._ts || 0;
+      return remote;
+    }
+  } catch(e) { console.warn("Firebase load error:", e); }
+  return null;
+};
+
+window._firebaseReady = true;
+console.log("🔥 Firebase conectado!");
+</script>
+</head>
+<body>
+<div id="obg" onclick="cSB()"></div>
+<div id="app">
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sl">
+    <div class="sl-logo">
+      <div class="sl-ic" id="sl-ic">🍦</div>
+      <div>
+        <div class="sl-nm" onclick="editNome()" title="Clique para editar">
+          <span id="sl-nm">Minha Fábrica</span><span class="ei">✏️</span>
+        </div>
+        <div class="sl-sb">Gestão v8</div>
+      </div>
+    </div>
+  </div>
+  <div class="ns">
+    <div class="nl">Principal</div>
+    <div class="ni active" data-p="dashboard" onclick="go('dashboard')"><span class="nicon">📊</span>Dashboard<span class="nb" id="nb-al" style="display:none">!</span></div>
+    <div class="ni" data-p="operacional" onclick="go('operacional')"><span class="nicon">⚡</span>Operacional<span class="nb" id="nb-hj" style="display:none">0</span></div>
+    <div class="ni" data-p="pedidos" onclick="go('pedidos')"><span class="nicon">📦</span>Pedidos</div>
+    <div class="ni" data-p="instagram" onclick="go('instagram')"><span class="nicon">📸</span>Instagram / Direto</div>
+    <div class="ni" data-p="clientes" onclick="go('clientes')"><span class="nicon">👥</span>Clientes</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Análise</div>
+    <div class="ni" data-p="mensal" onclick="go('mensal')"><span class="nicon">📅</span>Controle Mensal</div>
+    <div class="ni" data-p="ranking" onclick="go('ranking')"><span class="nicon">🏆</span>Ranking</div>
+    <div class="ni" data-p="perdas" onclick="go('perdas')"><span class="nicon">⚠️</span>Perdas</div>
+    <div class="ni" data-p="entregas" onclick="go('entregas')"><span class="nicon">🚚</span>Regiões</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Config.</div>
+    <div class="ni" data-p="produtos" onclick="go('produtos')"><span class="nicon">🍪</span>Produtos & Combos</div>
+    <div class="ni" data-p="config" onclick="go('config')"><span class="nicon">⚙️</span>Configurações</div>
+  </div>
+</nav>
+<!-- MAIN -->
+<div id="mn">
+  <div class="tb">
+    <div class="tbl"><button id="mbt" onclick="tSB()">☰</button><h1 id="pt">Dashboard</h1></div>
+    <div class="tbr"><div id="sync-status" style="font-size:11px;color:var(--t3);display:flex;align-items:center;gap:4px" title="Status de sincronização">🔥</div>
+      <div class="cbadge" id="tbc">Custo/cone: —</div>
+      <button class="btn bsm hide-m" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+  </div>
+
+  <!-- ══ DASHBOARD ══ -->
+  <div id="pg-dashboard" class="pg active">
+    <div id="saude-box"></div>
+    <div class="mg">
+      <div class="mc" id="mc-fat">
+        <div class="lb">Faturamento do Mês <span class="tip" data-tip="Total de receita gerada: soma de todos os pedidos (revenda + Instagram) no mês atual. Não desconta nenhum custo.">?</span></div>
+        <div class="vl" id="d-fat">R$ 0</div>
+        <div class="trend" id="d-ft"></div>
+      </div>
+      <div class="mc" id="mc-lb">
+        <div class="lb">Lucro Bruto <span class="tip" data-tip="Faturamento menos os custos variáveis (ingredientes, embalagem) e custo de entrega. Ainda NÃO desconta aluguel, luz e salários.">?</span></div>
+        <div class="vl" id="d-lb">R$ 0</div>
+        <div class="sb" id="d-lbp"></div>
+      </div>
+      <div class="mc" id="mc-ll">
+        <div class="lb">Lucro Líquido <span class="tip" data-tip="Lucro Bruto menos o rateio dos custos fixos (aluguel, luz, salários) distribuídos proporcionalmente pela produção do mês.">?</span></div>
+        <div class="vl" id="d-ll">R$ 0</div>
+        <div class="sb" id="d-llp"></div>
+      </div>
+      <div class="mc pu">
+        <div class="lb">Cones Vendidos</div>
+        <div class="vl" id="d-co">0</div>
+        <div class="sb" id="d-cs"></div>
+      </div>
+      <div class="mc" id="mc-cu">
+        <div class="lb">Custo CMV/Cone <span class="tip" data-tip="CMV = Custo da Mercadoria Vendida. Calculado como: Custo Variável + (Custo Fixo Mensal ÷ Produção do Mês). Diminui conforme você produz mais.">?</span></div>
+        <div class="vl" id="d-cu">—</div>
+        <div class="sb" id="d-cu-sb"></div>
+      </div>
+      <div class="mc" id="mc-lu2">
+        <div class="lb">Margem Líquida <span class="tip" data-tip="Margem = Lucro Líquido ÷ Faturamento × 100. Mostra quanto % da receita fica como lucro real depois de todos os custos. Ideal: acima de 30%.">?</span></div>
+        <div class="vl" id="d-mg">—</div>
+        <div class="sb" id="d-mg-sb"></div>
+      </div>
+    </div>
+    <!-- CMV explainer visual -->
+    <div class="cmv-box" id="cmv-box"></div>
+    <div id="pe-box"></div>
+    <div id="ck-box"></div>
+    <div class="g2">
+      <div class="card">
+        <div class="ch"><span class="ct">📈 Faturamento por Mês</span></div>
+        <div class="bch" id="ch-m" style="height:150px"></div>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">Revenda vs Instagram</span></div>
+        <div class="dnut">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="32" fill="none" stroke="#EDE9FE" stroke-width="16"/>
+            <circle id="da" cx="50" cy="50" r="32" fill="none" stroke="#6D28D9" stroke-width="16" stroke-dasharray="201 0" stroke-dashoffset="50" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .5s"/>
+            <circle id="db" cx="50" cy="50" r="32" fill="none" stroke="#fd1d1d" stroke-width="16" stroke-dasharray="0 201" stroke-dashoffset="0" transform="rotate(-90 50 50)" style="transition:all .5s"/>
+          </svg>
+          <div class="dleg">
+            <div class="di"><div class="dd" style="background:#6D28D9"></div><div><div style="font-weight:700" id="la">0%</div><div class="ts">Revendas</div><div style="font-size:12px;font-weight:600;color:var(--pu)" id="la-v">R$ 0</div></div></div>
+            <div class="di"><div class="dd" style="background:#fd1d1d"></div><div><div style="font-weight:700" id="lb-pct">0%</div><div class="ts">Instagram</div><div style="font-size:12px;font-weight:600;color:#fd1d1d" id="lb-v">R$ 0</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card"><div class="ch"><span class="ct">🏅 Top 5 Clientes</span></div><div id="t5"></div></div>
+      <div class="card"><div class="ch"><span class="ct">🕐 Últimos Pedidos</span></div><div id="ul"></div></div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">🌟 Cliente do Mês</span></div><div id="cm"></div></div>
+  </div>
+
+  <!-- ══ OPERACIONAL ══ -->
+  <div id="pg-operacional" class="pg">
+    <div id="alertas-box"></div>
+    <div class="g2">
+      <div>
+        <div class="card"><div class="ch"><span class="ct">📅 Agenda de Produção</span><span class="ts">Próximos 7 dias</span></div><div id="agenda-box"></div></div>
+      </div>
+      <div>
+        <div class="card"><div class="ch"><span class="ct">🚚 Entregas de Hoje</span><span class="ts" id="hoje-data"></span></div><div id="entregas-hoje"></div></div>
+        <div class="card"><div class="ch"><span class="ct">📋 Pedidos Pendentes</span></div><div id="pendentes-box"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PEDIDOS ══ -->
+  <div id="pg-pedidos" class="pg">
+    <div class="fb">
+      <div style="font-size:15px;font-weight:700">Pedidos — Revendedores</div>
+      <button class="btn bp" onclick="aMP('revenda')">+ Novo Pedido</button>
+    </div>
+    <div class="fr2" style="margin-bottom:12px">
+      <div class="sw3" style="margin-bottom:0"><span class="si">🔍</span><input type="text" placeholder="Buscar cliente..." id="q-pd" oninput="rPD()"></div>
+      <select id="fil-st-pd" onchange="rPD()" style="min-height:44px;border-radius:9px;border:1.5px solid var(--b2);padding:0 12px;font-size:14px;background:var(--s)">
+        <option value="">Todos os status</option>
+        <option value="pendente">⏳ Pendente</option>
+        <option value="producao">🔧 Em Produção</option>
+        <option value="enviado">📦 Enviado</option>
+        <option value="entregue">✅ Entregue</option>
+      </select>
+    </div>
+    <div id="list-pd"></div>
+  </div>
+
+  <!-- ══ INSTAGRAM ══ -->
+  <div id="pg-instagram" class="pg">
+    <div style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:var(--rl);padding:18px;margin-bottom:16px;color:#fff">
+      <h2 style="font-size:17px;font-weight:700;margin-bottom:3px">📸 Instagram & Venda Direta</h2>
+      <p style="font-size:12px;opacity:.85">Pedidos diretos — maior margem de lucro</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+        <div style="background:rgba(255,255,255,.18);border-radius:11px;padding:11px"><div style="font-size:19px;font-weight:700" id="ig-f">R$ 0</div><div style="font-size:11px;opacity:.85;margin-top:2px">Faturamento mês</div></div>
+        <div style="background:rgba(255,255,255,.18);border-radius:11px;padding:11px"><div style="font-size:19px;font-weight:700" id="ig-l">R$ 0</div><div style="font-size:11px;opacity:.85;margin-top:2px">Lucro mês</div></div>
+        <div style="background:rgba(255,255,255,.18);border-radius:11px;padding:11px"><div style="font-size:19px;font-weight:700" id="ig-c">0</div><div style="font-size:11px;opacity:.85;margin-top:2px">Cones · Cookies</div></div>
+        <div style="background:rgba(255,255,255,.18);border-radius:11px;padding:11px"><div style="font-size:19px;font-weight:700" id="ig-p">0</div><div style="font-size:11px;opacity:.85;margin-top:2px">Pedidos</div></div>
+      </div>
+    </div>
+    <!-- PAINEL DE ENTREGA INSTAGRAM -->
+    <div style="background:var(--blbg);border:1px solid #93C5FD;border-radius:var(--rl);padding:14px 16px;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--bltx);margin-bottom:12px">🛵 Controle de Entrega — Instagram</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:#fff;border-radius:9px;padding:12px;text-align:center;border:1px solid #93C5FD">
+          <div style="font-size:10px;font-weight:700;color:var(--bltx);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Cobrado dos clientes</div>
+          <div style="font-size:20px;font-weight:700;color:var(--gr)" id="ig-ent-cob">R$ 0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">total recebido p/ entrega</div>
+        </div>
+        <div style="background:#fff;border-radius:9px;padding:12px;text-align:center;border:1px solid #93C5FD">
+          <div style="font-size:10px;font-weight:700;color:var(--bltx);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Gasto (Uber/motoboy)</div>
+          <div style="font-size:20px;font-weight:700;color:var(--re)" id="ig-ent-gas">R$ 0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">custo real de entrega</div>
+        </div>
+      </div>
+      <div id="ig-ent-saldo" style="padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px"></div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:8px">Registrar gasto com Uber/motoboy este mês:</div>
+      <div style="display:flex;gap:8px">
+        <input type="number" step="0.01" id="ig-gas-input" placeholder="ex: 45.00" style="flex:1;min-height:38px;border:1.5px solid var(--b2);border-radius:9px;padding:8px 12px;font-size:14px;font-family:var(--f)">
+        <button class="btn bsm" onclick="salvarGasIG()" style="border-color:var(--bl);color:var(--bl);min-width:80px">Salvar</button>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--t3)" id="ig-gas-hint">Deixe 0 se os clientes estão pagando a entrega.</div>
+    </div>
+    <div class="ticket-box" id="ticket-box"></div>
+    <div class="card">
+      <div class="ch"><span class="ct">🎁 Combos</span><button class="btn bsm" onclick="go('produtos');setTimeout(()=>document.getElementById('combos-topo')?.scrollIntoView({behavior:'smooth'}),80)">Editar combos</button></div>
+      <div class="combo-grid" id="combo-grid"></div>
+    </div>
+    <div class="fb"><div style="font-size:15px;font-weight:700">Todos os pedidos diretos</div><button class="btn big" onclick="aMP('direta')">+ Pedido Instagram</button></div>
+    <div class="seg" id="ig-seg"><button class="btn bsm on" data-f="" onclick="igFiltro('')">Todos</button><button class="btn bsm" data-f="ck" onclick="igFiltro('ck')">🍪 Com cookie</button><button class="btn bsm" data-f="co" onclick="igFiltro('co')">🍦 Só cone</button></div>
+    <div class="sw3"><span class="si">🔍</span><input type="text" placeholder="Buscar nome ou @..." id="q-ig" oninput="rIG()"></div>
+    <div id="list-ig"></div>
+  </div>
+
+  <!-- ══ CLIENTES ══ -->
+  <div id="pg-clientes" class="pg">
+    <div class="fb"><div style="font-size:15px;font-weight:700">Clientes / Revendedores</div><button class="btn bp" onclick="aMC()">+ Novo Cliente</button></div>
+    <div class="sw3"><span class="si">🔍</span><input type="text" placeholder="Buscar..." id="q-cl" oninput="rCL()"></div>
+    <div id="list-cl"></div>
+  </div>
+
+  <!-- ══ MENSAL ══ -->
+  <div id="pg-mensal" class="pg"><div class="mga" id="mga"></div><div id="mbody"></div></div>
+
+  <!-- ══ RANKING ══ -->
+  <div id="pg-ranking" class="pg">
+    <div class="g2">
+      <div class="card"><div class="ch"><span class="ct">🏆 Ranking Geral</span></div><div id="rl"></div></div>
+      <div class="card"><div class="ch"><span class="ct">🎖️ Medalhas</span></div><div id="ml"></div></div>
+    </div>
+  </div>
+
+  <!-- ══ PERDAS ══ -->
+  <div id="pg-perdas" class="pg">
+    <div class="mg" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
+      <div class="mc bad"><div class="lb">Perdas do Mês</div><div class="vl" id="p-mes">R$ 0</div><div class="sb" id="p-mes-qt">0 unidades</div></div>
+      <div class="mc warn"><div class="lb">Perdas de Hoje</div><div class="vl" id="p-hoje">R$ 0</div><div class="sb" id="p-hoje-qt">0 unidades</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">Registrar Perda</span></div>
+      <div class="fr2">
+        <div class="fg"><label>Tipo de perda</label>
+          <select id="perda-tipo" oninput="prvPerda()">
+            <option value="cone">🍦 Cone inteiro</option>
+            <option value="casquinha">🥚 Casquinha quebrada</option>
+          </select>
+        </div>
+        <div class="fg"><label>Quantidade</label><input type="number" id="perda-qtd" placeholder="ex: 5" min="1" inputmode="numeric" oninput="prvPerda()"></div>
+      </div>
+      <div class="fg"><label>Data</label><input type="date" id="perda-data"></div>
+      <div class="fg"><label>Observação (opcional)</label><input type="text" id="perda-obs" placeholder="ex: queda na produção"></div>
+      <div id="perda-prv" style="background:var(--rebg);color:var(--retx);border-radius:8px;padding:10px;margin-bottom:12px;font-size:13px"></div>
+      <button class="btn bex bw" onclick="regPerda()">Registrar Perda</button>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">Histórico de Perdas</span></div><div id="perdas-hist"></div></div>
+  </div>
+
+  <!-- ══ REGIÕES DE ENTREGA ══ -->
+  <div id="pg-entregas" class="pg">
+    <div class="mg" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
+      <div class="mc"><div class="lb">Custo Entregas (mês)</div><div class="vl" id="e-t">R$ 0</div></div>
+      <div class="mc"><div class="lb">Entregas Realizadas</div><div class="vl" id="e-q">0</div></div>
+    </div>
+    <div class="fb"><div style="font-size:15px;font-weight:700">Regiões de Entrega</div><button class="btn bp" onclick="aMR()">+ Nova Região</button></div>
+    <div id="list-re"></div>
+  </div>
+
+
+  <!-- ══ COOKIES & SABORES ══ -->
+  <div id="pg-produtos" class="pg">
+    <div style="max-width:760px">
+      <div class="card">
+        <div class="ch"><span class="ct">🎯 Meta de CMV</span></div>
+        <p class="ts" style="margin-bottom:10px">CMV % = custo da mercadoria (ingredientes + embalagem) ÷ preço de venda. O preço sugerido de cada sabor é calculado a partir dessa meta.</p>
+        <div class="fr2">
+          <div class="fg" style="margin-bottom:0"><label>Meta de CMV (%)</label><input type="number" step="1" id="pr-meta" inputmode="decimal" onchange="prMeta(this.value)"></div>
+          <div class="fg" style="margin-bottom:0"><label>Rateio de custo fixo por unidade</label><input type="text" id="pr-fixo" readonly style="opacity:.7;background:var(--s2)"></div>
+        </div>
+        <div class="fg" style="margin:12px 0 0"><label>Custo fixo (aluguel, luz…) dividido por</label>
+          <select id="pr-rat" onchange="prRat(this.value)"><option value="1">Cones + cookies (recomendado)</option><option value="0">Só cones</option></select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">🧺 Ingredientes</span><button class="btn bsm" onclick="addIng()">+ Ingrediente</button></div>
+        <p class="ts" style="margin-bottom:6px">Cadastre o preço que você paga e o tamanho da embalagem. O custo por grama é calculado sozinho e usado em todas as receitas.</p>
+        <div id="ing-list"></div>
+      </div>
+      <div id="prod-list"></div>
+      <button class="btn bp bw" onclick="addProd()" style="margin-bottom:22px">+ Novo sabor de cookie</button>
+      <div class="card" id="combos-topo">
+        <div class="ch" style="margin-bottom:6px"><span class="ct">🎁 Combos</span></div>
+        <p class="ts">Monte combos com cones, cookies ou os dois juntos, com preço fechado. O custo e o lucro são calculados sozinhos, e os combos aparecem no pedido Instagram / Direto. O cone usa o custo variável das Configurações (<span id="cb-cone-cu"></span>).</p>
+      </div>
+      <div id="combo-list"></div>
+      <button class="btn bp bw" onclick="addCombo()" style="margin-bottom:14px">+ Novo combo</button>
+    </div>
+  </div>
+
+  <!-- ══ CONFIG ══ -->
+  <div id="pg-config" class="pg">
+    <div style="max-width:560px">
+      <div class="card">
+        <div class="ch"><span class="ct">🏪 Nome do Estabelecimento</span></div>
+        <div class="fg"><label>Nome da fábrica / marca</label><input type="text" id="cfg-nm" placeholder="ex: Cones da Maria"></div>
+        <div class="fg"><label>Emoji / Ícone</label>
+          <select id="cfg-ic"><option value="🍦">🍦 Sorvete</option><option value="🍫">🍫 Chocolate</option><option value="🧁">🧁 Cupcake</option><option value="🍬">🍬 Doce</option><option value="🎂">🎂 Bolo</option><option value="⭐">⭐ Estrela</option><option value="✨">✨ Brilho</option></select>
+        </div>
+        <button class="btn bp bw" onclick="savNm()">Salvar Nome</button>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">⚙️ Custo de Produção (CMV)</span></div>
+        <p class="ts" style="margin-bottom:12px">O custo por cone é calculado automaticamente: <b>Custo Variável + (Custo Fixo ÷ Produção do Mês)</b></p>
+        <div class="fg"><label>Custo variável por cone (R$) — ingredientes, embalagem</label><input type="number" step="0.01" id="cc-v" placeholder="ex: 1.66" oninput="cfPrv()"></div>
+        <div class="fg"><label>Custo fixo mensal (R$) — aluguel, luz, salários, etc.</label><input type="number" step="0.01" id="cc-f" placeholder="ex: 3690" oninput="cfPrv()"></div>
+        <div class="fg"><label>Produção manual/mês (deixe 0 para calcular automaticamente)</label><input type="number" id="cc-p" placeholder="0" oninput="cfPrv()"></div>
+        <div class="fg"><label>Custo da casquinha (R$) — usado no registro de perdas</label><input type="number" step="0.01" id="cc-cq" placeholder="ex: 0.40"></div>
+        <div class="cprev">
+          <div style="font-size:11px;font-weight:700;color:var(--putx);margin-bottom:8px;text-transform:uppercase">Custo unitário calculado automaticamente</div>
+          <div id="cp-v" style="font-size:24px;font-weight:700;color:var(--pu)">R$ —</div>
+          <div id="cp-formula" style="font-size:12px;color:var(--putx);margin-top:6px;line-height:1.6"></div>
+        </div>
+        <button class="btn bp bw" onclick="sC()">Salvar Configurações</button>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">💰 Preços Padrão</span></div>
+        <div class="fr2">
+          <div class="fg"><label>Preço de venda — Revendedor (R$)</label><input type="number" step="0.01" id="cc-r" placeholder="ex: 7.00"></div>
+          <div class="fg"><label>Preço de venda — Instagram/Direto (R$)</label><input type="number" step="0.01" id="cc-d" placeholder="ex: 10.00"></div>
+        </div>
+        <div class="fg"><label>Média de cones por revendedor por mês</label><input type="number" id="cc-m" placeholder="ex: 40"></div>
+        <button class="btn bp bw" onclick="sC()">Salvar</button>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">🎯 Metas Mensais</span></div>
+        <p class="ts" style="margin-bottom:12px">As metas aparecem no Dashboard e no Controle Mensal como barra de progresso e projeção automática.</p>
+        <div class="fr2">
+          <div class="fg"><label>Meta de faturamento (R$)</label><input type="number" id="cc-mt" placeholder="ex: 10000"></div>
+          <div class="fg"><label>Meta de cones</label><input type="number" id="cc-mc" placeholder="ex: 2000"></div>
+          <div class="fg"><label>Meta de cookies 🍪</label><input type="number" id="cc-mk" placeholder="ex: 100"></div>
+        </div>
+        <button class="btn bp bw" onclick="sMt()">Salvar Metas</button>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">📥 Exportar Dados</span></div>
+        <button class="btn bou bw" onclick="exportCSV()">⬇ Baixar CSV completo</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL PEDIDO -->
+<div class="ov" id="ov-pedido">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3 id="mp-t">Novo Pedido</h3><button class="mclose" onclick="fM('pedido')">✕</button></div>
+  <div id="mp-cr" class="fg"><label>Cliente (revendedor)</label><select id="mp-cl"></select></div>
+  <div id="mp-nr" class="fg" style="display:none"><label>Nome / @ do cliente</label><input type="text" id="mp-nm" placeholder="@doce_vida ou Maria Silva"></div>
+  <div class="fr2">
+    <div class="fg"><label id="mp-q-lb">Quantidade de cones</label><input type="number" id="mp-q" min="0" placeholder="0" inputmode="numeric" oninput="cPed()"></div>
+    <div class="fg" id="mp-combo-wrap"><label>Combo rápido</label>
+      <select id="mp-combo" onchange="aplicarCombo()">
+        <option value="">Selecionar combo...</option>
+        <option value="3">Combo 3 cones</option>
+        <option value="5">Combo 5 cones</option>
+        <option value="10">Combo 10 cones</option>
+      </select>
+    </div>
+  </div>
+  <div id="mp-itens" class="pi-box" style="display:none"></div>
+  <div class="fr2">
+    <div class="fg"><label>Data do pedido</label><input type="date" id="mp-dp"></div>
+    <div class="fg"><label>Data de entrega</label><input type="date" id="mp-de"></div>
+  </div>
+  <div class="fg"><label>Data de produção</label><input type="date" id="mp-dpr"></div>
+  <div class="fg"><label>Status</label>
+    <select id="mp-st">
+      <option value="pendente">⏳ Pendente</option>
+      <option value="producao">🔧 Em Produção</option>
+      <option value="enviado">📦 Enviado</option>
+      <option value="entregue">✅ Entregue</option>
+    </select>
+  </div>
+  <div class="fg"><label id="mp-pr-lb">Preço unitário (R$)</label><input type="number" step="0.01" id="mp-pr" inputmode="decimal" oninput="cPed()"></div>
+  <div id="mp-er" class="fg" style="display:none"><label>Custo de entrega — Revendedor (R$)</label><input type="number" step="0.01" id="mp-en" value="0" inputmode="decimal" oninput="cPed()"></div>
+  <div id="mp-ig-er" class="fg" style="display:none"><label>Entrega cobrada do cliente (R$) — Uber/motoboy <span style="font-size:11px;color:var(--t3)">(0 se cliente busca ou já incluso no preço)</span></label><input type="number" step="0.01" id="mp-ig-en" value="0" inputmode="decimal"></div>
+  <div id="mp-desc-row" class="fg" style="display:none">
+    <label>Desconto (%)</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" id="mp-desc" min="0" max="100" step="1" value="0" inputmode="numeric" oninput="cPed()" style="flex:1">
+      <div style="font-size:13px;color:var(--t2);white-space:nowrap">= <span id="mp-desc-val" style="font-weight:700;color:var(--re)">R$ 0,00</span> off</div>
+    </div>
+  </div>
+  <div class="lbox">
+    <div class="lr sub" id="cp-it-row" style="display:none;padding-left:0"><span>Itens:</span><span id="cp-it" style="text-align:right"></span></div>
+    <div class="lr"><span style="font-weight:600">Subtotal (sem desconto):</span><span id="cp-sub" style="font-weight:600;color:var(--t2)">R$ 0,00</span></div>
+    <div class="lr sub" id="cp-desc-row" style="display:none"><span>(-) Desconto aplicado:</span><span id="cp-desc" style="color:var(--re)">R$ 0,00</span></div>
+    <div class="lr"><span style="font-weight:600">Receita total:</span><span id="cp-t" style="font-weight:700;color:var(--bl)">R$ 0,00</span></div>
+    <div class="lr sub"><span>(-) Custo da mercadoria (CMV):</span><span id="cp-cv" style="color:var(--re)">R$ 0,00</span></div>
+    <div class="lr sub" id="cp-er-row" style="display:none"><span>(-) Custo de entrega:</span><span id="cp-en" style="color:var(--re)">R$ 0,00</span></div>
+    <div class="lr sub"><span>(-) Rateio custo fixo:</span><span id="cp-cf" style="color:var(--am)">R$ 0,00</span></div>
+    <div class="lr tot"><span>Lucro líquido estimado:</span><span id="cp-l">R$ 0,00</span></div>
+  </div>
+  <button class="btn bp bw" id="mp-sb" onclick="sP()" style="margin-bottom:10px">Salvar Pedido</button>
+  <button class="btn bou bw" onclick="fM('pedido')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL CLIENTE -->
+<div class="ov" id="ov-cliente">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3 id="mc-t">Novo Cliente</h3><button class="mclose" onclick="fM('cliente')">✕</button></div>
+  <div class="fg"><label>Nome completo</label><input type="text" id="cl-n" placeholder="Nome do revendedor"></div>
+  <div class="fg"><label>Telefone / WhatsApp</label><input type="tel" id="cl-t" placeholder="(41) 99999-0000" inputmode="tel"></div>
+  <div class="fg"><label>Região / Bairro</label><select id="cl-r"><option value="">Selecionar...</option></select></div>
+  <div class="fg"><label>Endereço</label><input type="text" id="cl-e" placeholder="Rua, número, bairro..."></div>
+  <button class="btn bp bw" onclick="saCl()" style="margin-bottom:10px">Salvar Cliente</button>
+  <button class="btn bou bw" onclick="fM('cliente')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL REGIÃO -->
+<div class="ov" id="ov-regiao">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3>Nova Região</h3><button class="mclose" onclick="fM('regiao')">✕</button></div>
+  <div class="fg"><label>Nome da região / bairro</label><input type="text" id="rg-n" placeholder="ex: Centro"></div>
+  <div class="fg"><label>Valor fixo de entrega (R$)</label><input type="number" step="0.01" id="rg-v" placeholder="ex: 8.00" inputmode="decimal"></div>
+  <button class="btn bp bw" onclick="saRg()" style="margin-bottom:10px">Salvar Região</button>
+  <button class="btn bou bw" onclick="fM('regiao')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL NOME -->
+<div class="ov" id="ov-nome">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3>Nome do Estabelecimento</h3><button class="mclose" onclick="fM('nome')">✕</button></div>
+  <div class="fg"><label>Nome da fábrica / marca</label><input type="text" id="en-n" placeholder="ex: Cones da Maria"></div>
+  <div class="fg"><label>Emoji / Ícone</label>
+    <select id="en-i"><option value="🍦">🍦 Sorvete</option><option value="🍫">🍫 Chocolate</option><option value="🧁">🧁 Cupcake</option><option value="🍬">🍬 Doce</option><option value="🎂">🎂 Bolo</option><option value="⭐">⭐ Estrela</option><option value="✨">✨ Brilho</option></select>
+  </div>
+  <button class="btn bp bw" onclick="savNmM()" style="margin-bottom:10px">✓ Salvar Nome</button>
+  <button class="btn bou bw" onclick="fM('nome')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL COMBOS -->
+<div class="ov" id="ov-combos">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3>Editar Preços dos Combos</h3><button class="mclose" onclick="fM('combos')">✕</button></div>
+  <p class="ts" style="margin-bottom:14px">O custo é calculado automaticamente com base no CMV atual.</p>
+  <div id="combos-form"></div>
+  <button class="btn bp bw" onclick="savCombos()" style="margin-bottom:10px">Salvar Combos</button>
+  <button class="btn bou bw" onclick="fM('combos')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL STATUS -->
+<div class="ov" id="ov-status">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3>Atualizar Status</h3><button class="mclose" onclick="fM('status')">✕</button></div>
+  <div class="fg"><label>Novo status do pedido</label>
+    <select id="st-sel">
+      <option value="pendente">⏳ Pendente</option>
+      <option value="producao">🔧 Em Produção</option>
+      <option value="enviado">📦 Enviado</option>
+      <option value="entregue">✅ Entregue</option>
+    </select>
+  </div>
+  <div class="fg"><label>Data de entrega (se aplicável)</label><input type="date" id="st-de"></div>
+  <button class="btn bp bw" onclick="salvarStatus()" style="margin-bottom:10px">Atualizar</button>
+  <button class="btn bou bw" onclick="fM('status')">Cancelar</button>
+</div>
+</div>
+
+<!-- MODAL DETALHE MENSAL -->
+<div class="ov" id="ov-detalhe">
+<div class="md">
+  <div class="drag"></div>
+  <div class="mh"><h3 id="det-title">Detalhes</h3><button class="mclose" onclick="fM('detalhe')">✕</button></div>
+  <div id="det-body"></div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+const MS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const MF=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const ST={pendente:{lb:'⏳ Pendente',cls:'st-pen'},producao:{lb:'🔧 Em Produção',cls:'st-pro'},enviado:{lb:'📦 Enviado',cls:'st-env'},entregue:{lb:'✅ Entregue',cls:'st-ent'},cancelado:{lb:'❌ Cancelado',cls:'st-can'}};
+
+let S={
+  clientes:[],pedidos:[],regioes:[],perdas:[],
+  nome:{label:'Canudo di Cacau',icon:'🍫'},
+  config:{custoVariavel:1.66,custoCasquinha:0.40,custoFixo:3690,producaoManual:0,mediaRev:40,precoRev:7,precoDir:10,meta:10000,metaCones:2000},
+  combos:{3:{preco:22},5:{preco:35},10:{preco:65}},
+  gasolinaIG:{},
+  mesSel:new Date().getMonth(),
+  editCl:null,pdTipo:'revenda',editStatusId:null
+};
+
+// ── STORAGE (migra v2→v8) ──
+function ldS(){
+  try{
+    for(const k of['cones9','cones8','cones7','cones5','cones4','cones3','cones2']){
+      const d=localStorage.getItem(k);if(!d)continue;
+      const p=JSON.parse(d);
+      if(p.config)S.config=Object.assign({},S.config,p.config);
+      if(p.clientes&&p.clientes.length)S.clientes=p.clientes;
+      if(p.pedidos&&p.pedidos.length){
+        S.pedidos=p.pedidos.map(x=>({
+          ...x,
+          status:x.status||'entregue',
+          dataPedido:x.dataPedido||dtStr(new Date(x.ts||Date.now())),
+          dataEntrega:x.dataEntrega||null,
+          dataProducao:x.dataProducao||null,
+          // IMPORTANT: ensure entrega only on revenda
+          entrega:x.tipo==='direta'?0:(x.entrega||0),
+        }));
+      }
+      if(p.regioes&&p.regioes.length)S.regioes=p.regioes;
+      if(p.perdas)S.perdas=p.perdas;
+      if(p.nome)S.nome=Object.assign({},S.nome,p.nome);
+      if(p.combos)S.combos=Object.assign({},S.combos,p.combos);
+      if(p.gasolinaIG)S.gasolinaIG=p.gasolinaIG;
+      ['ingredientes','produtos','combosNovos','_deletedIds'].forEach(k2=>{if(Array.isArray(p[k2]))S[k2]=p[k2];});
+      if(S.clientes.length)break;
+    }
+  }catch(e){}
+}
+const svS=()=>{
+  try{
+    S._ts=Date.now();
+    window._localTs=S._ts;
+    localStorage.setItem('cones9',JSON.stringify(S));
+    if(window.fbSave)window.fbSave(S);
+  }catch(e){}
+};
+const apNm=()=>{const{label:l,icon:ic}=S.nome;['sl-nm'].forEach(id=>document.getElementById(id).textContent=l);document.getElementById('sl-ic').textContent=ic;document.title=l;document.getElementById('doc-title').textContent=l;};
+
+// ── DATE HELPERS ──
+const dtStr=d=>{const dt=d instanceof Date?d:new Date(d);return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');};
+const dtDisp=s=>s?s.split('-').reverse().join('/'):'—';
+const today=()=>dtStr(new Date());
+const isPast=s=>s&&s<today();
+
+// ── CMV ──
+const cProd=()=>{
+  if(S.config.producaoManual>0)return S.config.producaoManual;
+  // Usa cones reais vendidos no mês atual
+  const mes=new Date().getMonth();
+  const conesReais=S.pedidos.filter(p=>p.mes===mes).reduce((a,p)=>a+p.qtd+(S.config.rateioTudo?(p.ck||0):0),0);
+  // Se não tiver vendas ainda, usa estimativa pelos revendedores
+  return Math.max(conesReais||S.clientes.length*S.config.mediaRev,1);
+};
+const cUnit=()=>S.config.custoVariavel+(S.config.custoFixo/cProd());
+
+// ── FINANCIAL HELPERS (CORRECTED) ──
+// tP: receita bruta do pedido
+const tP=p=>p.total||(p.qtd*p.preco);
+// cvP: custo variável (ingredientes) = qtd × custo variável por cone
+const cvP=p=>p.qtd*S.config.custoVariavel+(p.cvX||0); // cones + cookies/embalagem de combo (congelado na venda)
+// cfP: rateio do custo fixo = qtd × (custo fixo total ÷ produção do mês)
+const cfP=p=>(p.qtd+(S.config.rateioTudo?(p.ck||0):0))*(S.config.custoFixo/cProd());
+// entP: custo de entrega — SOMENTE para revenda; instagram = 0
+const entP=p=>p.tipo==='revenda'?(p.entrega||0):0;
+// lucBruto: receita - custo variável - entrega (SEM descontar fixo)
+const lucBruto=p=>tP(p)-cvP(p)-entP(p);
+// lucLiq: receita - custo variável - entrega - rateio fixo
+const lucLiq=p=>tP(p)-cvP(p)-entP(p)-cfP(p);
+
+const medal=v=>v>=500?{l:'Ouro',i:'🥇',c:'bgo'}:v>=300?{l:'Prata',i:'🥈',c:'bsi'}:v>=100?{l:'Bronze',i:'🥉',c:'bbr'}:null;
+const volCl=(id,mes=null)=>S.pedidos.filter(p=>p.clienteId===id&&(mes===null||p.mes===mes)).reduce((a,p)=>a+p.qtd,0);
+const fmt=n=>'R$ '+parseFloat(n||0).toFixed(2).replace('.',',');
+const fmtN=n=>(n||0).toLocaleString('pt-BR');
+const uid=()=>Date.now()+Math.floor(Math.random()*9999);
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+
+
+// ── SEED COM DADOS REAIS (importado do CSV) ──
+function seed(){
+  if(S.clientes.length>0)return;
+  S.clientes=[
+    {id:1,nome:'TRE FRATELLI AO LADO TERMINAL',tel:'',end:'',regiao:''},
+    {id:2,nome:'CRUZETTA',tel:'',end:'',regiao:''},
+    {id:3,nome:'LANCHONETE CENTRO',tel:'',end:'',regiao:''},
+    {id:4,nome:'TRE FRATELLI AO LADO BOLICHE',tel:'',end:'',regiao:''},
+    {id:5,nome:'MISSAL SHAWARMA',tel:'',end:'',regiao:''},
+    {id:6,nome:'Tahine',tel:'',end:'',regiao:''},
+    {id:7,nome:'Quiosque',tel:'',end:'',regiao:''},
+    {id:8,nome:'Trieste',tel:'',end:'',regiao:''},
+    {id:9,nome:'Rossa Mercado',tel:'',end:'',regiao:''},
+    {id:10,nome:'Outro Bar Itupava',tel:'',end:'',regiao:''},
+    {id:11,nome:'Casa verde itupava',tel:'',end:'',regiao:''},
+    {id:12,nome:'Nixxon',tel:'',end:'',regiao:''},
+    {id:13,nome:'Espetinho Santa',tel:'',end:'',regiao:''},
+    {id:14,nome:'Avenida gourmet',tel:'',end:'',regiao:''},
+    {id:15,nome:'Na brasa grill',tel:'',end:'',regiao:''},
+    {id:16,nome:'Mineiro centro',tel:'',end:'',regiao:''},
+    {id:17,nome:'Fernandes restaurante',tel:'',end:'',regiao:''},
+    {id:18,nome:'Zero absoluto',tel:'',end:'',regiao:''},
+    {id:19,nome:'Galpão ventania',tel:'',end:'',regiao:''},
+    {id:20,nome:'Eloisa gastronomia',tel:'',end:'',regiao:''},
+    {id:21,nome:'Café oliva',tel:'',end:'',regiao:''},
+  ];
+  let ts=Date.now()-30000;
+  S.pedidos=[
+    {id:1,tipo:'revenda',clienteId:1,nome:'TRE FRATELLI AO LADO TERMINAL',qtd:40,preco:7.0,entrega:5.0,entregaIG:0,desconto:0,total:280.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-15',dataEntrega:'2026-04-15',dataProducao:'2026-04-15'},
+    {id:2,tipo:'revenda',clienteId:2,nome:'CRUZETTA',qtd:70,preco:7.0,entrega:4.99,entregaIG:0,desconto:0,total:490.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-15',dataEntrega:'2026-04-15',dataProducao:'2026-04-15'},
+    {id:3,tipo:'revenda',clienteId:3,nome:'LANCHONETE CENTRO',qtd:30,preco:7.0,entrega:5.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-15',dataEntrega:'2026-04-16',dataProducao:'2026-04-15'},
+    {id:4,tipo:'revenda',clienteId:4,nome:'TRE FRATELLI AO LADO BOLICHE',qtd:40,preco:7.0,entrega:5.0,entregaIG:0,desconto:0,total:280.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-15',dataEntrega:'2026-04-15',dataProducao:'2026-04-15'},
+    {id:5,tipo:'direta',clienteId:null,nome:'@danielxavierdefranca',qtd:1,preco:119.9,entrega:0.0,entregaIG:0,desconto:0,total:119.9,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-15',dataEntrega:'2026-04-16',dataProducao:'2026-04-15'},
+    {id:6,tipo:'direta',clienteId:null,nome:'ANII_CA',qtd:4,preco:12.9,entrega:0.0,entregaIG:0,desconto:0,total:51.6,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-17',dataEntrega:'2026-04-17',dataProducao:'2026-04-17'},
+    {id:7,tipo:'revenda',clienteId:5,nome:'MISSAL SHAWARMA',qtd:50,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:350.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-17',dataEntrega:'2026-04-16',dataProducao:'2026-04-17'},
+    {id:8,tipo:'revenda',clienteId:6,nome:'Tahine',qtd:40,preco:7.1,entrega:5.0,entregaIG:0,desconto:0,total:284.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-17',dataEntrega:'2026-04-17',dataProducao:'2026-04-17'},
+    {id:9,tipo:'revenda',clienteId:7,nome:'Quiosque',qtd:40,preco:7.1,entrega:0.0,entregaIG:0,desconto:0,total:284.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-17',dataEntrega:'2026-04-17',dataProducao:'2026-04-17'},
+    {id:10,tipo:'revenda',clienteId:8,nome:'Trieste',qtd:30,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-17',dataEntrega:'2026-04-17',dataProducao:'2026-04-17'},
+    {id:11,tipo:'revenda',clienteId:9,nome:'Rossa Mercado',qtd:80,preco:7.1,entrega:20.0,entregaIG:0,desconto:0,total:568.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-21',dataEntrega:'2026-04-22',dataProducao:'2026-04-21'},
+    {id:12,tipo:'revenda',clienteId:10,nome:'Outro Bar Itupava',qtd:15,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:105.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-23',dataEntrega:'',dataProducao:'2026-04-23'},
+    {id:13,tipo:'revenda',clienteId:11,nome:'Casa verde itupava',qtd:15,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:105.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-23',dataEntrega:'',dataProducao:'2026-04-23'},
+    {id:14,tipo:'direta',clienteId:null,nome:'@tomas',qtd:11,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:77.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-23',dataEntrega:'2026-04-23',dataProducao:'2026-04-23'},
+    {id:15,tipo:'revenda',clienteId:12,nome:'Nixxon',qtd:75,preco:7.1,entrega:0.0,entregaIG:0,desconto:0,total:532.5,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-27',dataEntrega:'2026-04-27',dataProducao:'2026-04-27'},
+    {id:16,tipo:'revenda',clienteId:13,nome:'Espetinho Santa',qtd:70,preco:7.0,entrega:15.0,entregaIG:0,desconto:0,total:490.0,mes:3,ts:ts++,status:'producao',dataPedido:'2026-04-27',dataEntrega:'',dataProducao:'2026-04-27'},
+    {id:17,tipo:'revenda',clienteId:9,nome:'Rossa Mercado',qtd:80,preco:7.1,entrega:0.0,entregaIG:0,desconto:0,total:568.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-28',dataEntrega:'2026-04-28',dataProducao:'2026-04-28'},
+    {id:18,tipo:'revenda',clienteId:14,nome:'Avenida gourmet',qtd:30,preco:7.0,entrega:6.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-28',dataEntrega:'',dataProducao:'2026-04-28'},
+    {id:19,tipo:'revenda',clienteId:15,nome:'Na brasa grill',qtd:30,preco:7.0,entrega:6.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-28',dataEntrega:'',dataProducao:'2026-04-28'},
+    {id:20,tipo:'revenda',clienteId:16,nome:'Mineiro centro',qtd:30,preco:7.0,entrega:6.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-28',dataEntrega:'',dataProducao:'2026-04-28'},
+    {id:21,tipo:'revenda',clienteId:17,nome:'Fernandes restaurante',qtd:15,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:105.0,mes:3,ts:ts++,status:'enviado',dataPedido:'2026-04-29',dataEntrega:'2026-04-29',dataProducao:'2026-04-29'},
+    {id:22,tipo:'revenda',clienteId:18,nome:'Zero absoluto',qtd:9,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:63.0,mes:3,ts:ts++,status:'enviado',dataPedido:'2026-04-29',dataEntrega:'2026-04-29',dataProducao:'2026-04-29'},
+    {id:23,tipo:'revenda',clienteId:19,nome:'Galpão ventania',qtd:50,preco:7.0,entrega:8.0,entregaIG:0,desconto:0,total:350.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-29',dataEntrega:'2026-04-29',dataProducao:'2026-04-29'},
+    {id:24,tipo:'revenda',clienteId:20,nome:'Eloisa gastronomia',qtd:30,preco:7.0,entrega:0.0,entregaIG:0,desconto:0,total:210.0,mes:3,ts:ts++,status:'entregue',dataPedido:'2026-04-30',dataEntrega:'2026-04-30',dataProducao:'2026-04-30'},
+    {id:25,tipo:'direta',clienteId:null,nome:'Loja adriano',qtd:32,preco:7.6,entrega:0.0,entregaIG:0,desconto:0,total:243.2,mes:4,ts:ts++,status:'entregue',dataPedido:'2026-05-02',dataEntrega:'2026-05-02',dataProducao:'2026-05-02'},
+    {id:26,tipo:'revenda',clienteId:21,nome:'Café oliva',qtd:30,preco:7.0,entrega:5.0,entregaIG:0,desconto:0,total:210.0,mes:4,ts:ts++,status:'entregue',dataPedido:'2026-05-04',dataEntrega:'',dataProducao:'2026-05-04'},
+  ];
+  svS();
+}
+
+
+
+// ── COOKIES & SABORES (custo por receita) ──
+const UN={g:'g',ml:'ml',un:'un'};
+function seedProd(){
+  // Dados iniciais = receitas que o Marlonn montou na amostra em 19/10/2026
+  // (preços guardados por kg/L, calculados a partir dos custos que apareceram na tela)
+  if(!Array.isArray(S.ingredientes)){
+    const b=Date.now();
+    S.ingredientes=[
+      {id:b+1,nome:'Nutella',preco:209.90,qtdEmb:3000,un:'g'},
+      {id:b+2,nome:'Chocolate em gotas',preco:33,qtdEmb:1000,un:'g'},
+      {id:b+3,nome:'Cacau em pó 100%',preco:98,qtdEmb:1000,un:'g'},
+      {id:b+4,nome:'Farinha de trigo',preco:5.20,qtdEmb:1000,un:'g'},
+      {id:b+5,nome:'Açúcar refinado',preco:3.60,qtdEmb:1000,un:'g'},
+      {id:b+6,nome:'Açúcar mascavo',preco:12,qtdEmb:1000,un:'g'},
+      {id:b+7,nome:'Manteiga',preco:8.80,qtdEmb:200,un:'g'},
+      {id:b+8,nome:'Ovo',preco:5.40,qtdEmb:12,un:'un'},
+      {id:b+9,nome:'Fermento químico',preco:0,qtdEmb:100,un:'g'},
+      {id:b+10,nome:'Bicarbonato de sódio',preco:0,qtdEmb:80,un:'g'},
+      {id:b+11,nome:'Sal',preco:0,qtdEmb:1000,un:'g'},
+      {id:b+12,nome:'Essência de baunilha',preco:9,qtdEmb:30,un:'ml'},
+      {id:b+13,nome:'Kinder Bueno',preco:7.60,qtdEmb:40,un:'g'},
+      {id:b+14,nome:'Chocolate branco',preco:28,qtdEmb:1000,un:'g'},
+      {id:b+15,nome:'Cacau black',preco:49.90,qtdEmb:500,un:'g'},
+    ];
+    S.produtos=[
+      {id:b+20,nome:'Cookie Tradicional',tipo:'cookie',rend:27,emb:0.90,ades:0.15,preco:18.90,itens:[
+        {ing:b+1,q:405},{ing:b+2,q:400},{ing:b+4,q:560},{ing:b+7,q:240},{ing:b+5,q:170},{ing:b+6,q:170},{ing:b+8,q:2},{ing:b+12,q:10}]},
+      {id:b+21,nome:'Cookie Black Duo',tipo:'cookie',rend:27,emb:0.90,ades:0.15,preco:18.90,itens:[
+        // massa do Tradicional + 70 g de cacau black na fornada
+        {ing:b+15,q:70},{ing:b+1,q:405},{ing:b+2,q:400},{ing:b+4,q:560},{ing:b+7,q:240},{ing:b+5,q:170},{ing:b+6,q:170},{ing:b+8,q:2},{ing:b+12,q:10}]},
+      {id:b+22,nome:'Cookie Kinder Bueno',tipo:'cookie',rend:27,emb:0.90,ades:0.15,preco:22.90,itens:[
+        // massa do Tradicional sem a Nutella + recheio 15 g (80% Kinder / 20% choc. branco) + enfeite 2 pedaços (10 g) de Kinder por cookie
+        {ing:b+13,q:324},{ing:b+14,q:81},{ing:b+13,q:270},{ing:b+2,q:400},{ing:b+4,q:560},{ing:b+7,q:240},{ing:b+5,q:170},{ing:b+6,q:170},{ing:b+8,q:2},{ing:b+12,q:10}]},
+    ];
+    S.config.ingBaseV2=true;
+  }
+  if(!Array.isArray(S.produtos))S.produtos=[];
+  if(S.config.cmvMeta==null)S.config.cmvMeta=25;
+  // lista base de ingredientes de cookie (só adiciona o que ainda não existe, uma vez)
+  if(!S.config.ingBaseV2){
+    const tem=n=>S.ingredientes.some(i=>i.nome.trim().toLowerCase()===n.toLowerCase());
+    let b=Date.now()+100;
+    [['Farinha de trigo',1000,'g'],['Açúcar refinado',1000,'g'],['Açúcar mascavo',1000,'g'],['Manteiga',200,'g'],
+     ['Ovo',12,'un'],['Fermento químico',100,'g'],['Bicarbonato de sódio',80,'g'],['Sal',1000,'g'],['Essência de baunilha',30,'ml']]
+      .forEach(([nome,q,un])=>{if(!tem(nome))S.ingredientes.push({id:b++,nome,preco:0,qtdEmb:q,un});});
+    S.config.ingBaseV2=true;
+  }
+  seedCombos();
+}
+const ingById=id=>(S.ingredientes||[]).find(i=>i.id===id);
+const custoG=i=>i&&i.qtdEmb>0?(i.preco||0)/i.qtdEmb:0;
+function rcTxt(p,it){
+  const ing=ingById(it.ing);const un=ing?ing.un:'g';const r=Math.max(p.rend||1,1);
+  const porU=(it.q||0)/r;const q=porU>=10?Math.round(porU):Math.round(porU*10)/10;
+  return `${fmt((it.q||0)*custoG(ing))} · ≈ ${String(q).replace('.',',')} ${un} por unidade`;
+}
+const fixoUn=()=>S.config.custoFixo/cProd();
+function calcProd(p){
+  const receita=(p.itens||[]).reduce((a,it)=>a+(it.q||0)*custoG(ingById(it.ing)),0);
+  const rend=Math.max(p.rend||1,1);
+  const ingUn=receita/rend;
+  const cv=ingUn+(p.emb||0)+(p.ades||0);
+  const cf=fixoUn();
+  const preco=p.preco||0;
+  const cmvPct=preco>0?cv/preco*100:null;
+  const lucBr=preco-cv, lucLq=preco-cv-cf;
+  const meta=Math.max(S.config.cmvMeta||25,1);
+  return {receita,ingUn,cv,cf,ct:cv+cf,preco,cmvPct,lucBr,lucLq,mgLq:preco>0?lucLq/preco*100:null,sug:cv/(meta/100),meta};
+}
+const fmt2=n=>(Math.round((n||0)*100)/100).toString().replace('.',',');
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function rProd(){
+  seedProd();
+  document.getElementById('pr-meta').value=S.config.cmvMeta;
+  document.getElementById('pr-fixo').value=fmt(fixoUn())+' (mesmo do cone)';
+  document.getElementById('pr-rat').value=S.config.rateioTudo?'1':'0';
+  rCombos();
+  // ingredientes
+  const il=document.getElementById('ing-list');
+  il.innerHTML=S.ingredientes.length?S.ingredientes.map(i=>`
+    <div class="ing-row">
+      <div class="ing-nm"><label>Ingrediente</label><input type="text" value="${esc(i.nome)}" onchange="upIng(${i.id},'nome',this.value)"></div>
+      <div><label>Preço pago (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${i.preco||''}" onchange="upIng(${i.id},'preco',this.value)"></div>
+      <div><label>Qtd. embalagem</label><input type="number" step="any" inputmode="decimal" value="${i.qtdEmb||''}" onchange="upIng(${i.id},'qtdEmb',this.value)"></div>
+      <div><label>Unid.</label><select onchange="upIng(${i.id},'un',this.value)">${Object.keys(UN).map(u=>`<option ${i.un===u?'selected':''}>${u}</option>`).join('')}</select></div>
+      <button class="xbtn" title="Excluir" onclick="delIng(${i.id})">✕</button>
+      <div class="ing-cg">${i.preco>0?`${fmt(custoG(i)*(i.un==='un'?1:100))} por ${i.un==='un'?'unidade':'100'+i.un}`:'<span style="color:var(--am);font-weight:600">⚠️ preencha o preço pago</span>'}</div>
+    </div>`).join(''):'<p class="ts">Nenhum ingrediente ainda.</p>';
+  // produtos
+  const pl=document.getElementById('prod-list');
+  pl.innerHTML=S.produtos.map(p=>{
+    const opts=id=>S.ingredientes.map(i=>`<option value="${i.id}" ${i.id===id?'selected':''}>${esc(i.nome)}</option>`).join('');
+    return `<div class="card" id="pc-${p.id}" style="border-left:4px solid var(--ck)">
+      <div class="ch"><span class="ct">🍪 ${esc(p.nome)}</span><button class="btn bsm" style="color:var(--re)" onclick="delProd(${p.id})">Excluir</button></div>
+      <div class="fr2">
+        <div class="fg"><label>Nome do sabor</label><input type="text" value="${esc(p.nome)}" onchange="upProd(${p.id},'nome',this.value,true)"></div>
+        <div class="fg"><label>Rendimento da fornada (unidades)</label><input type="number" inputmode="numeric" value="${p.rend||''}" oninput="upProd(${p.id},'rend',this.value)" onchange="svS()"></div>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.04em;margin:4px 0 8px">Receita da fornada inteira</div>
+      ${(p.itens||[]).map((it,ix)=>{const ing=ingById(it.ing);return `
+        <div class="rc-row">
+          <div><label>Ingrediente</label><select onchange="upIt(${p.id},${ix},'ing',this.value,true)">${ing?'':'<option selected>— escolha —</option>'}${opts(it.ing)}</select></div>
+          <div><label>Qtd. (${ing?ing.un:'g'})</label><input type="number" step="any" inputmode="decimal" value="${it.q||''}" placeholder="0" oninput="upIt(${p.id},${ix},'q',this.value)" onchange="svS()"></div>
+          <div class="rc-cost" id="rc-${p.id}-${ix}">${rcTxt(p,it)}</div>
+          <button class="xbtn" title="Remover" onclick="delIt(${p.id},${ix})">✕</button>
+        </div>`;}).join('')}
+      <button class="btn bsm bou" onclick="addIt(${p.id})" ${S.ingredientes.length?'':'disabled'}>+ Ingrediente na receita</button>
+      <div class="fr2" style="margin-top:12px">
+        <div class="fg"><label>Embalagem por unidade (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${p.emb??''}" oninput="upProd(${p.id},'emb',this.value)" onchange="svS()"></div>
+        <div class="fg"><label>Adesivo / etiqueta (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${p.ades??''}" oninput="upProd(${p.id},'ades',this.value)" onchange="svS()"></div>
+      </div>
+      <div class="fg" style="margin-bottom:0"><label>Preço de venda (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${p.preco||''}" placeholder="defina o preço" oninput="upProd(${p.id},'preco',this.value)" onchange="svS()"></div>
+      <div class="pr-res" id="pr-${p.id}"></div>
+    </div>`;}).join('');
+  S.produtos.forEach(p=>rProdRes(p.id));
+}
+function rProdRes(id){
+  const p=S.produtos.find(x=>x.id===id);const el=document.getElementById('pr-'+id);if(!p||!el)return;
+  const c=calcProd(p);
+  (p.itens||[]).forEach((it,ix)=>{const e=document.getElementById(`rc-${id}-${ix}`);if(e)e.textContent=rcTxt(p,it);});
+  const cls=c.cmvPct==null?'':c.cmvPct<=c.meta?'ok':c.cmvPct<=c.meta+10?'warn':'bad';
+  const mgCls=c.mgLq==null?'':c.mgLq>=30?'ok':c.mgLq>=15?'warn':'bad';
+  el.innerHTML=`
+    <div class="lr sub" style="padding-left:0"><span>Custo da receita inteira</span><span>${fmt(c.receita)}</span></div>
+    <div class="lr sub" style="padding-left:0"><span>Ingredientes por unidade (÷ ${Math.max(p.rend||1,1)})</span><span>${fmt(c.ingUn)}</span></div>
+    <div class="lr sub" style="padding-left:0"><span>+ Embalagem e adesivo</span><span>${fmt((p.emb||0)+(p.ades||0))}</span></div>
+    <div class="lr" style="font-weight:700;border-top:1px solid var(--b);margin-top:4px;padding-top:6px"><span>= Custo da mercadoria (CMV)</span><span>${fmt(c.cv)}</span></div>
+    <div class="lr sub" style="padding-left:0"><span>+ Rateio do custo fixo</span><span>${fmt(c.cf)}</span></div>
+    <div class="lr" style="font-weight:700"><span>= Custo total por unidade</span><span>${fmt(c.ct)}</span></div>
+    <div class="pr-kpis">
+      <div class="pr-k ${cls}"><div class="lb">CMV %</div><div class="vl">${c.cmvPct==null?'—':fmt2(c.cmvPct.toFixed(1))+'%'}</div></div>
+      <div class="pr-k"><div class="lb">Lucro bruto/un.</div><div class="vl">${c.preco?fmt(c.lucBr):'—'}</div></div>
+      <div class="pr-k ${mgCls}"><div class="lb">Margem líquida</div><div class="vl">${c.mgLq==null?'—':Math.round(c.mgLq)+'%'}</div></div>
+    </div>
+    <div class="pr-sug">💡 Para CMV de <b>${c.meta}%</b>, o preço seria <b>${fmt(c.sug)}</b>.${c.preco?` Lucro líquido por unidade no preço atual: <b>${fmt(c.lucLq)}</b>.`:' Defina o preço de venda para ver CMV % e margem.'}</div>`;
+}
+function upIng(id,k,v){
+  const i=ingById(id);if(!i)return;
+  i[k]=(k==='nome'||k==='un')?v:(parseFloat(v)||0);
+  svS();rProd();
+}
+function addIng(){
+  S.ingredientes.push({id:uid(),nome:'Novo ingrediente',preco:0,qtdEmb:1000,un:'g'});
+  svS();rProd();
+  const ins=document.querySelectorAll('#ing-list .ing-nm input');const last=ins[ins.length-1];if(last){last.focus();last.select();}
+}
+function delIng(id){
+  const usado=S.produtos.filter(p=>(p.itens||[]).some(it=>it.ing===id)).map(p=>p.nome);
+  if(!confirm(usado.length?`Este ingrediente está na receita de: ${usado.join(', ')}. Excluir mesmo assim? Ele sai dessas receitas.`:'Excluir este ingrediente?'))return;
+  S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));
+  S.ingredientes=S.ingredientes.filter(i=>i.id!==id);
+  S.produtos.forEach(p=>p.itens=(p.itens||[]).filter(it=>it.ing!==id));
+  svS();rProd();toast('Ingrediente excluído');
+}
+function upProd(id,k,v,full){
+  const p=S.produtos.find(x=>x.id===id);if(!p)return;
+  p[k]=k==='nome'?v:(parseFloat(v)||0);
+  if(full){svS();rProd();}else rProdRes(id);
+}
+function upIt(id,ix,k,v,full){
+  const p=S.produtos.find(x=>x.id===id);if(!p||!p.itens[ix])return;
+  p.itens[ix][k]=k==='ing'?parseInt(v,10):(parseFloat(v)||0);
+  if(full){svS();rProd();}else rProdRes(id);
+}
+function addIt(id){
+  const p=S.produtos.find(x=>x.id===id);if(!p||!S.ingredientes.length)return;
+  p.itens=p.itens||[];p.itens.push({ing:S.ingredientes[0].id,q:0});
+  svS();rProd();
+}
+function delIt(id,ix){
+  const p=S.produtos.find(x=>x.id===id);if(!p)return;
+  p.itens.splice(ix,1);svS();rProd();
+}
+function addProd(){
+  const id=uid();
+  S.produtos.push({id,nome:'Novo cookie',tipo:'cookie',rend:20,emb:0.12,ades:0.15,preco:0,itens:[]});
+  svS();rProd();
+  document.getElementById('pc-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function delProd(id){
+  const p=S.produtos.find(x=>x.id===id);
+  if(!confirm(`Excluir o sabor "${p?p.nome:''}"?`))return;
+  S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));
+  S.produtos=S.produtos.filter(x=>x.id!==id);
+  svS();rProd();toast('Sabor excluído');
+}
+function prMeta(v){S.config.cmvMeta=parseFloat(v)||25;svS();rProd();}
+
+
+// ── COMBOS (cones + cookies) ──
+function seedCombos(){
+  if(!Array.isArray(S.combosNovos))S.combosNovos=[];
+  if(S.config.rateioTudo==null)S.config.rateioTudo=true;
+  if(S.config.metaCookies==null)S.config.metaCookies=100;
+  if(S.config.combosMigV1)return;
+  const b=Date.now()+500;
+  // migra os combos antigos (3, 5 e 10 cones) com o preço que já estava salvo
+  [3,5,10].forEach((n,i)=>{const cb=S.combos&&S.combos[n];if(cb&&cb.preco>0)S.combosNovos.push({id:b+i,nome:`Combo ${n} cones`,cones:n,itens:[],preco:cb.preco,emb:0,semEmbInd:false});});
+  const tr=S.produtos.find(p=>/tradicional/i.test(p.nome));
+  const lov=['tradicional','black','kinder'].map(k=>S.produtos.find(p=>new RegExp(k,'i').test(p.nome))).filter(Boolean);
+  if(tr){
+    S.combosNovos.push({id:b+10,nome:'Duo',cones:1,itens:[{prod:tr.id,q:1}],preco:27.90,emb:0,semEmbInd:false});
+    S.combosNovos.push({id:b+11,nome:'3 cones + 1 cookie',cones:3,itens:[{prod:tr.id,q:1}],preco:49.90,emb:0,semEmbInd:false});
+  }
+  if(lov.length)S.combosNovos.push({id:b+12,nome:'Cookie Lover',cones:0,itens:lov.map(p=>({prod:p.id,q:1})),preco:52.90,emb:0,semEmbInd:false});
+  S.config.combosMigV1=true;
+}
+const prodById=id=>(S.produtos||[]).find(p=>p.id===id);
+const comboById=id=>(S.combosNovos||[]).find(c=>c.id===id);
+const ckCv=id=>{const p=prodById(id);return p?calcProd(p).cv:0;};
+const ckEmb=id=>{const p=prodById(id);return p?(p.emb||0)+(p.ades||0):0;};
+const nomeCurto=n=>String(n||'').replace(/^cookie\s+/i,'');
+function comboDesc(c){
+  const pt=[];if(c.cones>0)pt.push(`${c.cones} cone${c.cones>1?'s':''}`);
+  (c.itens||[]).forEach(it=>{const p=prodById(it.prod);if(it.q>0)pt.push(`${it.q} ${p?nomeCurto(p.nome):'cookie'}`);});
+  return pt.join(' + ')||'vazio';
+}
+function calcCombo(c){
+  const cones=(c.cones||0)*S.config.custoVariavel;
+  const cks=(c.itens||[]).reduce((a,it)=>a+(it.q||0)*(ckCv(it.prod)-(c.semEmbInd?ckEmb(it.prod):0)),0);
+  const embRet=c.semEmbInd?(c.itens||[]).reduce((a,it)=>a+(it.q||0)*ckEmb(it.prod),0):0;
+  const cv=cones+cks+(c.emb||0);
+  const nCk=(c.itens||[]).reduce((a,it)=>a+(it.q||0),0);
+  const un=(c.cones||0)+nCk;
+  const cf=(((c.cones||0)+(S.config.rateioTudo?nCk:0)))*fixoUn();
+  const preco=c.preco||0;
+  const avulso=(c.cones||0)*(S.config.precoDir||0)+(c.itens||[]).reduce((a,it)=>{const p=prodById(it.prod);return a+(it.q||0)*(p?p.preco||0:0)},0);
+  return {cones,cks,embRet,cv,cf,preco,lucBr:preco-cv,lucLq:preco-cv-cf,cmvPct:preco>0?cv/preco*100:null,nCk,un,avulso};
+}
+function rCombos(){
+  const el=document.getElementById('combo-list');if(!el)return;
+  document.getElementById('cb-cone-cu').textContent=fmt(S.config.custoVariavel)+' por cone';
+  const pr=S.produtos||[];
+  el.innerHTML=(S.combosNovos||[]).map(c=>{
+    const opts=id=>pr.map(p=>`<option value="${p.id}" ${p.id===id?'selected':''}>${esc(p.nome)}</option>`).join('');
+    return `<div class="card" id="cbc-${c.id}" style="border-left:4px solid var(--pk)">
+      <div class="ch"><span class="ct">🎁 ${esc(c.nome)}</span><button class="btn bsm" style="color:var(--re)" onclick="delCombo(${c.id})">Excluir</button></div>
+      <div class="fr2">
+        <div class="fg"><label>Nome do combo</label><input type="text" value="${esc(c.nome)}" onchange="upCb(${c.id},'nome',this.value,true)"></div>
+        <div class="fg"><label>Preço do combo (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${c.preco||''}" placeholder="0,00" oninput="upCb(${c.id},'preco',this.value)" onchange="svS()"></div>
+      </div>
+      <div class="fg"><label>Quantidade de cones</label><input type="number" inputmode="numeric" min="0" value="${c.cones||0}" oninput="upCb(${c.id},'cones',this.value)" onchange="svS()"></div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.04em;margin:4px 0 8px">Cookies no combo</div>
+      ${(c.itens||[]).map((it,ix)=>`
+        <div class="rc-row" style="grid-template-columns:1.8fr 1fr 34px">
+          <div><label>Sabor</label><select onchange="upCbIt(${c.id},${ix},'prod',this.value,true)">${prodById(it.prod)?'':'<option selected>— escolha —</option>'}${opts(it.prod)}</select></div>
+          <div><label>Qtd.</label><input type="number" inputmode="numeric" min="0" value="${it.q||0}" oninput="upCbIt(${c.id},${ix},'q',this.value)" onchange="svS()"></div>
+          <button class="xbtn" title="Remover" onclick="delCbIt(${c.id},${ix})">✕</button>
+        </div>`).join('')}
+      <button class="btn bsm bou" onclick="addCbIt(${c.id})" ${pr.length?'':'disabled'}>+ Cookie no combo</button>
+      <div class="fg" style="margin:12px 0 6px"><label>Embalagem do combo — caixa, sacola (R$)</label><input type="number" step="0.01" inputmode="decimal" value="${c.emb||''}" placeholder="0,00" oninput="upCb(${c.id},'emb',this.value)" onchange="svS()"></div>
+      <label class="cb-chk"><input type="checkbox" ${c.semEmbInd?'checked':''} onchange="upCb(${c.id},'semEmbInd',this.checked,true)"> Os cookies vão sem a embalagem individual (desconta embalagem + adesivo deles)</label>
+      <div class="pr-res" id="cbr-${c.id}"></div>
+    </div>`;}).join('')||'<p class="ts" style="margin-bottom:12px">Nenhum combo ainda.</p>';
+  (S.combosNovos||[]).forEach(c=>rComboRes(c.id));
+}
+function rComboRes(id){
+  const c=comboById(id);const el=document.getElementById('cbr-'+id);if(!c||!el)return;
+  const k=calcCombo(c);const meta=Math.max(S.config.cmvMeta||25,1);
+  const cls=k.cmvPct==null?'':k.cmvPct<=meta?'ok':k.cmvPct<=meta+10?'warn':'bad';
+  const mg=k.preco>0?k.lucLq/k.preco*100:null;const mgCls=mg==null?'':mg>=30?'ok':mg>=15?'warn':'bad';
+  const desc=k.avulso>0&&k.preco>0?Math.round((1-k.preco/k.avulso)*100):null;
+  el.innerHTML=`
+    <div class="lr sub" style="padding-left:0"><span>${c.cones||0} cone(s) × ${fmt(S.config.custoVariavel)}</span><span>${fmt(k.cones)}</span></div>
+    <div class="lr sub" style="padding-left:0"><span>${k.nCk} cookie(s)${c.semEmbInd?' — sem embalagem individual':''}</span><span>${fmt(k.cks)}</span></div>
+    ${c.emb?`<div class="lr sub" style="padding-left:0"><span>+ Embalagem do combo</span><span>${fmt(c.emb)}</span></div>`:''}
+    <div class="lr" style="font-weight:700;border-top:1px solid var(--b);margin-top:4px;padding-top:6px"><span>= Custo da mercadoria (CMV)</span><span>${fmt(k.cv)}</span></div>
+    <div class="lr sub" style="padding-left:0"><span>+ Rateio do custo fixo</span><span>${fmt(k.cf)}</span></div>
+    <div class="pr-kpis">
+      <div class="pr-k ${cls}"><div class="lb">CMV %</div><div class="vl">${k.cmvPct==null?'—':k.cmvPct.toFixed(1).replace('.',',')+'%'}</div></div>
+      <div class="pr-k"><div class="lb">Lucro bruto</div><div class="vl">${k.preco?fmt(k.lucBr):'—'}</div></div>
+      <div class="pr-k ${mgCls}"><div class="lb">Margem líquida</div><div class="vl">${mg==null?'—':Math.round(mg)+'%'}</div></div>
+    </div>
+    <div class="pr-sug">🧾 Contém: <b>${esc(comboDesc(c))}</b>.${k.avulso>0?` Comprando separado sairia <b>${fmt(k.avulso)}</b>${desc!=null&&desc>0?` — o combo dá <b>${desc}% de desconto</b>`:desc!=null&&desc<0?' — <b>o combo está mais caro que separado</b>':''}.`:''}</div>`;
+}
+function upCb(id,k,v,full){
+  const c=comboById(id);if(!c)return;
+  c[k]=k==='nome'?v:k==='semEmbInd'?!!v:(k==='cones'?Math.max(0,parseInt(v,10)||0):(parseFloat(v)||0));
+  if(full){svS();rCombos();}else rComboRes(id);
+}
+function upCbIt(id,ix,k,v,full){
+  const c=comboById(id);if(!c||!c.itens[ix])return;
+  c.itens[ix][k]=k==='prod'?parseInt(v,10):Math.max(0,parseInt(v,10)||0);
+  if(full){svS();rCombos();}else rComboRes(id);
+}
+function addCbIt(id){const c=comboById(id);if(!c||!S.produtos.length)return;c.itens=c.itens||[];c.itens.push({prod:S.produtos[0].id,q:1});svS();rCombos();}
+function delCbIt(id,ix){const c=comboById(id);if(!c)return;c.itens.splice(ix,1);svS();rCombos();}
+function addCombo(){
+  const id=uid();S.combosNovos.push({id,nome:'Novo combo',cones:0,itens:[],preco:0,emb:0,semEmbInd:false});
+  svS();rCombos();document.getElementById('cbc-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function delCombo(id){
+  const c=comboById(id);if(!confirm(`Excluir o combo "${c?c.nome:''}"? Pedidos antigos com ele não mudam.`))return;
+  S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));
+  S.combosNovos=S.combosNovos.filter(x=>x.id!==id);svS();rCombos();toast('Combo excluído');
+}
+function prRat(v){S.config.rateioTudo=v==='1';svS();rProd();rDash();}
+
+// ── CONVERSÃO ÚNICA: pedidos de cookie que foram lançados como cone (antes de existir cookie no painel) ──
+function migCookiesV1(){
+  if(S.config.ckMigV1||!(S.produtos||[]).length)return;
+  const L=[['2026-08-05','COOKIES','tradicional'],['2026-09-27','Slow Fire Matheus','tradicional'],['2026-10-05','Slow Fire cookies','tradicional'],
+    ['2026-10-16','Cookies insta','tradicional'],['2026-10-20','Paula Instagram Cookies','tradicional'],['2026-10-20','Black','kinder'],
+    ['2026-10-26','Raquel','kinder'],['2026-10-26','Fabio','tradicional'],['2026-10-27','matheus slow fire','kinder']];
+  let n=0;
+  L.forEach(([d,nm,sab])=>{
+    const p=S.pedidos.find(x=>x.tipo==='direta'&&x.dataPedido===d&&x.nome===nm&&!x.ck&&x.qtd>0);
+    const pr=S.produtos.find(x=>new RegExp(sab,'i').test(x.nome));if(!p||!pr)return;
+    const q=p.qtd,tot=tP(p);
+    Object.assign(p,{qtd:0,qtdAvulso:0,preco:0,subtotal:tot,total:tot,ck:q,cookies:[{id:pr.id,nome:pr.nome,q}],combos:[],cvX:Math.round(q*calcProd(pr).cv*100)/100,fatCk:tot,migCk:true});n++;
+  });
+  S.config.ckMigV1=true;
+  if(n){svS();console.log('🍪 '+n+' pedidos de cookie convertidos');setTimeout(()=>toast(`🍪 ${n} pedidos antigos de cookie foram separados dos cones`),1500);}
+}
+// ── PEDIDO: combos e cookies (só Instagram/Direto) ──
+let PD={ck:{},cb:{}};
+function itensTxt(p){
+  const pt=[];if(p.qtd>0||!p.ck)pt.push(`${fmtN(p.qtd)} cones`);if(p.ck>0)pt.push(`${fmtN(p.ck)} cookie${p.ck>1?'s':''}`);
+  return pt.join(' + ');
+}
+function barraMetaCk(qtd){
+  const m=S.config.metaCookies||0;if(!m)return '';
+  const pc=Math.min(100,Math.round(qtd/m*100));
+  return `<div class="ch" style="margin:14px 0 6px"><span class="ct ck-c" style="font-size:13px">🍪 Meta Cookies: ${fmtN(m)}</span><span style="font-weight:700;color:${pc>=100?'var(--gr)':pc>=60?'var(--am)':'var(--re)'}">${pc}%</span></div><div class="prog"><div class="pf pf-ck" style="width:${pc}%"></div></div><div style="display:flex;justify-content:space-between;margin-top:4px" class="ts"><span>${fmtN(qtd)} de ${fmtN(m)}</span><span>${pc<100?'Faltam '+fmtN(m-qtd):'✅ Atingida'}</span></div>`;
+}
+function itensTag(p){
+  let h='';
+  if(p.qtd>0||!p.ck)h+=`<span class="tg tg-co">🍦 ${fmtN(p.qtd)}</span>`;
+  if(p.ck>0)h+=`<span class="tg tg-ck">🍪 ${fmtN(p.ck)}</span>`;
+  if(p.combos&&p.combos.length)h+=`<span class="tg tg-cb">🎁 Combo</span>`;
+  return h;
+}
+function rPedItens(){
+  const box=document.getElementById('mp-itens');
+  if(S.pdTipo!=='direta'){box.style.display='none';box.innerHTML='';return;}
+  const cbs=S.combosNovos||[];const pr=S.produtos||[];
+  if(!cbs.length&&!pr.length){box.style.display='none';return;}
+  box.style.display='block';
+  const row=(t,id,nome,sub)=>{const v=PD[t][id]||0;return `<div class="pi-row"><div class="pi-nm">${esc(nome)}<div class="ts" style="font-weight:400">${sub}</div></div><div class="stp"><button type="button" onclick="pdStep('${t}',${id},-1)">−</button><span id="pd-${t}-${id}" class="${v?'on':''}">${v}</span><button type="button" onclick="pdStep('${t}',${id},1)">+</button></div></div>`;};
+  box.innerHTML=(cbs.length?`<div class="pi-hd"><span>🎁 Combos</span><span class="ts" style="text-transform:none;font-weight:500">preço fechado</span></div>`+cbs.map(c=>row('cb',c.id,c.nome,`${fmt(c.preco)} · ${esc(comboDesc(c))}`)).join(''):'')
+    +(pr.length?`<div class="pi-hd ck-c" style="margin-top:${cbs.length?12:0}px"><span>🍪 Cookies avulsos</span></div>`+pr.map(p=>row('ck',p.id,p.nome,fmt(p.preco||0)+' cada')).join(''):'');
+}
+function pdStep(t,id,d){
+  const o=PD[t];o[id]=Math.max(0,(o[id]||0)+d);if(!o[id])delete o[id];
+  const el=document.getElementById(`pd-${t}-${id}`);if(el){el.textContent=o[id]||0;el.className=o[id]?'on':'';}
+  cPed();
+}
+function pdCalc(){
+  const isD=S.pdTipo==='direta';
+  const q=Math.max(0,parseInt(document.getElementById('mp-q').value)||0);
+  const pr=parseFloat(document.getElementById('mp-pr').value)||0;
+  let conesTot=q,vCb=0,vCk=0,cvX=0;const ckMap={},combos=[];
+  if(isD){
+    Object.entries(PD.cb).forEach(([id,n])=>{const c=comboById(+id);if(!c||!n)return;
+      vCb+=n*(c.preco||0);conesTot+=n*(c.cones||0);cvX+=n*(c.emb||0);
+      combos.push({id:c.id,nome:c.nome,n,preco:c.preco||0});
+      (c.itens||[]).forEach(it=>{if(!it.q)return;ckMap[it.prod]=(ckMap[it.prod]||0)+n*it.q;cvX+=n*it.q*(ckCv(it.prod)-(c.semEmbInd?ckEmb(it.prod):0));});
+    });
+    Object.entries(PD.ck).forEach(([id,n])=>{const p=prodById(+id);if(!p||!n)return;vCk+=n*(p.preco||0);ckMap[p.id]=(ckMap[p.id]||0)+n;cvX+=n*ckCv(p.id);});
+  }
+  const subtotal=q*pr+vCb+vCk;
+  const descPct=isD?(parseFloat(document.getElementById('mp-desc')?.value)||0):0;
+  const descVal=subtotal*(descPct/100);const rec=subtotal-descVal;
+  const cookies=Object.entries(ckMap).map(([id,n])=>({id:+id,nome:(prodById(+id)||{}).nome||'Cookie',q:n}));
+  const ck=cookies.reduce((a,c)=>a+c.q,0);
+  // parte do faturamento que é de cookie (proporcional ao preço de tabela de cada item)
+  const prCone=pr||S.config.precoDir||0;
+  const tabCo=conesTot*prCone,tabCk=cookies.reduce((a,c)=>{const p=prodById(c.id);return a+c.q*(p?p.preco||0:0)},0);
+  const fatCk=(tabCo+tabCk)>0?rec*tabCk/(tabCo+tabCk):0;
+  return {q,pr,conesTot,subtotal,descPct,descVal,rec,cvX,cookies,ck,combos,fatCk};
+}
+// ── NAV ──
+function go(pg){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pg-'+pg).classList.add('active');
+  document.querySelector(`.ni[data-p="${pg}"]`)?.classList.add('active');
+  const tt={dashboard:'Dashboard',operacional:'Operacional',pedidos:'Pedidos',instagram:'Instagram',clientes:'Clientes',mensal:'Controle Mensal',ranking:'Ranking',perdas:'Perdas',entregas:'Regiões de Entrega',config:'Configurações',produtos:'Produtos & Combos'};
+  document.getElementById('pt').textContent=tt[pg]||pg;
+  cSB();
+  ({dashboard:rDash,operacional:rOp,pedidos:rPD,instagram:rIG,clientes:rCL,mensal:rMensal,ranking:rRank,perdas:rPerdas,entregas:rEnt,config:rCfg,produtos:rProd}[pg]||Function)();
+}
+function tSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('obg').classList.toggle('open')}
+function cSB(){document.getElementById('sb').classList.remove('open');document.getElementById('obg').classList.remove('open')}
+
+// ── MODALS ──
+function aMP(tipo){
+  S.pdTipo=tipo;const isR=tipo==='revenda';
+  document.getElementById('mp-t').textContent=isR?'Pedido — Revendedor':'Pedido — Instagram/Direto';
+  document.getElementById('mp-cr').style.display=isR?'block':'none';
+  document.getElementById('mp-nr').style.display=isR?'none':'block';
+  // entrega: only shown for revenda; IG entrega shown for direta
+  document.getElementById('mp-er').style.display=isR?'block':'none';
+  document.getElementById('cp-er-row').style.display=isR?'flex':'none';
+  const igErEl=document.getElementById('mp-ig-er');if(igErEl)igErEl.style.display=isR?'none':'block';
+  const igEnEl=document.getElementById('mp-ig-en');if(igEnEl)igEnEl.value='0';
+  const descRow=document.getElementById('mp-desc-row');if(descRow)descRow.style.display=isR?'none':'block';
+  const descEl=document.getElementById('mp-desc');if(descEl)descEl.value='0';
+  document.getElementById('mp-sb').className=isR?'btn bp bw':'btn big bw';
+  const sl=document.getElementById('mp-cl');
+  sl.innerHTML='<option value="">Selecionar cliente...</option>'+S.clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
+  document.getElementById('mp-q').value='';
+  document.getElementById('mp-pr').value=isR?S.config.precoRev:S.config.precoDir;
+  document.getElementById('mp-en').value='0';
+  document.getElementById('mp-nm').value='';
+  document.getElementById('mp-dp').value=today();
+  document.getElementById('mp-de').value='';
+  document.getElementById('mp-dpr').value=today();
+  document.getElementById('mp-st').value='pendente';
+  document.getElementById('mp-combo').value='';
+  PD={ck:{},cb:{}};
+  document.getElementById('mp-q-lb').textContent=isR?'Quantidade de cones':'Cones avulsos';
+  document.getElementById('mp-pr-lb').textContent=isR?'Preço unitário (R$)':'Preço por cone avulso (R$)';
+  document.getElementById('mp-combo-wrap').style.display=isR?'block':'none';
+  rPedItens();
+  cPed();
+  document.getElementById('ov-pedido').classList.add('open');
+  setTimeout(()=>document.getElementById('mp-q').focus(),350);
+}
+function fM(k){document.getElementById('ov-'+k).classList.remove('open')}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+function aplicarCombo(){
+  const v=document.getElementById('mp-combo').value;if(!v)return;
+  document.getElementById('mp-q').value=v;
+  if(S.pdTipo==='direta'&&S.combos[v])document.getElementById('mp-pr').value=S.combos[v].preco;
+  cPed();
+}
+function aMC(id=null){
+  S.editCl=id;
+  document.getElementById('mc-t').textContent=id?'Editar Cliente':'Novo Cliente';
+  const sl=document.getElementById('cl-r');
+  sl.innerHTML='<option value="">Selecionar...</option>'+S.regioes.map(r=>`<option value="${r.nome}">${r.nome} (${fmt(r.valor)})</option>`).join('');
+  if(id){const c=S.clientes.find(x=>x.id===id);if(c){document.getElementById('cl-n').value=c.nome;document.getElementById('cl-t').value=c.tel;document.getElementById('cl-e').value=c.end;sl.value=c.regiao||'';}}
+  else{['cl-n','cl-t','cl-e'].forEach(i=>document.getElementById(i).value='');sl.value='';}
+  document.getElementById('ov-cliente').classList.add('open');
+}
+function aMR(){document.getElementById('rg-n').value='';document.getElementById('rg-v').value='';document.getElementById('ov-regiao').classList.add('open');}
+function editNome(){document.getElementById('en-n').value=S.nome.label;document.getElementById('en-i').value=S.nome.icon;document.getElementById('ov-nome').classList.add('open');}
+function savNmM(){const nm=document.getElementById('en-n').value.trim();if(!nm){toast('Informe o nome');return}S.nome={label:nm,icon:document.getElementById('en-i').value};svS();apNm();fM('nome');toast('Nome atualizado! ✓');}
+function savNm(){const nm=document.getElementById('cfg-nm').value.trim();if(!nm){toast('Informe o nome');return}S.nome={label:nm,icon:document.getElementById('cfg-ic').value};svS();apNm();toast('Nome salvo! ✓');}
+function abrirStatus(id){
+  S.editStatusId=id;const p=S.pedidos.find(x=>x.id===id);if(!p)return;
+  document.getElementById('st-sel').value=p.status||'pendente';
+  document.getElementById('st-de').value=p.dataEntrega||'';
+  document.getElementById('ov-status').classList.add('open');
+}
+function salvarStatus(){
+  const p=S.pedidos.find(x=>x.id===S.editStatusId);if(!p)return;
+  p.status=document.getElementById('st-sel').value;
+  p.dataEntrega=document.getElementById('st-de').value||p.dataEntrega;
+  svS();fM('status');rPD();rIG();rOp();rDash();atualizarBadges();toast('Status atualizado! ✓');
+}
+function editarCombos(){
+  const cu=cUnit();
+  document.getElementById('combos-form').innerHTML=[3,5,10].map(n=>{
+    const cb=S.combos[n]||{preco:0};const custo=cu*n;const lucro=cb.preco-custo;const mg=cb.preco>0?Math.round(lucro/cb.preco*100):0;
+    return`<div style="background:var(--s2);border-radius:10px;padding:14px;margin-bottom:10px">
+      <div style="font-weight:600;margin-bottom:10px">🎁 Combo ${n} cones</div>
+      <div class="fr2">
+        <div class="fg"><label>Preço de venda (R$)</label><input type="number" step="0.01" id="cb-${n}" value="${cb.preco||0}" min="0"></div>
+        <div class="fg"><label>Custo (automático)</label><input type="number" readonly value="${custo.toFixed(2)}" style="opacity:.6;background:var(--s2)"></div>
+      </div>
+      <div class="ts">Lucro: <b style="color:${lucro>=0?'var(--gr)':'var(--re)'}">${fmt(lucro)}</b> · Margem: ${mg}%</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ov-combos').classList.add('open');
+}
+function savCombos(){
+  [3,5,10].forEach(n=>{const v=parseFloat(document.getElementById('cb-'+n).value)||0;S.combos[n]={preco:v,qtd:n};});
+  svS();fM('combos');rIG();toast('Combos salvos! ✓');
+}
+function abrirDetalhe(tipo,mes){
+  const pm=S.pedidos.filter(p=>p.mes===mes&&p.tipo===tipo);
+  const tp=tipo==='revenda'?'🏪 Revendas':'📸 Instagram/Direto';
+  document.getElementById('det-title').textContent=`${tp} — ${MF[mes]}`;
+  const fat=pm.reduce((a,p)=>a+tP(p),0);const liq=pm.reduce((a,p)=>a+lucLiq(p),0);
+  document.getElementById('det-body').innerHTML=`
+    <div class="mg" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+      <div class="mc"><div class="lb">Faturamento</div><div class="vl">${fmt(fat)}</div></div>
+      <div class="mc ${liq>=0?'ok':'bad'}"><div class="lb">Lucro Líquido</div><div class="vl">${fmt(liq)}</div></div>
+    </div>
+    ${pm.length?pm.map(p=>{const l=lucLiq(p);const st=ST[p.status||'pendente'];return`<div style="padding:10px 0;border-bottom:1px solid var(--b)"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px"><div><div style="font-weight:600;font-size:13px">${p.nome}</div><div class="ts">${dtDisp(p.dataPedido)} · ${itensTag(p)}</div></div><span class="badge ${st.cls}" style="font-size:10px;flex-shrink:0">${st.lb}</span></div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${fmt(tP(p))}</span><span style="font-weight:600;color:${l>=0?'var(--gr)':'var(--re)'}">${fmt(l)}</span></div></div>`;}).join(''):'<div class="empty"><p>Sem pedidos</p></div>'}`;
+  document.getElementById('ov-detalhe').classList.add('open');
+}
+
+// ── CALC PEDIDO (CORRIGIDO) ──
+function cPed(){
+  const k=pdCalc();
+  const en=S.pdTipo==='revenda'?(parseFloat(document.getElementById('mp-en').value)||0):0;
+  const cv=k.conesTot*S.config.custoVariavel+k.cvX;
+  const cf=(k.conesTot+(S.config.rateioTudo?k.ck:0))*(S.config.custoFixo/cProd());
+  const liq=k.rec-cv-en-cf;
+  const itRow=document.getElementById('cp-it-row');
+  if(itRow){const show=S.pdTipo==='direta'&&(k.ck>0||k.combos.length>0);itRow.style.display=show?'flex':'none';
+    document.getElementById('cp-it').textContent=itensTxt({qtd:k.conesTot,ck:k.ck});}
+  const subEl=document.getElementById('cp-sub');if(subEl)subEl.textContent=fmt(k.subtotal);
+  const descRow=document.getElementById('cp-desc-row');
+  if(descRow)descRow.style.display=k.descPct>0?'flex':'none';
+  const dv=document.getElementById('cp-desc');if(dv)dv.textContent=fmt(k.descVal);
+  const db=document.getElementById('mp-desc-val');if(db)db.textContent=fmt(k.descVal);
+  document.getElementById('cp-t').textContent=fmt(k.rec);
+  document.getElementById('cp-cv').textContent=fmt(cv);
+  document.getElementById('cp-en').textContent=fmt(en);
+  document.getElementById('cp-cf').textContent=fmt(cf);
+  const lEl=document.getElementById('cp-l');lEl.textContent=fmt(liq);lEl.style.color=liq>=0?'var(--gr)':'var(--re)';
+}
+
+// ── CRUD ──
+function sP(){
+  const k=pdCalc();
+  const en=S.pdTipo==='revenda'?(parseFloat(document.getElementById('mp-en').value)||0):0;
+  const igEn=S.pdTipo==='direta'?(parseFloat(document.getElementById('mp-ig-en')?.value)||0):0;
+  if(k.conesTot+k.ck<=0){toast(S.pdTipo==='direta'?'Informe cones, cookies ou um combo':'Informe a quantidade');return}
+  let cId=null,nm='';
+  if(S.pdTipo==='revenda'){cId=parseInt(document.getElementById('mp-cl').value)||null;if(!cId){toast('Selecione o cliente');return}const c=S.clientes.find(x=>x.id===cId);nm=c?c.nome:'';}
+  else{nm=document.getElementById('mp-nm').value.trim();if(!nm){toast('Informe o nome ou @');return}}
+  const dp=document.getElementById('mp-dp').value||today();
+  const de=document.getElementById('mp-de').value||null;
+  const dpr=document.getElementById('mp-dpr').value||null;
+  const st=document.getElementById('mp-st').value||'pendente';
+  const mesPedido=new Date(dp+'T00:00:00').getMonth();
+  const ped={id:uid(),tipo:S.pdTipo,clienteId:cId,nome:nm,qtd:k.conesTot,preco:k.pr,desconto:k.descPct,total:Math.round(k.rec*100)/100,entrega:en,entregaIG:igEn,mes:mesPedido,ts:Date.now(),status:st,dataPedido:dp,dataEntrega:de,dataProducao:dpr};
+  if(k.ck>0||k.combos.length){
+    // custo e faturamento dos cookies ficam "congelados" no pedido — mudar a receita depois não altera vendas antigas
+    Object.assign(ped,{qtdAvulso:k.q,subtotal:k.subtotal,ck:k.ck,cookies:k.cookies,combos:k.combos,cvX:Math.round(k.cvX*100)/100,fatCk:Math.round(k.fatCk*100)/100});
+  }
+  S.pedidos.push(ped);
+  svS();fM('pedido');S.pdTipo==='revenda'?rPD():rIG();rDash();rOp();atualizarBadges();toast('Pedido salvo! ✓');
+}
+function dP(id){if(!confirm('Excluir este pedido?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.pedidos=S.pedidos.filter(p=>p.id!==id);svS();rPD();rIG();rDash();rOp();toast('Pedido excluído')}
+function saCl(){
+  const nm=document.getElementById('cl-n').value.trim();if(!nm){toast('Informe o nome');return}
+  const obj={nome:nm,tel:document.getElementById('cl-t').value.trim(),end:document.getElementById('cl-e').value.trim(),regiao:document.getElementById('cl-r').value};
+  if(S.editCl){const c=S.clientes.find(x=>x.id===S.editCl);if(c)Object.assign(c,obj);}
+  else S.clientes.push({id:uid(),...obj});
+  svS();fM('cliente');rCL();toast('Cliente salvo! ✓');
+}
+function dCl(id){if(!confirm('Excluir este cliente?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
+function saRg(){const nm=document.getElementById('rg-n').value.trim();if(!nm){toast('Informe o nome');return}S.regioes.push({id:uid(),nome:nm,valor:parseFloat(document.getElementById('rg-v').value)||0});svS();fM('regiao');rEnt();toast('Região salva! ✓');}
+function dRg(id){if(!confirm('Excluir esta região?'))return;S.regioes=S.regioes.filter(r=>r.id!==id);svS();rEnt();toast('Região excluída');}
+function sC(){
+  S.config.custoVariavel=parseFloat(document.getElementById('cc-v').value)||1.66;
+  S.config.custoFixo=parseFloat(document.getElementById('cc-f').value)||3690;
+  S.config.producaoManual=parseFloat(document.getElementById('cc-p').value)||0;
+  S.config.custoCasquinha=parseFloat(document.getElementById('cc-cq').value)||0.40;
+  S.config.precoRev=parseFloat(document.getElementById('cc-r').value)||7;
+  S.config.precoDir=parseFloat(document.getElementById('cc-d').value)||10;
+  S.config.mediaRev=parseFloat(document.getElementById('cc-m').value)||40;
+  svS();rCfg();rDash();toast('Configurações salvas! ✓');
+}
+function sMt(){
+  S.config.meta=parseFloat(document.getElementById('cc-mt').value)||10000;
+  S.config.metaCones=parseFloat(document.getElementById('cc-mc').value)||2000;
+  S.config.metaCookies=parseFloat(document.getElementById('cc-mk').value)||0;
+  svS();toast('Metas salvas! ✓');
+}
+function cfPrv(){
+  const cv=parseFloat(document.getElementById('cc-v').value)||0;
+  const cf=parseFloat(document.getElementById('cc-f').value)||0;
+  const pm=parseFloat(document.getElementById('cc-p').value)||0;
+  const med=parseFloat(document.getElementById('cc-m').value)||40;
+  const p=pm||S.clientes.length*med||1;
+  const ratFixed=cf/p;const total=cv+ratFixed;
+  document.getElementById('cp-v').textContent=fmt(total);
+  document.getElementById('cp-formula').innerHTML=`<b>${fmt(cv)}</b> variável + (<b>${fmt(cf)}</b> fixo ÷ <b>${fmtN(p)}</b> cones) = <b>${fmt(ratFixed)}</b> rateio = <b>${fmt(total)}</b> total`;
+}
+
+// ── PERDAS ──
+function prvPerda(){
+  const tipo=document.getElementById('perda-tipo')?.value;
+  const qtd=parseInt(document.getElementById('perda-qtd')?.value)||0;
+  const cu=tipo==='cone'?cUnit():S.config.custoCasquinha;
+  const box=document.getElementById('perda-prv');
+  if(box)box.innerHTML=qtd>0?`Custo estimado: <b>${fmt(cu*qtd)}</b> · ${qtd} × ${fmt(cu)}`:`Custo unitário: <b>${fmt(cu)}</b>`;
+}
+function regPerda(){
+  const tipo=document.getElementById('perda-tipo').value;
+  const qtd=parseInt(document.getElementById('perda-qtd').value)||0;
+  if(qtd<=0){toast('Informe a quantidade');return}
+  const cu=tipo==='cone'?cUnit():S.config.custoCasquinha;
+  const data=document.getElementById('perda-data').value||today();
+  const obs=document.getElementById('perda-obs').value.trim();
+  S.perdas.push({id:uid(),tipo,qtd,custoUnit:cu,total:cu*qtd,data,obs,ts:Date.now()});
+  svS();rPerdas();rDash();toast('Perda registrada');
+  document.getElementById('perda-qtd').value='';document.getElementById('perda-obs').value='';
+}
+function dPerda(id){if(!confirm('Excluir esta perda?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.perdas=S.perdas.filter(p=>p.id!==id);svS();rPerdas();rDash();toast('Perda excluída');}
+
+// ── BADGES SIDEBAR ──
+function atualizarBadges(){
+  const t=today();
+  const atr=S.pedidos.filter(p=>p.status!=='entregue'&&p.status!=='cancelado'&&p.dataEntrega&&p.dataEntrega<t).length;
+  const hj=S.pedidos.filter(p=>p.dataEntrega===t&&p.status!=='entregue'&&p.status!=='cancelado').length;
+  const nbA=document.getElementById('nb-al');
+  nbA.textContent=atr>0?atr:'!';nbA.style.display=atr>0?'inline-flex':'none';
+  const nbH=document.getElementById('nb-hj');
+  nbH.textContent=hj;nbH.style.display=hj>0?'inline-flex':'none';
+}
+
+// ── RENDER DASHBOARD ──
+function rDash(){
+  const cu=cUnit();
+  document.getElementById('tbc').textContent='Custo/cone: '+fmt(cu);
+  const mes=new Date().getMonth();
+  const pm=S.pedidos.filter(p=>p.mes===mes);
+  const fat=pm.reduce((a,p)=>a+tP(p),0);
+  const lb=pm.reduce((a,p)=>a+lucBruto(p),0);
+  const ll=pm.reduce((a,p)=>a+lucLiq(p),0);
+  const cones=pm.reduce((a,p)=>a+p.qtd,0);
+  const fatA=S.pedidos.filter(p=>p.mes===mes-1).reduce((a,p)=>a+tP(p),0);
+  const mgLiq=fat>0?Math.round(ll/fat*100):0;
+  const mgBruto=fat>0?Math.round(lb/fat*100):0;
+  const perdasMes=S.perdas.filter(p=>{try{return new Date(p.data+'T12:00:00').getMonth()===mes}catch{return false}}).reduce((a,p)=>a+p.total,0);
+
+  // Saúde financeira
+  const sc=mgLiq>=25?'ok':mgLiq>=10?'warn':'bad';
+  const sdMap={ok:{ico:'🟢',t:'Saúde financeira boa',d:`Margem líquida de ${mgLiq}% — lucro saudável`},warn:{ico:'🟡',t:'Atenção',d:`Margem líquida de ${mgLiq}% — acompanhar custos de perto`},bad:{ico:'🔴',t:'Risco financeiro',d:`Margem líquida de ${mgLiq}% — custos altos em relação à receita`}};
+  const sd=sdMap[sc];
+  document.getElementById('saude-box').innerHTML=`<div class="saude ${sc}"><div class="saude-ico">${sd.ico}</div><div class="saude-txt"><h3>${sd.t}</h3><p>${sd.d} · Lucro líquido: <b>${fmt(ll)}</b></p></div></div>`;
+
+  // Cards
+  document.getElementById('mc-lb').className='mc '+(lb>0?'ok':lb<0?'bad':'');
+  document.getElementById('mc-ll').className='mc '+(ll>0?'ok':ll<0?'bad':'warn');
+  document.getElementById('mc-lu2').className='mc '+(mgLiq>=25?'ok':mgLiq>=10?'warn':'bad');
+  document.getElementById('d-fat').textContent=fmt(fat);
+  document.getElementById('d-lb').textContent=fmt(lb);
+  document.getElementById('d-lbp').textContent=`margem bruta: ${mgBruto}%`;
+  document.getElementById('d-ll').textContent=fmt(ll);
+  document.getElementById('d-llp').textContent=`após fixos`;
+  document.getElementById('d-co').textContent=fmtN(cones);
+  document.getElementById('d-cs').textContent=`meta: ${fmtN(S.config.metaCones)} cones`;
+  document.getElementById('d-cu').textContent=fmt(cu);
+  document.getElementById('d-cu-sb').textContent=`${fmt(S.config.custoVariavel)} var + ${fmt(S.config.custoFixo/cProd())} fixo`;
+  document.getElementById('d-mg').textContent=mgLiq+'%';
+  document.getElementById('d-mg-sb').textContent=mgLiq>=25?'✅ Saudável':mgLiq>=10?'⚠️ Atenção':'🔴 Risco';
+  if(fatA>0){const d=Math.round((fat-fatA)/fatA*100);document.getElementById('d-ft').innerHTML=`<span class="${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${Math.abs(d)}% vs anterior</span>`;}
+
+  // CMV explainer — 3 partes separadas
+  const prod=cProd();const cfUnit=S.config.custoFixo/prod;
+  // cookie médio do mês (pelas vendas; sem venda ainda, média dos sabores cadastrados)
+  const ckMes=pm.reduce((a,p)=>a+(p.ck||0),0);
+  let ckLinha='';
+  if((S.produtos||[]).length){
+    const ckBase=ckMes>0?pm.reduce((a,p)=>a+(p.cvX||0),0)/ckMes:S.produtos.reduce((a,p)=>a+calcProd(p).cv,0)/S.produtos.length;
+    const ckOp=S.config.rateioTudo?cfUnit:0;
+    ckLinha=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:var(--ckbg);color:var(--cktx);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px"><span><b>🍪 Cookie médio${ckMes>0?' (vendidos no mês)':' (média dos sabores)'}:</b> ${fmt(ckBase)} mercadoria + ${fmt(ckOp)} operacional</span><b style="font-size:15px">= ${fmt(ckBase+ckOp)}</b></div>`;
+  }
+  // Diagnóstico automático de produção
+  const prodRef=S.clientes.length*S.config.mediaRev||1;
+  const prodBaixa=prod<prodRef*0.7;
+  const uLbl=S.config.rateioTudo&&ckMes>0?'unidades':'cones';
+  const prodAlta=prod>=prodRef*1.2;
+  const diagMsg=prodBaixa
+    ?`⚠️ <b>O custo está alto porque a produção do mês está baixa</b> (${fmtN(prod)} ${uLbl}, abaixo da média esperada de ${fmtN(Math.round(prodRef))}). Cada cone carrega mais custo fixo.`
+    :prodAlta
+    ?`✅ <b>O custo está diluído por maior volume de produção</b> (${fmtN(prod)} ${uLbl}). Quanto mais se produz, menor o custo por cone.`
+    :`ℹ️ Produção dentro do esperado: <b>${fmtN(prod)} ${uLbl}</b> este mês (base do cálculo).`;
+  document.getElementById('cmv-box').innerHTML=`
+    <h4 style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--t)">📐 Custo por Unidade (CMV)</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--rebg);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--retx);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">1. Custo Base do Cone</div>
+        <div style="font-size:20px;font-weight:700;color:var(--re)">${fmt(S.config.custoVariavel)}</div>
+        <div style="font-size:10px;color:var(--retx);margin-top:4px">ingredientes + embalagem</div>
+      </div>
+      <div style="background:var(--ambg);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--amtx);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">2. Custo Operacional</div>
+        <div style="font-size:20px;font-weight:700;color:var(--am)">${fmt(cfUnit)}</div>
+        <div style="font-size:10px;color:var(--amtx);margin-top:4px">${fmt(S.config.custoFixo)} ÷ ${S.config.rateioTudo&&ckMes>0&&!(S.config.producaoManual>0)?fmtN(prod-ckMes)+' cones + '+fmtN(ckMes)+' cookies':fmtN(prod)+' '+(S.config.rateioTudo?'unidades':'cones')}</div>
+      </div>
+      <div style="background:var(--pubg);border-radius:10px;padding:12px;text-align:center;border:1.5px solid #C4B5FD">
+        <div style="font-size:10px;font-weight:700;color:var(--putx);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">🍦 Total por Cone</div>
+        <div style="font-size:22px;font-weight:700;color:var(--pu)">${fmt(cu)}</div>
+        <div style="font-size:10px;color:var(--putx);margin-top:4px">base + operacional</div>
+      </div>
+    </div>
+    ${ckLinha}
+    <div style="padding:10px 12px;background:${prodBaixa?'var(--ambg)':prodAlta?'var(--grbg)':'var(--s3)'};border-radius:8px;font-size:12px;color:${prodBaixa?'var(--amtx)':prodAlta?'var(--grtx)':'var(--t2)'};line-height:1.5">
+      ${diagMsg}
+    </div>`;
+
+  // PE
+  const pe=S.config.precoRev>S.config.custoVariavel?Math.ceil(S.config.custoFixo/(S.config.precoRev-S.config.custoVariavel)):0;
+  const pePct=pe>0?Math.min(100,Math.round(cones/pe*100)):100;
+  const peCls=pePct>=100?'pf-gr':pePct>=60?'pf-am':'pf-re';
+  document.getElementById('pe-box').innerHTML=`<div class="pe-bar"><div class="pe-top"><div><div style="font-weight:700;font-size:14px">🎯 Ponto de Equilíbrio</div><div class="ts">${fmtN(cones)} vendidos · precisar vender ${fmtN(pe)} para cobrir fixos · Perdas: ${fmt(perdasMes)}</div></div><div class="pe-pct" style="color:${pePct>=100?'var(--gr)':pePct>=60?'var(--am)':'var(--re)'}">${pePct}%</div></div><div class="prog"><div class="pf ${peCls}" style="width:${pePct}%"></div></div><div style="display:flex;justify-content:space-between;margin-top:4px" class="ts"><span>${pePct>=100?'✅ Custos fixos cobertos!':pe-cones>0?'⚠️ Faltam '+fmtN(pe-cones)+' cones':''}</span><span>Metas: ${fmtN(S.config.metaCones)} cones / ${fmt(S.config.meta)}</span></div></div>`;
+
+  // Cones x Cookies
+  const ckBox=document.getElementById('ck-box');
+  if(ckBox){
+    if(!(S.produtos||[]).length){ckBox.innerHTML='';}else{
+      const ckM=pm.reduce((a,p)=>a+(p.ck||0),0);
+      const fatCk=pm.reduce((a,p)=>a+(p.fatCk||0),0);
+      const lbCk=fatCk-pm.reduce((a,p)=>a+(p.cvX||0),0);
+      const fatCo=fat-fatCk,lbCo=lb-lbCk;
+      const pct=v=>fat>0?Math.round(v/fat*100)+'%':'—';
+      const sab={};pm.forEach(p=>(p.cookies||[]).forEach(c=>{sab[c.nome]=(sab[c.nome]||0)+c.q;}));
+      const sr=Object.entries(sab).sort((a,b)=>b[1]-a[1]);const mxS=sr[0]?sr[0][1]:1;
+      ckBox.innerHTML=`<div class="card"><div class="ch"><span class="ct">🍦 Cones x 🍪 Cookies — ${MF[mes]}</span></div>
+        <div class="cx-grid">
+          <div class="h"></div><div class="h n" style="color:var(--pu)">🍦 Cones</div><div class="h n ck-c">🍪 Cookies</div>
+          <div>Vendidos</div><div class="n">${fmtN(cones)}</div><div class="n ck-c">${fmtN(ckM)}</div>
+          <div>Faturamento</div><div class="n">${fmt(fatCo)}</div><div class="n">${fmt(fatCk)}</div>
+          <div>Lucro bruto</div><div class="n" style="color:var(--gr)">${fmt(lbCo)}</div><div class="n" style="color:var(--gr)">${fmt(lbCk)}</div>
+          <div style="border-bottom:none">% do faturamento</div><div class="n" style="border-bottom:none">${pct(fatCo)}</div><div class="n" style="border-bottom:none">${pct(fatCk)}</div>
+        </div>
+        ${barraMetaCk(ckM)}
+        ${sr.length?`<div style="font-size:12px;font-weight:700;color:var(--t2);margin:14px 0 4px">Sabores de cookie mais vendidos</div>`+sr.map(([nm,v],i)=>`<div class="ri"><div class="rn ${['r1','r2','r3'][i]||'r0'}">${i+1}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">${esc(nm)}</div><div class="prog" style="margin-top:5px"><div class="pf pf-ck" style="width:${Math.round(v/mxS*100)}%"></div></div></div><div class="ck-c" style="font-size:13px;font-weight:700;margin-left:8px">${fmtN(v)}</div></div>`).join(''):`<p class="ts" style="margin-top:10px">Nenhum cookie vendido em ${MF[mes]} ainda. Lance pelo pedido Instagram / Direto.</p>`}
+      </div>`;
+    }
+  }
+
+  // Chart
+  const mxF=Math.max(...MS.map((_,i)=>S.pedidos.filter(p=>p.mes===i).reduce((a,p)=>a+tP(p),0)),1);
+  document.getElementById('ch-m').innerHTML=MS.map((m,i)=>{const v=S.pedidos.filter(p=>p.mes===i).reduce((a,p)=>a+tP(p),0);const h=Math.max(Math.round(v/mxF*130),4);const isCur=i===mes;return`<div class="bcc"><div class="bcv">${v>0?'R$'+Math.round(v):''}</div><div class="bcb" style="height:${h}px;background:${isCur?'#6D28D9':v>0?'#C4B5FD':'#DDD8D0'};${isCur?'box-shadow:0 2px 8px rgba(109,40,217,.3)':''}"></div><div class="bcl">${m}</div></div>`;}).join('');
+
+  // Donut
+  const rF=pm.filter(p=>p.tipo==='revenda').reduce((a,p)=>a+tP(p),0);
+  const dF=pm.filter(p=>p.tipo==='direta').reduce((a,p)=>a+tP(p),0);
+  const tot=rF+dF||1;const C=201;const rA=rF/tot*C;const dA=dF/tot*C;
+  document.getElementById('da').setAttribute('stroke-dasharray',`${rA} ${C-rA}`);
+  document.getElementById('db').setAttribute('stroke-dasharray',`${dA} ${C-dA}`);
+  document.getElementById('db').setAttribute('stroke-dashoffset',-(rA-50));
+  document.getElementById('la').textContent=Math.round(rF/tot*100)+'%';
+  document.getElementById('lb-pct').textContent=Math.round(dF/tot*100)+'%';
+  document.getElementById('la-v').textContent=fmt(rF);
+  document.getElementById('lb-v').textContent=fmt(dF);
+
+  // Top5
+  const vol={};pm.forEach(p=>{if(p.clienteId)vol[p.clienteId]=(vol[p.clienteId]||0)+p.qtd});
+  const t5=Object.entries(vol).sort((a,b)=>b[1]-a[1]).slice(0,5);const mxV=t5[0]?t5[0][1]:1;
+  document.getElementById('t5').innerHTML=t5.length?t5.map(([id,v],i)=>{const c=S.clientes.find(x=>x.id==id);return`<div class="ri"><div class="rn ${['r1','r2','r3','r0','r0'][i]}">${i+1}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c?c.nome:id}</div><div class="prog" style="margin-top:5px"><div class="pf pf-pu" style="width:${Math.round(v/mxV*100)}%"></div></div></div><div style="font-size:13px;font-weight:700;color:var(--pu);margin-left:8px">${fmtN(v)}</div></div>`;}).join(''):'<div class="empty"><div class="ico">📊</div><p>Sem dados este mês</p></div>';
+
+  // Últimos
+  const ul=[...S.pedidos].sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,5);
+  document.getElementById('ul').innerHTML=ul.length?ul.map(p=>{const st=ST[p.status||'pendente'];return`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b)"><div class="av ${p.tipo==='direta'?'ig':''}">${p.nome.substring(0,2).toUpperCase()}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.nome}</div><div class="ts">${dtDisp(p.dataPedido)} · ${itensTag(p)}</div></div><span class="badge ${st.cls}" style="font-size:10px">${st.lb}</span></div>`;}).join(''):'<div class="empty"><p>Sem pedidos</p></div>';
+
+  // Cliente do mês
+  const tE=t5[0];const tC=tE?S.clientes.find(c=>c.id==tE[0]):null;const tV=tE?tE[1]:0;const md=medal(tV);
+  document.getElementById('cm').innerHTML=tC?`<div style="display:flex;align-items:center;gap:16px;padding:6px 0"><div style="font-size:44px">🌟</div><div><div style="font-size:17px;font-weight:700">${tC.nome}</div><div class="ts" style="margin-top:3px">${tC.regiao||''} · ${fmtN(tV)} cones em ${MF[mes]}</div>${md?`<span class="badge ${md.c}" style="margin-top:8px">${md.i} ${md.l}</span>`:''}</div></div>`:'<div class="empty"><p>Faça vendas para ver o destaque</p></div>';
+}
+
+// ── OPERACIONAL ──
+function rOp(){
+  const t=today();const td=new Date();
+  document.getElementById('hoje-data').textContent=`${td.getDate()}/${td.getMonth()+1}`;
+  const atr=S.pedidos.filter(p=>p.status!=='entregue'&&p.status!=='cancelado'&&p.dataEntrega&&p.dataEntrega<t);
+  const entH=S.pedidos.filter(p=>p.dataEntrega===t&&p.status!=='entregue'&&p.status!=='cancelado');
+  const prodH=S.pedidos.filter(p=>p.dataProducao===t&&p.status==='producao');
+  let alerts='';
+  if(atr.length)alerts+=`<div class="alert bad"><div class="alert-ico">🔴</div><div class="alert-txt"><strong>${atr.length} pedido(s) atrasado(s)!</strong><span>${atr.map(p=>p.nome).join(', ')}</span></div></div>`;
+  if(entH.length)alerts+=`<div class="alert warn"><div class="alert-ico">🚚</div><div class="alert-txt"><strong>${entH.length} entrega(s) para hoje</strong><span>${entH.map(p=>p.nome+' ('+itensTxt(p)+')').join(', ')}</span></div></div>`;
+  if(prodH.length)alerts+=`<div class="alert info"><div class="alert-ico">🔧</div><div class="alert-txt"><strong>${prodH.length} lote(s) em produção hoje</strong><span>${fmtN(prodH.reduce((a,p)=>a+p.qtd,0))} cones no total</span></div></div>`;
+  if(!alerts)alerts='<div class="alert ok"><div class="alert-ico">✅</div><div class="alert-txt"><strong>Tudo em dia!</strong><span>Nenhum alerta operacional.</span></div></div>';
+  document.getElementById('alertas-box').innerHTML=alerts;
+  const dias=[];for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()+i);dias.push(dtStr(d));}
+  const agHtml=dias.map(d=>{
+    const pds=S.pedidos.filter(p=>p.dataProducao===d&&p.status!=='cancelado'&&p.status!=='entregue');
+    if(!pds.length)return'';
+    const tot=pds.reduce((a,p)=>a+p.qtd,0);const isT=d===t;
+    return`<div class="agenda-dia"><div class="agenda-hdr"><span>${dtDisp(d)} ${isT?'<span class="tag-hoje">HOJE</span>':''}</span><span style="color:var(--pu);font-weight:700">${fmtN(tot)} cones</span></div>${pds.map(p=>`<div class="agenda-item"><div style="min-width:0;flex:1"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.nome}</div><div class="ts">${itensTag(p)}</div></div><div style="display:flex;gap:6px;align-items:center;flex-shrink:0"><span class="badge ${ST[p.status||'pendente'].cls}" style="font-size:10px">${ST[p.status||'pendente'].lb}</span><button class="btn bsm" onclick="abrirStatus(${p.id})">↺</button></div></div>`).join('')}</div>`;
+  }).join('');
+  document.getElementById('agenda-box').innerHTML=agHtml||'<div class="empty"><p>Nenhuma produção nos próximos 7 dias</p></div>';
+  const entHj=S.pedidos.filter(p=>p.dataEntrega===t&&p.status!=='cancelado');
+  document.getElementById('entregas-hoje').innerHTML=entHj.length?entHj.map(p=>`<div class="agenda-item" style="border-top:1px solid var(--b)"><div style="min-width:0;flex:1"><div style="font-weight:600;font-size:13px">${p.nome}</div><div class="ts">${itensTag(p)} · ${p.tipo==='direta'?'📸':'🏪'}</div></div><div style="display:flex;gap:6px;align-items:center"><span class="badge ${ST[p.status||'pendente'].cls}" style="font-size:10px">${ST[p.status||'pendente'].lb}</span><button class="btn bsm bgr2" onclick="marcarEntregue(${p.id})" style="font-size:11px">✓</button></div></div>`).join(''):'<div class="empty" style="padding:20px"><p>Nenhuma entrega hoje</p></div>';
+  const pend=S.pedidos.filter(p=>p.status==='pendente').slice(0,10);
+  document.getElementById('pendentes-box').innerHTML=pend.length?pend.map(p=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--b);gap:8px"><div style="min-width:0;flex:1"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.nome}</div><div class="ts">Entrega: ${dtDisp(p.dataEntrega)} · ${itensTag(p)} ${p.dataEntrega&&isPast(p.dataEntrega)?'<span class="tag-atr">ATRASADO</span>':''}</div></div><button class="btn bsm" onclick="abrirStatus(${p.id})" style="flex-shrink:0">↺ Status</button></div>`).join(''):'<div class="empty" style="padding:20px"><p>Nenhum pedido pendente</p></div>';
+}
+function marcarEntregue(id){const p=S.pedidos.find(x=>x.id===id);if(p){p.status='entregue';svS();rOp();rDash();atualizarBadges();toast('Marcado como entregue! ✓');}}
+
+// ── PEDIDOS ──
+function liPedido(p,showEnt=true){
+  const lb=lucBruto(p);const ll=lucLiq(p);
+  const st=ST[p.status||'pendente'];
+  const atr=p.status!=='entregue'&&p.status!=='cancelado'&&p.dataEntrega&&isPast(p.dataEntrega);
+  return`<div class="li" ${atr?'style="border-color:var(--re);border-width:1.5px"':''}>
+    <div class="li-h"><div><div class="li-nm">${p.nome}${atr?' <span class="tag-atr">ATRASADO</span>':''}</div><div class="ts">${dtDisp(p.dataPedido)} · ${itensTag(p)}</div></div><span class="badge ${st.cls}">${st.lb}</span></div>
+    <div class="li-r"><span class="lbl">Entrega prevista</span><span class="val">${dtDisp(p.dataEntrega)}</span></div>
+    <div class="li-r"><span class="lbl">Produção</span><span class="val">${dtDisp(p.dataProducao)}</span></div>
+    ${p.desconto>0?`<div class="li-r"><span class="lbl">Preço original</span><span class="val" style="text-decoration:line-through;color:var(--t3)">${fmt(p.subtotal||p.qtd*p.preco)}</span></div>`:''}
+    ${p.desconto>0?`<div class="li-r"><span class="lbl">Desconto aplicado</span><span class="val" style="color:var(--re)">- ${p.desconto}% (${fmt((p.subtotal||p.qtd*p.preco)*(p.desconto/100))})</span></div>`:''}
+    ${p.combos&&p.combos.length?`<div class="li-r"><span class="lbl">Combos</span><span class="val">${p.combos.map(c=>c.n+'× '+esc(c.nome)).join(', ')}</span></div>`:''}
+    ${p.cookies&&p.cookies.length?`<div class="li-r"><span class="lbl">Cookies</span><span class="val">${p.cookies.map(c=>c.q+' '+esc(nomeCurto(c.nome))).join(', ')}</span></div>`:''}
+    <div class="li-r"><span class="lbl">Total recebido</span><span class="val" style="font-weight:600">${fmt(tP(p))}</span></div>
+    ${showEnt&&p.entrega?`<div class="li-r"><span class="lbl">Custo entrega</span><span class="val" style="color:var(--re)">- ${fmt(entP(p))}</span></div>`:''}
+    <div class="li-r"><span class="lbl">Lucro bruto</span><span class="val" style="color:${lb>=0?'var(--gr)':'var(--re)'}">${fmt(lb)}</span></div>
+    <div class="li-r" style="border-top:1px solid var(--b);margin-top:6px;padding-top:6px"><span style="font-weight:700">Lucro líquido</span><span style="font-weight:700;color:${ll>=0?'var(--gr)':'var(--re)'}">${fmt(ll)}</span></div>
+    <div class="li-acts">
+      <button class="btn bsm" style="flex:1" onclick="abrirStatus(${p.id})">↺ Atualizar Status</button>
+      <button class="btn bsm bex" style="flex:1" onclick="dP(${p.id})">Excluir</button>
+    </div>
+  </div>`;
+}
+function rPD(){
+  const q=(document.getElementById('q-pd')?.value||'').toLowerCase();
+  const stF=document.getElementById('fil-st-pd')?.value||'';
+  const list=S.pedidos.filter(p=>p.tipo==='revenda'&&(!q||p.nome.toLowerCase().includes(q))&&(!stF||p.status===stF)).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  document.getElementById('list-pd').innerHTML=list.length?list.map(p=>liPedido(p,true)).join(''):'<div class="empty"><div class="ico">📦</div><p>Nenhum pedido encontrado</p></div>';
+}
+
+// ── INSTAGRAM ──
+function rIG(){
+  const mes=new Date().getMonth();
+  const mk=mes.toString();
+  const pm=S.pedidos.filter(p=>p.tipo==='direta'&&p.mes===mes);
+  const fat=pm.reduce((a,p)=>a+tP(p),0);const ll=pm.reduce((a,p)=>a+lucLiq(p),0);
+  const qtd=pm.reduce((a,p)=>a+p.qtd,0);
+  document.getElementById('ig-f').textContent=fmt(fat);
+  document.getElementById('ig-l').textContent=fmt(ll);
+  document.getElementById('ig-c').textContent=fmtN(qtd)+' · '+fmtN(pm.reduce((a,p)=>a+(p.ck||0),0));
+  document.getElementById('ig-p').textContent=pm.length;
+  // Entrega: cobrado dos clientes nos pedidos (campo entregaIG por pedido)
+  const cobrado=pm.reduce((a,p)=>a+(p.entregaIG||0),0);
+  const gasto=S.gasolinaIG[mk]||0;
+  const saldo=cobrado-gasto;
+  document.getElementById('ig-ent-cob').textContent=fmt(cobrado);
+  document.getElementById('ig-ent-gas').textContent=fmt(gasto);
+  // Preencher input com valor salvo
+  const gasInput=document.getElementById('ig-gas-input');
+  if(gasInput&&!gasInput._dirty)gasInput.value=gasto||'';
+  // Saldo visual
+  const saldoEl=document.getElementById('ig-ent-saldo');
+  if(saldo>0){
+    saldoEl.style.background='var(--grbg)';saldoEl.style.color='var(--grtx)';
+    saldoEl.innerHTML=`✅ Saldo positivo: cliente pagou ${fmt(saldo)} a mais do que o custo real de entrega.`;
+  } else if(saldo<0){
+    saldoEl.style.background='var(--rebg)';saldoEl.style.color='var(--retx)';
+    saldoEl.innerHTML=`⚠️ Você gastou ${fmt(Math.abs(saldo))} a mais do que cobrou — entrega com prejuízo este mês.`;
+  } else if(gasto===0&&cobrado===0){
+    saldoEl.style.background='var(--s2)';saldoEl.style.color='var(--t3)';
+    saldoEl.innerHTML=`Nenhuma entrega registrada. Registre o gasto com Uber/motoboy abaixo.`;
+  } else {
+    saldoEl.style.background='var(--s2)';saldoEl.style.color='var(--t2)';
+    saldoEl.innerHTML=`⚖️ Empate: custo cobrado igual ao gasto.`;
+  }
+  // Hint
+  const hint=document.getElementById('ig-gas-hint');
+  if(hint){
+    if(cobrado===0&&gasto===0)hint.textContent='Dica: se você cobra entrega dos clientes, registre o valor em cada pedido.';
+    else if(cobrado>0&&gasto===0)hint.textContent=`Você cobrou ${fmt(cobrado)} em entregas — registre acima o quanto gastou com Uber/motoboy para ver o saldo.`;
+    else hint.textContent=`Cobrado: ${fmt(cobrado)} · Gasto: ${fmt(gasto)} · Saldo: ${fmt(saldo)}`;
+  }
+  // Ticket médio
+  const tk=pm.length>0?fat/pm.length:0;const cpP=pm.length>0?qtd/pm.length:0;
+  document.getElementById('ticket-box').innerHTML=`<h3>🎫 Ticket Médio — Instagram</h3><div class="ticket-grid"><div class="ticket-item"><div class="tv">${fmt(tk)}</div><div class="tl">Ticket Médio</div></div><div class="ticket-item"><div class="tv">${cpP.toFixed(1)}</div><div class="tl">Cones/Pedido</div></div><div class="ticket-item"><div class="tv">${pm.length}</div><div class="tl">Pedidos</div></div><div class="ticket-item"><div class="tv" style="color:${fat>0&&ll>=0?'var(--gr)':'var(--re)'}">${fat>0?Math.round(ll/fat*100):0}%</div><div class="tl">Margem</div></div></div>`;
+  // Combos
+  document.getElementById('combo-grid').innerHTML=(S.combosNovos||[]).map(c=>{const k=calcCombo(c);const mgC=k.preco>0?Math.round(k.lucBr/k.preco*100):0;return`<div class="combo-card"><div class="cc-ico">${(c.itens||[]).some(i=>i.q>0)?((c.cones||0)>0?'🍦🍪':'🍪'):'🍦'}</div><div class="cc-nm">${esc(c.nome)}</div><div class="cc-vl">${fmt(k.preco)}</div><div class="cc-lu" style="color:${k.lucBr>=0?'var(--gr)':'var(--re)'}">Lucro: ${fmt(k.lucBr)} (${mgC}%)</div><div class="ts" style="margin-top:3px;font-size:10px">${esc(comboDesc(c))}</div></div>`;}).join('')||'<p class="ts">Nenhum combo. Crie em Produtos & Combos.</p>';
+  // Lista
+  const q=(document.getElementById('q-ig')?.value||'').toLowerCase();
+  const list=S.pedidos.filter(p=>p.tipo==='direta'&&(!q||p.nome.toLowerCase().includes(q))&&(!IGF||(IGF==='ck'?(p.ck||0)>0:!(p.ck||0)))).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  document.getElementById('list-ig').innerHTML=list.length?list.map(p=>liPedido(p,false)).join(''):'<div class="empty"><div class="ico">📸</div><p>Nenhum pedido direto ainda</p><p class="ts" style="margin-top:4px">Clique em "+ Pedido Instagram"</p></div>';
+}
+let IGF='';
+function igFiltro(f){IGF=f;document.querySelectorAll('#ig-seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));rIG();}
+function salvarGasIG(){
+  const v=parseFloat(document.getElementById('ig-gas-input')?.value)||0;
+  const mk=new Date().getMonth().toString();
+  S.gasolinaIG[mk]=v;
+  document.getElementById('ig-gas-input')._dirty=false;
+  svS();rIG();toast('Custo de entrega salvo! ✓');
+}
+
+// ── CLIENTES ──
+function rCL(){
+  const q=(document.getElementById('q-cl')?.value||'').toLowerCase();
+  const list=S.clientes.filter(c=>!q||c.nome.toLowerCase().includes(q)||(c.regiao||'').toLowerCase().includes(q));
+  const mes=new Date().getMonth();
+  document.getElementById('list-cl').innerHTML=list.length?list.map(c=>{
+    const vol=volCl(c.id,mes);const md=medal(vol);const tel=c.tel.replace(/\D/g,'');
+    return`<div class="li"><div class="li-h"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><div class="av">${c.nome.substring(0,2).toUpperCase()}</div><div style="min-width:0"><div class="li-nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nome}</div><div class="ts">${c.regiao||'Sem região'}</div></div></div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div>${c.end?`<div class="li-sb">${c.end}</div>`:''}<div class="li-r"><span class="lbl">WhatsApp</span><a href="https://wa.me/55${tel}" target="_blank" style="color:var(--gr);font-weight:600;font-size:13px">📱 ${c.tel}</a></div><div class="li-r"><span class="lbl">Volume (mês)</span><span class="val" style="color:var(--pu);font-weight:700">${fmtN(vol)} un.</span></div><div class="li-acts"><button class="btn bsm" style="flex:1" onclick="aMC(${c.id})">Editar</button><button class="btn bsm bex" style="flex:1" onclick="dCl(${c.id})">Excluir</button></div></div>`;
+  }).join(''):'<div class="empty"><div class="ico">👥</div><p>Nenhum cliente cadastrado</p></div>';
+}
+
+// ── MENSAL ──
+function rMensal(){
+  document.getElementById('mga').innerHTML=MS.map((m,i)=>{const tem=S.pedidos.some(p=>p.mes===i);return`<div class="mb${i===S.mesSel?' active':''}" onclick="selM(${i})">${m}${tem&&i!==S.mesSel?'<span class="mb-dot"></span>':''}</div>`;}).join('');
+  rMBody();
+}
+function selM(i){S.mesSel=i;document.querySelectorAll('.mb').forEach((b,idx)=>b.classList.toggle('active',idx===i));rMBody();}
+function rMBody(){
+  const mes=S.mesSel;const pm=S.pedidos.filter(p=>p.mes===mes);
+  const fat=pm.reduce((a,p)=>a+tP(p),0);
+  const ll=pm.reduce((a,p)=>a+lucLiq(p),0);
+  const lb=pm.reduce((a,p)=>a+lucBruto(p),0);
+  const cones=pm.reduce((a,p)=>a+p.qtd,0);const ent=pm.reduce((a,p)=>a+entP(p),0);
+  const fatA=S.pedidos.filter(p=>p.mes===mes-1).reduce((a,p)=>a+tP(p),0);
+  const diff=fatA>0?Math.round((fat-fatA)/fatA*100):null;
+  const vol={};pm.filter(p=>p.clienteId).forEach(p=>{vol[p.clienteId]=(vol[p.clienteId]||0)+p.qtd});
+  const rank=Object.entries(vol).sort((a,b)=>b[1]-a[1]);const mxV=rank[0]?rank[0][1]:1;
+  const mPct=Math.min(100,fat>0?Math.round(fat/S.config.meta*100):0);
+  const mcPct=Math.min(100,cones>0?Math.round(cones/S.config.metaCones*100):0);
+  const mCls=mPct>=100?'pf-gr':mPct>=60?'pf-am':'pf-re';
+  const diasNoMes=new Date(new Date().getFullYear(),mes+1,0).getDate();
+  const diaAt=mes===new Date().getMonth()?new Date().getDate():diasNoMes;
+  const proj=diaAt>0&&mes===new Date().getMonth()?Math.round(fat/diaAt*diasNoMes):fat;
+  const rF=pm.filter(p=>p.tipo==='revenda').reduce((a,p)=>a+tP(p),0);
+  const dF=pm.filter(p=>p.tipo==='direta').reduce((a,p)=>a+tP(p),0);
+  const llR=pm.filter(p=>p.tipo==='revenda').reduce((a,p)=>a+lucLiq(p),0);
+  const llD=pm.filter(p=>p.tipo==='direta').reduce((a,p)=>a+lucLiq(p),0);
+  // ── Explicação do lucro líquido ──
+  const mgPct=fat>0?Math.round(ll/fat*100):0;
+  let llExp='';
+  if(ll<0){
+    // Calcular o custo fixo total rateado para esse mês
+    const custoFixoMes=S.config.custoFixo;
+    const custoVarMes=pm.reduce((a,p)=>a+cvP(p),0);
+    const entMes=pm.reduce((a,p)=>a+entP(p),0);
+    if(fat===0) llExp='Nenhuma venda registrada — os custos fixos existem mesmo sem faturamento.';
+    else if(custoFixoMes>fat) llExp=`O custo fixo mensal (${fmt(custoFixoMes)}) é maior que todo o faturamento (${fmt(fat)}). Precisa vender mais para cobrir.`;
+    else llExp=`Os custos totais (variável ${fmt(custoVarMes)} + fixo rateado ${fmt(pm.reduce((a,p)=>a+cfP(p),0))}${entMes>0?' + entrega '+fmt(entMes):''}) superam o faturamento de ${fmt(fat)}.`;
+  } else if(mgPct<15){
+    llExp=`Margem baixa — para cada R$ 1,00 vendido, sobram R$ ${(mgPct/100).toFixed(2)} de lucro real.`;
+  }
+
+  // ── Explicação da projeção ──
+  let projAlert='';
+  if(mes===new Date().getMonth()){
+    const diasRest=diasNoMes-diaAt;
+    const fatDia=diaAt>0?fat/diaAt:0;
+    const fatFalta=S.config.meta-fat;
+    if(proj>=S.config.meta){
+      const diasParaMeta=fatDia>0?Math.ceil(fatFalta/fatDia):null;
+      const dataAtinge=diasParaMeta!=null?new Date(new Date().getFullYear(),mes,diaAt+diasParaMeta):null;
+      const diaStr=dataAtinge?dataAtinge.getDate()+'/'+String(dataAtinge.getMonth()+1).padStart(2,'0'):'ainda este mês';
+      projAlert=`<div class="alert ok" style="margin-bottom:14px"><div class="alert-ico">✅</div><div class="alert-txt"><strong>Vai atingir a meta!</strong><span>Ritmo: <b>${fmt(fatDia)}/dia</b> · projeção: <b>${fmt(proj)}</b>${diasParaMeta!=null&&diasParaMeta>0?' · vai atingir por volta do dia <b>'+diaStr+'</b>':' · meta já superada'}. A meta é <b>${fmt(S.config.meta)}</b> e faltam <b>${diasRest} dias</b> no mês.</span></div></div>`;
+    } else {
+      const fatNecDia=diasRest>0?fatFalta/diasRest:fatFalta;
+      const viavel=fatNecDia<=fatDia*1.5;
+      projAlert=`<div class="alert ${viavel?'warn':'bad'}" style="margin-bottom:14px"><div class="alert-ico">${viavel?'⚠️':'🔴'}</div><div class="alert-txt"><strong>${viavel?'Meta possível, mas precisa acelerar':'Meta difícil no ritmo atual'}</strong><span>Ritmo atual: <b>${fmt(fatDia)}/dia</b> · projeção: <b>${fmt(proj)}</b> · meta: <b>${fmt(S.config.meta)}</b>. Faltam <b>${fmt(fatFalta)}</b> em <b>${diasRest} dias</b> — precisaria de <b>${fmt(fatNecDia)}/dia</b>${viavel?' ('+Math.round(fatNecDia/fatDia*100)+'% do ritmo atual)':' — '+Math.round(fatNecDia/Math.max(fatDia,1)*100)+'% do ritmo atual'}.</span></div></div>`;
+    }
+  }
+
+  document.getElementById('mbody').innerHTML=`
+    <div class="mg" style="grid-template-columns:1fr 1fr">
+      <div class="mc ${ll>=0?'ok':'bad'}"><div class="lb">Faturamento — ${MF[mes]}</div><div class="vl">${fmt(fat)}</div>${diff!==null?`<div class="trend ${diff>=0?'up':'dn'}">${diff>=0?'▲':'▼'} ${Math.abs(diff)}%</div>`:''}</div>
+      <div class="mc ${ll>=0?'ok':'bad'}"><div class="lb">Lucro Líquido</div><div class="vl">${fmt(ll)}</div><div class="sb">${mgPct}% margem</div></div>
+      <div class="mc"><div class="lb">Cones Vendidos</div><div class="vl">${fmtN(cones)}</div></div>
+      <div class="mc"><div class="lb">Custo Entregas</div><div class="vl">${fmt(ent)}</div></div>
+      <div class="mc"><div class="lb">🍪 Cookies Vendidos</div><div class="vl">${fmtN(pm.reduce((a,p)=>a+(p.ck||0),0))}</div><div class="sb">${fmt(pm.reduce((a,p)=>a+(p.fatCk||0),0))} faturados</div></div>
+      <div class="mc"><div class="lb">🍪 Lucro Bruto Cookies</div><div class="vl" style="color:var(--gr)">${fmt(pm.reduce((a,p)=>a+(p.fatCk||0)-(p.cvX||0),0))}</div><div class="sb">sem rateio do fixo</div></div>
+    </div>
+    ${ll<0||llExp?`<div class="alert ${ll<0?'bad':'warn'}" style="margin-bottom:14px"><div class="alert-ico">${ll<0?'🔴':'⚠️'}</div><div class="alert-txt"><strong>${ll<0?'Por que o lucro está negativo?':'Margem baixa'}</strong><span>${llExp}</span></div></div>`:''}
+    ${projAlert}
+    <div class="card"><div class="ch"><span class="ct">Meta Faturamento</span><span style="font-weight:700;color:${mPct>=100?'var(--gr)':mPct>=60?'var(--am)':'var(--re)'}">${mPct}%</span></div><div class="prog" style="margin-bottom:6px"><div class="pf ${mCls}" style="width:${mPct}%"></div></div><div style="display:flex;justify-content:space-between" class="ts"><span>${fmt(fat)} de ${fmt(S.config.meta)}</span><span>${mPct<100?'Falta '+fmt(S.config.meta-fat):'✅ Atingida'}</span></div><div style="height:12px"></div><div class="ch" style="margin-bottom:6px"><span class="ct" style="font-size:13px">Meta Cones: ${fmtN(S.config.metaCones)}</span><span style="font-weight:700;color:${mcPct>=100?'var(--gr)':mcPct>=60?'var(--am)':'var(--re)'}">${mcPct}%</span></div><div class="prog"><div class="pf ${mcPct>=100?'pf-gr':mcPct>=60?'pf-am':'pf-re'}" style="width:${mcPct}%"></div></div><div style="display:flex;justify-content:space-between;margin-top:4px" class="ts"><span>${fmtN(cones)} de ${fmtN(S.config.metaCones)}</span><span>${mcPct<100?'Faltam '+fmtN(S.config.metaCones-cones):'✅ Atingida'}</span></div>${barraMetaCk(pm.reduce((a,p)=>a+(p.ck||0),0))}</div>
+    <div class="card"><div class="ch"><span class="ct">Ranking — ${MF[mes]}</span></div>${rank.length?rank.slice(0,8).map(([id,v],i)=>{const c=S.clientes.find(x=>x.id==id);return`<div class="ri"><div class="rn ${['r1','r2','r3','r0','r0','r0','r0','r0'][i]}">${i+1}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c?c.nome:id}</div><div class="prog" style="margin-top:5px"><div class="pf pf-pu" style="width:${Math.round(v/mxV*100)}%"></div></div></div><div style="font-size:12px;font-weight:700;color:var(--pu);margin-left:8px">${fmtN(v)}</div></div>`;}).join(''):'<div class="empty"><p>Sem dados</p></div>'}</div>
+    <div class="card">
+      <div class="ch"><span class="ct">Revenda vs Instagram</span></div>
+      <div class="clickable-row" style="padding:10px 0;border-bottom:1px solid var(--b)" onclick="abrirDetalhe('revenda',${mes})">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;align-items:center"><span style="font-weight:600">🏪 Revendas (${pm.filter(p=>p.tipo==='revenda').length} pedidos) →</span><span class="badge bpu">Ver detalhes</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span class="ts">Fat: ${fmt(rF)}</span><span style="font-weight:600;color:${llR>=0?'var(--gr)':'var(--re)'}">Lucro liq: ${fmt(llR)}</span></div>
+      </div>
+      <div class="clickable-row" style="padding:10px 0" onclick="abrirDetalhe('direta',${mes})">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;align-items:center"><span style="font-weight:600">📸 Instagram (${pm.filter(p=>p.tipo==='direta').length} pedidos) →</span><span class="badge bpk">Ver detalhes</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span class="ts">Fat: ${fmt(dF)}</span><span style="font-weight:600;color:${llD>=0?'var(--gr)':'var(--re)'}">Lucro liq: ${fmt(llD)}</span></div>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">Pedidos — ${MF[mes]}</span></div>${pm.length?pm.map(p=>{const l=lucLiq(p);const st=ST[p.status||'pendente'];return`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--b)"><div style="min-width:0;flex:1"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.nome}</div><div class="ts">${dtDisp(p.dataPedido)} · ${itensTag(p)} · <span class="badge ${st.cls}" style="font-size:10px">${st.lb}</span></div></div><div style="text-align:right;margin-left:10px;flex-shrink:0"><div style="font-weight:600">${fmt(tP(p))}</div><div style="font-size:12px;font-weight:600;color:${l>=0?'var(--gr)':'var(--re)'}">${fmt(l)}</div></div></div>`;}).join(''):'<div class="empty"><p>Sem pedidos em '+MF[mes]+'</p></div>'}</div>`;
+}
+
+// ── RANKING ──
+function rRank(){
+  const vol={};S.pedidos.filter(p=>p.clienteId).forEach(p=>{vol[p.clienteId]=(vol[p.clienteId]||0)+p.qtd});
+  const rank=Object.entries(vol).sort((a,b)=>b[1]-a[1]);const mxV=rank[0]?rank[0][1]:1;
+  document.getElementById('rl').innerHTML=rank.length?rank.map(([id,v],i)=>{const c=S.clientes.find(x=>x.id==id);const md=medal(v);return`<div class="ri"><div class="rn ${['r1','r2','r3','r0'][Math.min(i,3)]}">${i+1}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c?c.nome:id}</div><div class="prog" style="margin-top:5px"><div class="pf pf-pu" style="width:${Math.round(v/mxV*100)}%"></div></div></div><div style="text-align:right;margin-left:8px;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--pu)">${fmtN(v)}</div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div></div>`;}).join(''):'<div class="empty"><div class="ico">🏆</div><p>Sem dados</p></div>';
+  const bz=S.clientes.filter(c=>{const v=volCl(c.id);return v>=100&&v<300});
+  const sv=S.clientes.filter(c=>{const v=volCl(c.id);return v>=300&&v<500});
+  const gd=S.clientes.filter(c=>{const v=volCl(c.id);return v>=500});
+  document.getElementById('ml').innerHTML=[{i:'🥇',l:'Ouro',d:'500+ unidades',list:gd,c:'bgo'},{i:'🥈',l:'Prata',d:'300–499',list:sv,c:'bsi'},{i:'🥉',l:'Bronze',d:'100–299',list:bz,c:'bbr'}].map(m=>`<div style="background:var(--s2);border-radius:11px;padding:14px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span style="font-size:24px">${m.i}</span><div><div style="font-weight:700">${m.l}</div><div class="ts">${m.d}</div></div></div>${m.list.length?m.list.map(c=>`<span class="badge ${m.c}" style="margin:2px">${c.nome.split(' ')[0]}</span>`).join(''):'<span class="ts">Nenhum ainda</span>'}</div>`).join('');
+}
+
+// ── PERDAS ──
+function rPerdas(){
+  const t=today();const mes=new Date().getMonth();
+  const pMes=S.perdas.filter(p=>{try{return new Date(p.data+'T12:00:00').getMonth()===mes}catch{return false}});
+  const pHj=S.perdas.filter(p=>p.data===t);
+  document.getElementById('p-mes').textContent=fmt(pMes.reduce((a,p)=>a+p.total,0));
+  document.getElementById('p-mes-qt').textContent=fmtN(pMes.reduce((a,p)=>a+p.qtd,0))+' unidades';
+  document.getElementById('p-hoje').textContent=fmt(pHj.reduce((a,p)=>a+p.total,0));
+  document.getElementById('p-hoje-qt').textContent=fmtN(pHj.reduce((a,p)=>a+p.qtd,0))+' unidades';
+  document.getElementById('perda-data').value=t;
+  prvPerda();
+  const hist=[...S.perdas].sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,20);
+  document.getElementById('perdas-hist').innerHTML=hist.length?hist.map(p=>`<div class="perda-item"><div><div style="font-weight:600;font-size:13px">${p.tipo==='cone'?'🍦 Cone inteiro':'🥚 Casquinha quebrada'}</div><div class="ts">${dtDisp(p.data)} · ${fmtN(p.qtd)} un.${p.obs?' · '+p.obs:''}</div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><div style="font-weight:700;color:var(--re)">${fmt(p.total)}</div><button class="btn bsm bex" onclick="dPerda(${p.id})">Excluir</button></div></div>`).join(''):'<div class="empty"><p>Nenhuma perda registrada</p></div>';
+}
+
+// ── ENTREGAS ──
+function rEnt(){
+  const mes=new Date().getMonth();const pm=S.pedidos.filter(p=>p.mes===mes);
+  document.getElementById('e-t').textContent=fmt(pm.reduce((a,p)=>a+entP(p),0));
+  document.getElementById('e-q').textContent=pm.filter(p=>entP(p)>0).length;
+  document.getElementById('list-re').innerHTML=S.regioes.length?S.regioes.map(r=>`<div class="li"><div class="li-h"><div class="li-nm">📍 ${r.nome}</div><span style="font-weight:700;color:var(--pu);font-size:15px">${fmt(r.valor)}</span></div><div class="li-acts"><button class="btn bsm bex" onclick="dRg(${r.id})">Excluir</button></div></div>`).join(''):'<div class="empty"><div class="ico">🗺️</div><p>Nenhuma região cadastrada</p></div>';
+}
+
+// ── CONFIG ──
+function rCfg(){
+  document.getElementById('cfg-nm').value=S.nome.label;
+  document.getElementById('cfg-ic').value=S.nome.icon;
+  document.getElementById('cc-v').value=S.config.custoVariavel;
+  document.getElementById('cc-f').value=S.config.custoFixo;
+  document.getElementById('cc-p').value=S.config.producaoManual;
+  document.getElementById('cc-cq').value=S.config.custoCasquinha||0.40;
+  document.getElementById('cc-r').value=S.config.precoRev;
+  document.getElementById('cc-d').value=S.config.precoDir;
+  document.getElementById('cc-m').value=S.config.mediaRev;
+  document.getElementById('cc-mt').value=S.config.meta;
+  document.getElementById('cc-mc').value=S.config.metaCones||2000;
+  document.getElementById('cc-mk').value=S.config.metaCookies||'';
+  cfPrv();
+}
+
+// ── FRASE DO DIA ──
+const FRASES=[
+  {q:"Cada cone que sai da sua cozinha carrega o sabor do seu esforço!",a:"Canudo di Cacau"},
+  {q:"Um cliente feliz não volta sozinho — ele traz mais cinco.",a:"Equipe"},
+  {q:"Hoje é dia de transformar esforço em faturamento.",a:"Canudo di Cacau"},
+  {q:"A consistência de hoje é o sucesso de amanhã.",a:"Equipe"},
+  {q:"Feito à mão, sentido no coração.",a:"Canudo di Cacau"},
+  {q:"Cada revendedor ativo é uma vitrine do Canudo di Cacau no mundo.",a:"Equipe"},
+  {q:"Qualidade não é o que você coloca no produto — é o que o cliente sente ao abrir.",a:"Filosofia"},
+];
+async function carregarFrase(){
+  const d=new Date();
+  const idx=d.getDate()%FRASES.length;
+  let fr=FRASES[idx];
+  try{
+    const ctrl=new AbortController();setTimeout(()=>ctrl.abort(),3000);
+    const r=await fetch('https://api.quotable.io/random?tags=motivational|success&maxLength=100',{signal:ctrl.signal});
+    if(r.ok){const data=await r.json();if(data.content)fr={q:data.content,a:data.author};}
+  }catch(e){}
+  const fd=document.getElementById('frase-dia');
+  const fa=document.getElementById('frase-autor');
+  if(fd)fd.textContent='"'+fr.q+'"';
+  if(fa)fa.textContent='— '+fr.a;
+}
+
+// ── EXPORT ──
+function exportCSV(){
+  const rows=[['Tipo','Cliente','Data Pedido','Data Entrega','Status','Qtd','Preço Unit.','Total','Entrega','Custo Variável','Rateio Fixo','Lucro Bruto','Lucro Líquido','Cookies','Detalhe Cookies','Combos','Faturamento Cookies','Custo Cookies']];
+  S.pedidos.forEach(p=>rows.push([p.tipo,p.nome,p.dataPedido||'',p.dataEntrega||'',p.status||'',p.qtd,p.preco.toFixed(2),tP(p).toFixed(2),entP(p).toFixed(2),cvP(p).toFixed(2),cfP(p).toFixed(2),lucBruto(p).toFixed(2),lucLiq(p).toFixed(2),p.ck||0,(p.cookies||[]).map(c=>c.q+' '+c.nome).join(', '),(p.combos||[]).map(c=>c.n+'x '+c.nome).join(', '),(p.fatCk||0).toFixed(2),(p.cvX||0).toFixed(2)]));
+  const csv=rows.map(r=>r.join(';')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download=(S.nome.label.replace(/\s/g,'_'))+'_v8.csv';a.click();
+  toast('CSV exportado! ✓');
+}
+
+// ── INIT ──
+async function iniciar(){
+  let fbData=null;
+  if(window.fbLoad) fbData=await window.fbLoad();
+  if(fbData&&fbData.clientes&&fbData.clientes.length){
+    Object.assign(S,fbData);
+    console.log('✅ Firebase carregado: '+fbData.clientes.length+' clientes');
+  } else {
+    ldS();
+    if((!S.clientes||!S.clientes.length)&&window.DEMO_DATA){Object.assign(S,JSON.parse(JSON.stringify(window.DEMO_DATA)));console.log('🧪 Modo teste: dados do CSV');}
+    else console.log('✅ localStorage carregado');
+  }
+  if(!S.gasolinaRev)S.gasolinaRev={};
+  if(!S.gasolinaIG)S.gasolinaIG={};
+  if(!S.festivasDatas)S.festivasDatas=[];
+  seedProd();
+  if(!S.salarios)S.salarios={producao:0,vendas:0,entregas:0,admin:0};
+  // Sempre roda seed se não tiver clientes — garante dados iniciais
+  if(!S.clientes||S.clientes.length===0){
+    console.log('⚡ Carregando seed com dados iniciais...');
+    S.clientes=[];S.pedidos=[];
+    seed();
+  }
+  migCookiesV1();
+  apNm();if(typeof carregarFrase==='function')carregarFrase();rDash();atualizarBadges();
+}
+let _fbTries=0;
+const _fbWait=setInterval(()=>{
+  _fbTries++;
+  if(window._firebaseReady||_fbTries>15){
+    clearInterval(_fbWait);
+    iniciar();
+  }
+},200);
+// Conectar listeners de perdas
+setTimeout(()=>{
+  const tp=document.getElementById('perda-tipo');const qt=document.getElementById('perda-qtd');
+  if(tp){tp.oninput=prvPerda;qt.oninput=prvPerda;prvPerda();}
+},200);
+</script>
+</body>
+</html>

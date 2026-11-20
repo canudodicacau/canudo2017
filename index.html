@@ -955,11 +955,14 @@ const today=()=>dtStr(new Date());
 const isPast=s=>s&&s<today();
 
 // ── CMV ──
-const cProd=()=>{
-  if(S.config.producaoManual>0)return S.config.producaoManual;
-  // Usa cones reais vendidos no mês atual
-  const mes=new Date().getMonth();
-  const conesReais=S.pedidos.filter(p=>p.mes===mes).reduce((a,p)=>a+p.qtd+(S.config.rateioTudo?(p.ck||0):0),0);
+// ym: "AAAA-MM" do pedido (usa a data do pedido; se não tiver, mês salvo + ano atual)
+const ymP=p=>(p.dataPedido&&p.dataPedido.length>=7)?p.dataPedido.slice(0,7):(new Date().getFullYear()+'-'+String((p.mes??new Date().getMonth())+1).padStart(2,'0'));
+const ymHoje=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');};
+// cProd(ym): produção do mês informado (padrão = mês atual). Cada mês usa a PRÓPRIA produção.
+const cProd=(ym=ymHoje())=>{
+  // Produção manual só vale para o mês atual (não distorce meses passados)
+  if(S.config.producaoManual>0&&ym===ymHoje())return S.config.producaoManual;
+  const conesReais=S.pedidos.filter(p=>ymP(p)===ym).reduce((a,p)=>a+p.qtd+(S.config.rateioTudo?(p.ck||0):0),0);
   // Se não tiver vendas ainda, usa estimativa pelos revendedores
   return Math.max(conesReais||S.clientes.length*S.config.mediaRev,1);
 };
@@ -971,7 +974,7 @@ const tP=p=>p.total||(p.qtd*p.preco);
 // cvP: custo variável (ingredientes) = qtd × custo variável por cone
 const cvP=p=>p.qtd*S.config.custoVariavel+(p.cvX||0); // cones + cookies/embalagem de combo (congelado na venda)
 // cfP: rateio do custo fixo = qtd × (custo fixo total ÷ produção do mês)
-const cfP=p=>(p.qtd+(S.config.rateioTudo?(p.ck||0):0))*(S.config.custoFixo/cProd());
+const cfP=p=>(p.qtd+(S.config.rateioTudo?(p.ck||0):0))*(S.config.custoFixo/cProd(ymP(p)));
 // entP: custo de entrega — SOMENTE para revenda; instagram = 0
 const entP=p=>p.tipo==='revenda'?(p.entrega||0):0;
 // lucBruto: receita - custo variável - entrega (SEM descontar fixo)

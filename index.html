@@ -279,6 +279,15 @@ input:focus,select:focus{outline:none;border-color:var(--pu);box-shadow:0 0 0 3p
 .cbadge{display:inline-flex;align-items:center;background:var(--pubg);color:var(--putx);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
 .sw3{position:relative;margin-bottom:12px}
 .sw3 input{padding-left:36px}
+.clpick{position:relative}
+.clpick-list{display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;max-height:260px;overflow-y:auto;background:var(--s);border:1.5px solid var(--b2);border-radius:9px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;-webkit-overflow-scrolling:touch}
+.clpick-list.open{display:block}
+.clpick-it{padding:12px 14px;font-size:15px;border-bottom:1px solid var(--b2);cursor:pointer}
+.clpick-it:last-child{border-bottom:0}
+.clpick-it:active,.clpick-it.hl{background:var(--b2)}
+.clpick-none{padding:12px 14px;font-size:14px;opacity:.6}
+.li.inativo{opacity:.55}
+.tag-in{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--b2);margin-left:6px;vertical-align:middle}
 .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;font-size:14px}
 .tag-hoje{background:var(--grbg);color:var(--grtx);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700}
 .tag-atr{background:var(--rebg);color:var(--retx);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700}
@@ -761,7 +770,9 @@ console.log("🔥 Firebase conectado!");
 <div class="md">
   <div class="drag"></div>
   <div class="mh"><h3 id="mp-t">Novo Pedido</h3><button class="mclose" onclick="fM('pedido')">✕</button></div>
-  <div id="mp-cr" class="fg"><label>Cliente (revendedor)</label><select id="mp-cl"></select></div>
+  <div id="mp-cr" class="fg"><label>Cliente (revendedor)</label>
+    <div class="clpick"><input type="text" id="mp-cl-q" placeholder="Digite o nome do cliente..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="clPickFiltra()" onfocus="clPickFiltra()" onblur="setTimeout(clPickFecha,200)"><input type="hidden" id="mp-cl"><div class="clpick-list" id="mp-cl-list"></div></div>
+  </div>
   <div id="mp-nr" class="fg" style="display:none"><label>Nome / @ do cliente</label><input type="text" id="mp-nm" placeholder="@doce_vida ou Maria Silva"></div>
   <div class="fr2">
     <div class="fg"><label id="mp-q-lb">Quantidade de cones</label><input type="number" id="mp-q" min="0" placeholder="0" inputmode="numeric" oninput="cPed()"></div>
@@ -1450,8 +1461,9 @@ function aMP(tipo){
   const descRow=document.getElementById('mp-desc-row');if(descRow)descRow.style.display=isR?'none':'block';
   const descEl=document.getElementById('mp-desc');if(descEl)descEl.value='0';
   document.getElementById('mp-sb').className=isR?'btn bp bw':'btn big bw';
-  const sl=document.getElementById('mp-cl');
-  sl.innerHTML='<option value="">Selecionar cliente...</option>'+S.clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
+  document.getElementById('mp-cl').value='';
+  document.getElementById('mp-cl-q').value='';
+  clPickFecha();
   document.getElementById('mp-q').value='';
   document.getElementById('mp-pr').value=isR?S.config.precoRev:S.config.precoDir;
   document.getElementById('mp-en').value='0';
@@ -1588,7 +1600,7 @@ function saCl(){
   else S.clientes.push({id:uid(),...obj});
   svS();fM('cliente');rCL();toast('Cliente salvo! ✓');
 }
-function dCl(id){if(!confirm('Excluir este cliente?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
+function dCl(id){if(!confirm('Excluir este cliente de vez?\n\nSe ele só parou de comprar, use "Inativar": ele some da busca do pedido e o histórico fica guardado.'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
 function saRg(){const nm=document.getElementById('rg-n').value.trim();if(!nm){toast('Informe o nome');return}S.regioes.push({id:uid(),nome:nm,valor:parseFloat(document.getElementById('rg-v').value)||0});svS();fM('regiao');rEnt();toast('Região salva! ✓');}
 function dRg(id){if(!confirm('Excluir esta região?'))return;S.regioes=S.regioes.filter(r=>r.id!==id);svS();rEnt();toast('Região excluída');}
 function sC(){
@@ -1913,14 +1925,43 @@ function salvarGasIG(){
   svS();rIG();toast('Custo de entrega salvo! ✓');
 }
 
+// ── BUSCA DE CLIENTE NO PEDIDO (funciona no celular) ──
+function semAcento(t){return (t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+function clPickFiltra(){
+  const inp=document.getElementById('mp-cl-q');const box=document.getElementById('mp-cl-list');
+  const q=semAcento(inp.value.trim());
+  const sel=S.clientes.find(c=>c.id===parseInt(document.getElementById('mp-cl').value));
+  if(sel&&inp.value!==sel.nome)document.getElementById('mp-cl').value='';
+  const lista=S.clientes.filter(c=>c.ativo!==false&&(!q||semAcento(c.nome).includes(q)))
+    .sort((a,b)=>{const ia=semAcento(a.nome).startsWith(q)?0:1,ib=semAcento(b.nome).startsWith(q)?0:1;return ia-ib||a.nome.localeCompare(b.nome,'pt-BR');});
+  box.innerHTML='';
+  if(!lista.length){const d=document.createElement('div');d.className='clpick-none';d.textContent='Nenhum cliente ativo com esse nome';box.appendChild(d);}
+  lista.forEach(c=>{const d=document.createElement('div');d.className='clpick-it';d.textContent=c.nome;
+    d.addEventListener('mousedown',e=>e.preventDefault());
+    d.addEventListener('click',()=>clPickEscolhe(c.id));box.appendChild(d);});
+  box.classList.add('open');
+}
+function clPickEscolhe(id){
+  const c=S.clientes.find(x=>x.id===id);if(!c)return;
+  document.getElementById('mp-cl').value=c.id;document.getElementById('mp-cl-q').value=c.nome;
+  clPickFecha();document.getElementById('mp-cl-q').blur();
+}
+function clPickFecha(){const b=document.getElementById('mp-cl-list');if(b)b.classList.remove('open');}
+function tgAtivoCl(id){
+  const c=S.clientes.find(x=>x.id===id);if(!c)return;
+  c.ativo=c.ativo===false?true:false;
+  svS();rCL();toast(c.ativo===false?'Cliente inativado — não aparece mais na busca do pedido':'Cliente reativado ✓');
+}
+
 // ── CLIENTES ──
 function rCL(){
   const q=(document.getElementById('q-cl')?.value||'').toLowerCase();
-  const list=S.clientes.filter(c=>!q||c.nome.toLowerCase().includes(q)||(c.regiao||'').toLowerCase().includes(q));
+  const qq=semAcento(q);const list=S.clientes.filter(c=>!qq||semAcento(c.nome).includes(qq)||semAcento(c.regiao).includes(qq)).sort((a,b)=>(a.ativo===false?1:0)-(b.ativo===false?1:0));
   const mes=new Date().getMonth();
   document.getElementById('list-cl').innerHTML=list.length?list.map(c=>{
     const vol=volCl(c.id,mes);const md=medal(vol);const tel=c.tel.replace(/\D/g,'');
-    return`<div class="li"><div class="li-h"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><div class="av">${c.nome.substring(0,2).toUpperCase()}</div><div style="min-width:0"><div class="li-nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nome}</div><div class="ts">${c.regiao||'Sem região'}</div></div></div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div>${c.end?`<div class="li-sb">${c.end}</div>`:''}<div class="li-r"><span class="lbl">WhatsApp</span><a href="https://wa.me/55${tel}" target="_blank" style="color:var(--gr);font-weight:600;font-size:13px">📱 ${c.tel}</a></div><div class="li-r"><span class="lbl">Volume (mês)</span><span class="val" style="color:var(--pu);font-weight:700">${fmtN(vol)} un.</span></div><div class="li-acts"><button class="btn bsm" style="flex:1" onclick="aMC(${c.id})">Editar</button><button class="btn bsm bex" style="flex:1" onclick="dCl(${c.id})">Excluir</button></div></div>`;
+    const ina=c.ativo===false;
+    return`<div class="li${ina?' inativo':''}"><div class="li-h"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><div class="av">${c.nome.substring(0,2).toUpperCase()}</div><div style="min-width:0"><div class="li-nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nome}${ina?'<span class="tag-in">Inativo</span>':''}</div><div class="ts">${c.regiao||'Sem região'}</div></div></div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div>${c.end?`<div class="li-sb">${c.end}</div>`:''}<div class="li-r"><span class="lbl">WhatsApp</span><a href="https://wa.me/55${tel}" target="_blank" style="color:var(--gr);font-weight:600;font-size:13px">📱 ${c.tel}</a></div><div class="li-r"><span class="lbl">Volume (mês)</span><span class="val" style="color:var(--pu);font-weight:700">${fmtN(vol)} un.</span></div><div class="li-acts"><button class="btn bsm" style="flex:1" onclick="aMC(${c.id})">Editar</button><button class="btn bsm" style="flex:1" onclick="tgAtivoCl(${c.id})">${ina?'Reativar':'Inativar'}</button><button class="btn bsm bex" style="flex:1" onclick="dCl(${c.id})">Excluir</button></div></div>`;
   }).join(''):'<div class="empty"><div class="ico">👥</div><p>Nenhum cliente cadastrado</p></div>';
 }
 

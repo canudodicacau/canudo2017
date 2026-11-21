@@ -412,7 +412,7 @@ DOC.onSnapshot((snap) => {
       if (typeof rDash === 'function') rDash();
       if (typeof atualizarBadges === 'function') atualizarBadges();
       const pg = document.querySelector('.ni.active')?.dataset?.p;
-      const fns = {pedidos:rPD,instagram:rIG,clientes:rCL,mensal:rMensal,ranking:rRank,perdas:rPerdas,operacional:rOp,config:rCfg,produtos:rProd};
+      const fns = {pedidos:rPD,instagram:rIG,clientes:rCL,repor:rRP,mensal:rMensal,ranking:rRank,perdas:rPerdas,operacional:rOp,config:rCfg,produtos:rProd};
       if (pg && fns[pg]) fns[pg]();
       console.log("🔄 Sincronizado do Firebase");
     }
@@ -459,6 +459,7 @@ console.log("🔥 Firebase conectado!");
     <div class="ni" data-p="pedidos" onclick="go('pedidos')"><span class="nicon">📦</span>Pedidos</div>
     <div class="ni" data-p="instagram" onclick="go('instagram')"><span class="nicon">📸</span>Instagram / Direto</div>
     <div class="ni" data-p="clientes" onclick="go('clientes')"><span class="nicon">👥</span>Clientes</div>
+    <div class="ni" data-p="repor" onclick="go('repor')"><span class="nicon">🔁</span>Repor<span class="nb" id="nb-rp" style="display:none">0</span></div>
   </div>
   <div class="ns">
     <div class="nl">Análise</div>
@@ -633,6 +634,14 @@ console.log("🔥 Firebase conectado!");
     <div class="fb"><div style="font-size:15px;font-weight:700">Clientes / Revendedores</div><button class="btn bp" onclick="aMC()">+ Novo Cliente</button></div>
     <div class="sw3"><span class="si">🔍</span><input type="text" placeholder="Buscar..." id="q-cl" oninput="rCL()"></div>
     <div id="list-cl"></div>
+  </div>
+
+  <!-- ══ REPOR ══ -->
+  <div id="pg-repor" class="pg">
+    <div class="fb"><div><div style="font-size:15px;font-weight:700">Quem está na hora de repor</div><div class="ts">Pelo intervalo que cada revendedor costuma levar entre um pedido e outro</div></div></div>
+    <div class="seg" id="rp-seg"><button class="btn bsm on" data-f="contatar" onclick="rpFiltro('contatar')">Para contatar</button><button class="btn bsm" data-f="parados" onclick="rpFiltro('parados')">Parados</button><button class="btn bsm" data-f="todos" onclick="rpFiltro('todos')">Todos</button></div>
+    <div id="rp-resumo" class="ts" style="margin-bottom:10px"></div>
+    <div id="list-rp"></div>
   </div>
 
   <!-- ══ MENSAL ══ -->
@@ -1439,10 +1448,10 @@ function go(pg){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('pg-'+pg).classList.add('active');
   document.querySelector(`.ni[data-p="${pg}"]`)?.classList.add('active');
-  const tt={dashboard:'Dashboard',operacional:'Operacional',pedidos:'Pedidos',instagram:'Instagram',clientes:'Clientes',mensal:'Controle Mensal',ranking:'Ranking',perdas:'Perdas',entregas:'Regiões de Entrega',config:'Configurações',produtos:'Produtos & Combos'};
+  const tt={dashboard:'Dashboard',operacional:'Operacional',pedidos:'Pedidos',instagram:'Instagram',clientes:'Clientes',repor:'Repor',mensal:'Controle Mensal',ranking:'Ranking',perdas:'Perdas',entregas:'Regiões de Entrega',config:'Configurações',produtos:'Produtos & Combos'};
   document.getElementById('pt').textContent=tt[pg]||pg;
   cSB();
-  ({dashboard:rDash,operacional:rOp,pedidos:rPD,instagram:rIG,clientes:rCL,mensal:rMensal,ranking:rRank,perdas:rPerdas,entregas:rEnt,config:rCfg,produtos:rProd}[pg]||Function)();
+  ({dashboard:rDash,operacional:rOp,pedidos:rPD,instagram:rIG,clientes:rCL,repor:rRP,mensal:rMensal,ranking:rRank,perdas:rPerdas,entregas:rEnt,config:rCfg,produtos:rProd}[pg]||Function)();
 }
 function tSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('obg').classList.toggle('open')}
 function cSB(){document.getElementById('sb').classList.remove('open');document.getElementById('obg').classList.remove('open')}
@@ -1598,7 +1607,7 @@ function saCl(){
   const obj={nome:nm,tel:document.getElementById('cl-t').value.trim(),end:document.getElementById('cl-e').value.trim(),regiao:document.getElementById('cl-r').value};
   if(S.editCl){const c=S.clientes.find(x=>x.id===S.editCl);if(c)Object.assign(c,obj);}
   else S.clientes.push({id:uid(),...obj});
-  svS();fM('cliente');rCL();toast('Cliente salvo! ✓');
+  svS();fM('cliente');rCL();if(document.getElementById('pg-repor').classList.contains('active'))rRP();atualizarBadges();toast('Cliente salvo! ✓');
 }
 function dCl(id){if(!confirm('Excluir este cliente de vez?\n\nSe ele só parou de comprar, use "Inativar": ele some da busca do pedido e o histórico fica guardado.'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.clientes=S.clientes.filter(c=>c.id!==id);svS();rCL();toast('Cliente excluído')}
 function saRg(){const nm=document.getElementById('rg-n').value.trim();if(!nm){toast('Informe o nome');return}S.regioes.push({id:uid(),nome:nm,valor:parseFloat(document.getElementById('rg-v').value)||0});svS();fM('regiao');rEnt();toast('Região salva! ✓');}
@@ -1660,6 +1669,8 @@ function atualizarBadges(){
   nbA.textContent=atr>0?atr:'!';nbA.style.display=atr>0?'inline-flex':'none';
   const nbH=document.getElementById('nb-hj');
   nbH.textContent=hj;nbH.style.display=hj>0?'inline-flex':'none';
+  const nbR=document.getElementById('nb-rp');
+  if(nbR&&typeof calcRepor==='function'){const n=calcRepor().filter(r=>r.sit==='atrasado'&&!r.contatado).length;nbR.textContent=n;nbR.style.display=n>0?'inline-flex':'none';}
 }
 
 // ── RENDER DASHBOARD ──
@@ -1925,6 +1936,60 @@ function salvarGasIG(){
   svS();rIG();toast('Custo de entrega salvo! ✓');
 }
 
+// ── REPOR ──
+let RPF='contatar';
+function diasEntre(a,b){return Math.round((Date.UTC(+b.slice(0,4),+b.slice(5,7)-1,+b.slice(8,10))-Date.UTC(+a.slice(0,4),+a.slice(5,7)-1,+a.slice(8,10)))/864e5);}
+function somaDias(d,n){const x=new Date(Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10)+n));return x.toISOString().slice(0,10);}
+function calcRepor(){
+  const t=today(),CICLO_PADRAO=21;
+  return S.clientes.filter(c=>c.ativo!==false).map(c=>{
+    const ps=S.pedidos.filter(p=>p.clienteId===c.id&&p.tipo==='revenda'&&p.status!=='cancelado'&&p.dataPedido).sort((a,b)=>a.dataPedido<b.dataPedido?-1:1);
+    if(!ps.length)return null;
+    const datas=[...new Set(ps.map(p=>p.dataPedido))];
+    const ult=datas[datas.length-1];
+    const ultQtd=ps.filter(p=>p.dataPedido===ult).reduce((a,p)=>a+(p.qtd||0),0);
+    const ciclo=datas.length>1?Math.max(7,Math.round(diasEntre(datas[0],ult)/(datas.length-1))):CICLO_PADRAO;
+    const dias=diasEntre(ult,t);
+    const media=Math.round(ps.reduce((a,p)=>a+(p.qtd||0),0)/datas.length);
+    const sit=dias>Math.max(ciclo*3,60)?'parado':dias>ciclo*1.2?'atrasado':dias>=ciclo-3?'hora':'emdia';
+    const contatado=!!(c.ultimoContato&&c.ultimoContato>=ult&&diasEntre(c.ultimoContato,t)<=7);
+    return {c,ult,ultQtd,ciclo,dias,media,sit,contatado,prox:somaDias(ult,ciclo),estimado:datas.length<2};
+  }).filter(Boolean);
+}
+function rpFiltro(f){RPF=f;document.querySelectorAll('#rp-seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));rRP();}
+function telWa(tel){let d=(tel||'').replace(/\D/g,'');if(!d)return '';if(!d.startsWith('55')||d.length<=11)d='55'+d;return d;}
+function rpWhats(id){
+  const r=calcRepor().find(x=>x.c.id===id);if(!r)return;
+  const tel=telWa(r.c.tel);if(!tel){toast('Cadastre o telefone do cliente');aMC(id);return;}
+  const primeiro=r.c.nome.split(' ')[0];
+  const msg=`Oi, ${primeiro}! Tudo bem? Passando pra ver como estão os cones trufados por aí 🍫 Da última vez foram ${r.ultQtd} unidades. Quer que eu separe a reposição?`;
+  r.c.ultimoContato=today();svS();rRP();atualizarBadges();
+  window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function rpContatado(id){const c=S.clientes.find(x=>x.id===id);if(!c)return;c.ultimoContato=c.ultimoContato===today()?null:today();svS();rRP();atualizarBadges();}
+function rpPedido(id){aMP('revenda');clPickEscolhe(id);}
+function rRP(){
+  const el=document.getElementById('list-rp');if(!el)return;
+  const ordem={atrasado:0,hora:1,emdia:2,parado:3};
+  let lista=calcRepor().sort((a,b)=>(a.contatado-b.contatado)||(ordem[a.sit]-ordem[b.sit])||(a.sit==='hora'?(a.prox<b.prox?-1:1):(a.dias-a.ciclo)-(b.dias-b.ciclo)));
+  const nAt=lista.filter(r=>r.sit==='atrasado').length,nHr=lista.filter(r=>r.sit==='hora').length,nPa=lista.filter(r=>r.sit==='parado').length;
+  document.getElementById('rp-resumo').textContent=`${nAt} atrasado${nAt===1?'':'s'} · ${nHr} na hora de repor · ${lista.length-nAt-nHr-nPa} em dia · ${nPa} parado${nPa===1?'':'s'} há mais de 2 meses`;
+  if(RPF==='contatar')lista=lista.filter(r=>r.sit==='atrasado'||r.sit==='hora');
+  else if(RPF==='parados')lista=lista.filter(r=>r.sit==='parado');
+  const dm=d=>d.slice(8,10)+'/'+d.slice(5,7);
+  const esc=t=>String(t||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  el.innerHTML=lista.length?lista.map(r=>{
+    const bd=r.contatado?'<span class="badge bsi">✓ Contatado</span>':r.sit==='atrasado'?`<span class="badge bre">Atrasado ${r.dias-r.ciclo}d</span>`:r.sit==='hora'?'<span class="badge bam2">Hora de repor</span>':r.sit==='parado'?`<span class="badge bsi">Parado há ${r.dias}d</span>`:'<span class="badge bgr3">Em dia</span>';
+    const temTel=!!telWa(r.c.tel);
+    return`<div class="li"${r.contatado?' style="opacity:.6"':''}><div class="li-h"><div class="li-nm">${esc(r.c.nome)}</div>${bd}</div>
+      <div class="li-r"><span class="lbl">Último pedido</span><span class="val">${dm(r.ult)} · ${r.dias} dias atrás</span></div>
+      <div class="li-r"><span class="lbl">Costuma pedir a cada</span><span class="val">${r.ciclo} dias${r.estimado?' (estimado)':''}</span></div>
+      <div class="li-r"><span class="lbl">Quantidade</span><span class="val">${r.ultQtd} un. no último · média ${r.media}</span></div>
+      ${r.c.ultimoContato?`<div class="li-r"><span class="lbl">Último contato</span><span class="val">${dm(r.c.ultimoContato)}</span></div>`:''}
+      <div class="li-acts"><button class="btn bsm" style="flex:1;${temTel?'background:var(--gr);border-color:var(--gr);color:#fff':''}" onclick="rpWhats(${r.c.id})">${temTel?'📱 WhatsApp':'📱 Cadastrar telefone'}</button><button class="btn bsm" style="flex:1" onclick="rpPedido(${r.c.id})">+ Pedido</button><button class="btn bsm" style="flex:1" onclick="rpContatado(${r.c.id})">${r.contatado?'Desfazer':'Já falei'}</button></div></div>`;
+  }).join(''):`<div class="empty"><div class="ico">✅</div><p>${RPF==='contatar'?'Ninguém para contatar agora':RPF==='parados'?'Nenhum revendedor parado — os que você inativou não aparecem aqui':'Nenhum revendedor com pedido'}</p></div>`;
+}
+
 // ── BUSCA DE CLIENTE NO PEDIDO (funciona no celular) ──
 function semAcento(t){return (t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
 function clPickFiltra(){
@@ -1950,7 +2015,7 @@ function clPickFecha(){const b=document.getElementById('mp-cl-list');if(b)b.clas
 function tgAtivoCl(id){
   const c=S.clientes.find(x=>x.id===id);if(!c)return;
   c.ativo=c.ativo===false?true:false;
-  svS();rCL();toast(c.ativo===false?'Cliente inativado — não aparece mais na busca do pedido':'Cliente reativado ✓');
+  svS();rCL();atualizarBadges();toast(c.ativo===false?'Cliente inativado — não aparece mais na busca do pedido':'Cliente reativado ✓');
 }
 
 // ── CLIENTES ──

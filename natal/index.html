@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Natal Canudo di Cacau — Chocottone, Cestas e Cones Trufados</title>
+<meta name="description" content="Chocottone recheado, cestas de Natal e cones trufados artesanais. Encomendas para você e para sua empresa em Curitiba.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --d1:#180904;--d2:#2b1409;--d3:#4a2210;--d4:#7a3d1e;
+  --gold:#c9913a;--gold2:#e4b96a;--gold3:#f5d898;
+  --cr1:#fdf4e3;--cr2:#f7e9cc;--cr3:#edcea0;--wh:#fffef9;
+  --tx1:#1a0a03;--tx2:#5a3318;--tx3:#9a7050;
+  --red:#8e1b1b;--red2:#b3261e;--green:#1f8a4c;--amber:#b7791f;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,sans-serif;background:var(--cr3);color:var(--tx1);line-height:1.45}
+.wrap{max-width:480px;margin:0 auto;background:var(--cr1);min-height:100vh;box-shadow:0 0 40px rgba(24,9,4,.15);padding-bottom:110px}
+h1,h2,h3,.serif{font-family:"Cormorant Garamond",serif}
+button{font:inherit;cursor:pointer;border:0}
+input,select,textarea{font:inherit;width:100%;padding:11px 12px;border:1.5px solid var(--cr3);border-radius:10px;background:var(--wh);color:var(--tx1)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+label{display:block;font-size:13px;font-weight:600;color:var(--tx2);margin:12px 0 5px}
+
+/* HERO */
+.hero{position:relative;background:radial-gradient(120% 90% at 50% 0%,var(--d4) 0%,var(--d2) 55%,var(--d1) 100%);color:var(--cr1);padding:38px 22px 28px;text-align:center;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,216,152,.55) 1px,transparent 1.6px);background-size:34px 34px;opacity:.35;pointer-events:none}
+.hero .tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold3);border:1px solid rgba(228,185,106,.5);padding:5px 12px;border-radius:99px;position:relative}
+.hero h1{font-size:40px;line-height:1.02;margin:14px 0 10px;color:var(--wh);position:relative}
+.hero h1 em{color:var(--gold2);font-style:normal}
+.hero p{font-size:14.5px;color:var(--cr2);max-width:340px;margin:0 auto;position:relative}
+.prazo{position:relative;margin-top:16px;display:inline-flex;gap:8px;align-items:center;background:rgba(201,145,58,.18);border:1px solid rgba(228,185,106,.45);color:var(--gold3);font-size:13px;font-weight:600;padding:8px 14px;border-radius:10px}
+
+/* TABS */
+.tabs{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 14px;background:var(--cr1);border-bottom:1px solid var(--cr2)}
+.tab{padding:12px 8px;border-radius:12px;background:var(--cr2);color:var(--tx2);font-weight:600;font-size:14px}
+.tab.on{background:var(--d2);color:var(--gold3)}
+.tab small{display:block;font-weight:500;font-size:11px;opacity:.8}
+
+section{padding:18px 16px 4px}
+.sec-t{font-size:26px;color:var(--d2);margin-bottom:2px}
+.sec-s{font-size:13.5px;color:var(--tx3);margin-bottom:14px}
+
+/* CARDS */
+.card{background:var(--wh);border:1px solid var(--cr2);border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 10px rgba(74,34,16,.06)}
+.card.off{opacity:.55}
+.ph{height:150px;background:linear-gradient(135deg,var(--d3),var(--d1));display:flex;align-items:center;justify-content:center;font-size:54px;position:relative}
+.ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--wh);z-index:2}
+.b-pronta{color:var(--green)}.b-encomenda{color:var(--amber)}.b-esgotado{color:var(--red2)}
+.hl{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--gold);color:var(--d1);z-index:2}
+.cb{padding:14px 15px 15px}
+.cb h3{font-size:23px;color:var(--d2);line-height:1.1}
+.cb .d{font-size:13.5px;color:var(--tx2);margin:5px 0 10px}
+.inc{font-size:12.5px;color:var(--tx3);margin:-4px 0 10px;padding-left:16px}
+.inc li{margin:2px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-size:21px;font-weight:700;color:var(--d3)}
+.price{white-space:nowrap;line-height:1.1}.price s{display:block;font-size:12.5px;color:var(--tx3);font-weight:500}
+.step{display:flex;align-items:center;background:var(--cr1);border:1px solid var(--cr3);border-radius:12px}
+.step button{width:38px;height:38px;background:none;font-size:20px;color:var(--d3);font-weight:600}
+.step span{min-width:24px;text-align:center;font-weight:700}
+.add{background:var(--d2);color:var(--gold3);padding:10px 16px;border-radius:12px;font-weight:600;font-size:14px}
+.add[disabled]{background:var(--cr3);color:var(--tx3);cursor:not-allowed}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{font-size:12.5px;padding:7px 11px;border-radius:99px;border:1.5px solid var(--cr3);background:var(--wh);color:var(--tx2);font-weight:500}
+.chip.on{border-color:var(--d3);background:var(--d3);color:var(--cr1)}
+.note{font-size:12px;color:var(--tx3)}
+
+/* EMPRESA */
+.ben{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.ben div{background:var(--wh);border:1px solid var(--cr2);border-radius:14px;padding:12px;font-size:12.5px;color:var(--tx2)}
+.ben b{display:block;font-size:14px;color:var(--d2);margin-bottom:2px}
+.box{background:var(--wh);border:1px solid var(--cr2);border-radius:18px;padding:16px;margin-bottom:14px}
+.erow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--cr2)}
+.erow:last-child{border-bottom:0}
+.erow .n{font-weight:600;font-size:14px;color:var(--d2)}
+.erow .p{font-size:12px;color:var(--tx3)}
+.erow input{width:84px;text-align:center;padding:9px 6px}
+.cta{display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--d1);font-weight:700;font-size:16px;padding:15px;border-radius:14px;margin-top:16px}
+.cta[disabled]{opacity:.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:var(--red2);font-size:13px;margin-top:8px;display:none}
+
+/* CART BAR */
+.bar{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;width:calc(100% - 24px);max-width:456px;z-index:30;background:var(--d1);color:var(--cr1);border-radius:16px;padding:12px 14px;display:none;align-items:center;justify-content:space-between;box-shadow:0 10px 30px rgba(24,9,4,.35)}
+.bar.show{display:flex}
+.bar .t{font-size:12px;color:var(--gold3)}
+.bar .v{font-size:19px;font-weight:700}
+.bar button{background:var(--gold);color:var(--d1);font-weight:700;padding:11px 18px;border-radius:12px}
+
+/* SHEET */
+.ov{position:fixed;inset:0;background:rgba(24,9,4,.55);z-index:40;display:none}
+.ov.show{display:block}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;max-height:92vh;overflow:auto;background:var(--cr1);border-radius:22px 22px 0 0;z-index:41;padding:18px 16px 26px;display:none}
+.sheet.show{display:block}
+.sh-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sh-h h2{font-size:26px;color:var(--d2)}
+.x{background:var(--cr2);width:34px;height:34px;border-radius:50%;font-size:18px;color:var(--tx2)}
+.it{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--cr2);font-size:14px}
+.it .s{font-size:12px;color:var(--tx3)}
+.it button{background:none;color:var(--red2);font-size:12px;font-weight:600}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding:12px 0 2px;color:var(--d2)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.seg button{padding:11px;border-radius:10px;background:var(--wh);border:1.5px solid var(--cr3);color:var(--tx2);font-weight:600;font-size:14px}
+.seg button.on{border-color:var(--d3);background:var(--d3);color:var(--cr1)}
+
+footer{text-align:center;font-size:12.5px;color:var(--tx3);padding:26px 16px 10px}
+footer a{color:var(--d4)}
+
+/* ADMIN */
+.adm{display:none;padding:16px;background:#fff8e6;border-bottom:2px solid var(--gold)}
+.adm.show{display:block}
+.adm h2{font-size:24px;color:var(--d2)}
+.adm .ar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--cr2);font-size:14px}
+.adm .sw{display:flex;gap:4px}
+.adm .sw button{padding:7px 9px;border-radius:8px;font-size:13px;background:var(--wh);border:1.5px solid var(--cr3)}
+.adm .sw button.on{border-color:var(--d3);background:var(--d3);color:#fff}
+.adm .msg{font-size:13px;margin-top:10px;color:var(--tx2)}
+.hide{display:none!important}
+.xbtn{display:block;width:100%;text-align:left;background:var(--cr1);border:1.5px dashed var(--gold);color:var(--d3);font-weight:600;font-size:13.5px;padding:10px 12px;border-radius:12px;margin:0 0 12px}
+.xbox{background:var(--cr1);border-radius:12px;padding:4px 12px 10px;margin:-6px 0 12px}
+.xsum{font-size:13px;font-weight:600;color:var(--d3);padding-top:8px}
+.vol{background:linear-gradient(135deg,var(--d2),var(--d3));color:var(--cr1);border-radius:16px;padding:14px 15px;margin-bottom:16px}
+.vol-t{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:700;color:var(--gold3);line-height:1.15}
+.vol-s{font-size:13.5px;margin-top:5px;color:var(--cr2)}
+.vtag{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:#e7f6ec;color:var(--green)}
+.vtag.wait{background:var(--cr1);color:var(--tx3);font-weight:600}
+.mg{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:14px 0 2px}
+.mg:first-child{margin-top:0}
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--cr2)}
+.mrow .n{font-size:14px;font-weight:600;color:var(--d2)}.mrow .p{font-size:12px;color:var(--tx3)}
+.step.sm button{width:34px;height:34px}
+.mres{background:var(--cr1);border-radius:12px;padding:12px;margin-top:14px;font-size:13.5px;color:var(--tx2)}
+.mres .l{display:flex;justify-content:space-between;gap:10px;margin:3px 0}.mres .l span:last-child{white-space:nowrap}
+.mres .tt{font-weight:700;font-size:17px;color:var(--d2);border-top:1px solid var(--cr3);padding-top:8px;margin-top:6px}
+.chk{display:flex;gap:10px;align-items:flex-start;background:var(--wh);border:1.5px solid var(--cr3);border-radius:12px;padding:11px 12px;margin-top:12px;font-size:13.5px;color:var(--tx2);cursor:pointer}
+.chk input{width:18px;height:18px;margin-top:1px;accent-color:var(--d3);flex:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- PAINEL DE STATUS (abre com ?admin no endereço) -->
+<div class="adm" id="adm">
+  <h2>Status dos produtos</h2>
+  <p class="note">Toque para mudar. 🟢 pronta entrega · 🟡 sob encomenda · 🔴 esgotado. Salva para todo mundo na hora.</p>
+  <div id="admList"></div>
+  <button class="cta" id="admSave">Salvar status</button>
+  <div class="msg" id="admMsg"></div>
+</div>
+
+<header class="hero">
+  <span class="tag">Natal 2026 · Edição artesanal</span>
+  <h1>Natal com sabor de <em>chocolate de verdade</em></h1>
+  <p>Chocottone recheado, cestas e cones trufados feitos à mão em Curitiba. Para presentear quem você ama e a sua equipe.</p>
+  <div class="prazo">🎄 <span id="prazoTxt">Encomendas até 18/12</span></div>
+</header>
+
+<nav class="tabs">
+  <button class="tab on" data-tab="voce">Para você<small>presentes e ceia</small></button>
+  <button class="tab" data-tab="empresa">Para sua empresa<small>cestas em quantidade</small></button>
+</nav>
+
+<!-- PARA VOCÊ -->
+<main id="tab-voce">
+  <section>
+    <div class="vol">
+      <div class="vol-t">🎄 Presente bom é presente que se come</div>
+      <div class="vol-s">Tudo feito à mão, em pequenas fornadas, com chocolate de verdade. Escolha um mimo, leve uma cesta pronta ou monte o presente do seu jeito.</div>
+    </div>
+    <h2 class="sec-t">Cardápio de Natal</h2>
+    <p class="sec-s">Para a sua ceia, para a sobremesa da família ou para aquele mimo de última hora.</p>
+    <div id="lista"></div>
+  </section>
+  <section>
+    <h2 class="sec-t">Cestas prontas</h2>
+    <p class="sec-s">Escolheu, chegou embrulhada para presente. E se quiser, dá para colocar mais itens dentro.</p>
+    <div id="listaCestas"></div>
+  </section>
+  <section id="monteSec">
+    <h2 class="sec-t">Monte a sua cesta</h2>
+    <p class="sec-s">Você escolhe cada detalhe, a gente embala com carinho. Ideal para quem conhece bem o gosto de quem vai ganhar.</p>
+    <div class="box" id="monte"></div>
+  </section>
+</main>
+
+<!-- PARA SUA EMPRESA -->
+<main id="tab-empresa" class="hide">
+  <section>
+    <h2 class="sec-t">Presentes para a equipe e clientes</h2>
+    <p class="sec-s">Diga o que precisa e a data. Respondemos com o orçamento no mesmo dia.</p>
+    <div class="ben">
+      <div><b>Quanto mais, melhor</b>A partir de <span id="minEmp">5</span> unidades, o preço de cada item desce</div>
+      <div><b>Entrega no endereço</b>Tudo entregue de uma vez, em Curitiba e região</div>
+      <div><b>Feito sob encomenda</b>Produção fresca para a data combinada</div>
+      <div><b>Atendimento direto</b>Você fala com quem produz</div>
+    </div>
+
+    <div class="vol">
+      <div class="vol-t">🎁 Presentear a equipe toda sai mais em conta</div>
+      <div class="vol-s">A partir de <b><span class="minE">5</span> unidades</b> de um mesmo item, você ganha preço de volume. Quanto maior o pedido, menor o valor de cada presente.</div>
+    </div>
+    <h3 class="serif" style="font-size:22px;color:var(--d2)">1. O que você precisa?</h3>
+    <p class="note" style="margin-bottom:10px">Coloque a quantidade de cada item (pode deixar zero).</p>
+    <div id="empLista"></div>
+
+    <div class="box">
+      <h3 class="serif" style="font-size:22px;color:var(--d2)">Ou monte o presente da equipe</h3>
+      <p class="note" style="margin-bottom:6px">Escolha o que vai em <b>cada presente</b> (ex.: 1 chocottone + 1 cone) e quantos presentes iguais você precisa. Vai embalado para presente.</p>
+      <div id="eMonte"></div>
+      <div class="mrow" style="border-bottom:0;margin-top:6px"><div><div class="n">Quantos presentes iguais?</div><div class="p">um por pessoa da equipe</div></div>
+        <div class="step"><button data-pq="-1">−</button><input type="number" min="0" step="1" inputmode="numeric" value="0" id="ePQ" style="width:56px;border:0;background:none;text-align:center;font-weight:700;padding:8px 0"><button data-pq="1">+</button></div></div>
+      <div class="mres" id="ePres"></div>
+    </div>
+
+    <div class="box" id="eTotBox" style="display:none">
+      <h3 class="serif" style="font-size:21px;color:var(--d2)">Resumo do orçamento</h3>
+      <div class="mres" id="eTot" style="margin-top:8px"></div>
+      <p class="note" style="margin-top:8px">Valores estimados. Confirmamos tudo no orçamento pelo WhatsApp, com a taxa de entrega.</p>
+    </div>
+
+    <div class="box">
+      <h3 class="serif" style="font-size:21px;color:var(--d2)">2. Seus dados</h3>
+      <label>Empresa</label><input id="eEmp" placeholder="Nome da empresa">
+      <label>Seu nome</label><input id="eNome" placeholder="Quem vai receber o orçamento">
+      <div class="two">
+        <div><label>Data de entrega</label><input id="eData" type="date"></div>
+        <div><label>Bairro / cidade</label><input id="eBairro" placeholder="Ex.: Centro, Curitiba"></div>
+      </div>
+      <label>Precisa de nota fiscal?</label>
+      <div class="seg" id="eNF"><button data-v="Sim">Sim</button><button data-v="Não" class="on">Não</button></div>
+      <label>Observações</label><textarea id="eObs" rows="3" placeholder="Ex.: horário de entrega, orçamento máximo por pessoa..."></textarea>
+      <button class="cta" id="eEnviar">Pedir orçamento no WhatsApp</button>
+      <div class="err" id="eErr"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Canudo di Cacau · Fábrica no Tarumã, Curitiba<br>
+  Entrega via motoboy ou retirada no local (com aviso)<br>
+  <a href="https://cardapiocanudocombrinde.netlify.app" target="_blank" rel="noopener">Ver cardápio completo</a> · <a href="https://instagram.com/canudodicacau" target="_blank" rel="noopener">@canudodicacau</a>
+</footer>
+</div>
+
+<!-- BARRA DO PEDIDO -->
+<div class="bar" id="bar">
+  <div><div class="t" id="barQ">0 itens</div><div class="v" id="barV">R$ 0,00</div></div>
+  <button id="barBtn">Ver pedido</button>
+</div>
+
+<!-- FINALIZAR -->
+<div class="ov" id="ov"></div>
+<div class="sheet" id="sheet">
+  <div class="sh-h"><h2>Seu pedido</h2><button class="x" id="close">✕</button></div>
+  <div id="itens"></div>
+  <div class="tot"><span>Total dos produtos</span><span id="tot">R$ 0,00</span></div>
+  <p class="note">Taxa de entrega calculada pelo WhatsApp, conforme o bairro.</p>
+
+  <label class="chk hide" id="juntaBox"><input type="checkbox" id="cJunta"><span>Colocar os itens avulsos <b>dentro da cesta</b>, como presente único</span></label>
+  <label>Seu nome</label><input id="cNome" placeholder="Como podemos te chamar?">
+  <label>Como prefere receber?</label>
+  <div class="seg" id="cEnt"><button data-v="Entrega" class="on">Entrega</button><button data-v="Retirada no Tarumã">Retirada</button></div>
+  <div id="cEndBox"><label>Bairro / endereço</label><input id="cEnd" placeholder="Rua, número e bairro"></div>
+  <label>Para quando?</label><input id="cData" type="date">
+  <label>Pagamento</label>
+  <div class="seg" id="cPag"><button data-v="Pix" class="on">Pix</button><button data-v="Cartão">Cartão</button></div>
+  <label>Observações</label><textarea id="cObs" rows="2" placeholder="Ex.: é presente, sabores preferidos..."></textarea>
+  <button class="cta" id="cEnviar">Enviar pedido no WhatsApp</button>
+  <div class="err" id="cErr"></div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIGURAÇÃO — edite aqui preços, produtos e textos
+   status: 'pronta' (pronta entrega) | 'encomenda' | 'esgotado'
+   ============================================================ */
+const CONFIG = {
+  whatsapp: '5541997514973',
+  prazo: 'Encomendas até 18/12',
+  minEmpresa: 5,
+  // DESCONTO POR VOLUME (aba empresa) — por item, conforme a quantidade daquele item
+  faixas: [ {min:5, desc:0.05}, {min:10, desc:0.08}, {min:20, desc:0.10}, {min:50, desc:0.15} ],
+  // Firestore (mesmo projeto do painel) — guarda só o status dos produtos
+  fbProject: 'canudo-di-cacau',
+  fbKey: 'AIzaSyBu6LPeuWezz463KH1JjALFC00PmEARQ9E',
+  fbDoc: 'sistema/natal2026'
+};
+
+const brlX = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const SABORES_CONE = ['50% Cacau','Ninho com Nutella','Dois Amores','Prestígio com Nutella','Laka com Oreo'];
+const SABORES_COOKIE = ['Tradicional','Black Duo','Kinder Bueno'];
+// CHOCOTTONE — sabores e preços (avulso). Nas cestas, o tradicional vem incluso e os outros pagam a diferença.
+const CHOCO = [
+  {nome:'Tradicional',    preco:89.90,  desc:'ganache de chocolate e nhá benta de Ninho'},
+  {nome:'Ferrero Rocher', preco:99.90,  desc:'ganache e nhá benta, com castanhas e Ferrero Rocher por cima'},
+  {nome:'Kinder Bueno',   preco:109.90, desc:'recheio de Kinder Bueno e nhá benta, com Kinder por cima', estrela:true}
+];
+const chocoPreco = n => (CHOCO.find(c=>c.nome===n)||CHOCO[0]).preco;
+const chocoExtra = n => +(chocoPreco(n) - CHOCO[0].preco).toFixed(2);
+const chocoLabel = c => c.nome + (c.estrela?' ⭐':'');
+
+const PRODUTOS = [
+  {id:'chocottone', nome:'Chocottone Recheado', emoji:'🎄', img:'',
+   desc:'Massa macia de chocolate com 300 g de recheio e cobertura de chocolate. Feito à mão, em pequenas fornadas.',
+   inclui:CHOCO.map(c=>`<b>${chocoLabel(c)}</b> · ${brlX(c.preco)}: ${c.desc}`),
+   preco:89.90, status:'encomenda', destaque:'Novidade', sabores:'choco'},
+  {id:'cesta-mimo', cat:'cesta', nome:'Cesta Doce Mimo', emoji:'🎀', img:'',
+   desc:'Um carinho na medida certa: para amigo secreto, professores e lembrancinhas.',
+   inclui:['5 cones trufados (sabores à escolha)','1 cookie recheado','Embalagem de presente'],
+   preco:74.90, de:83.40, status:'encomenda', sabores:'cone'},
+  {id:'cesta-noite', cat:'cesta', nome:'Cesta Noite Feliz', emoji:'🎁', img:'',
+   desc:'O chocottone acompanhado de cones trufados, pronto para presentear.',
+   inclui:['1 Chocottone Recheado (sabor à escolha)','5 cones trufados (sabores à escolha)','Embalagem de presente'],
+   preco:139.90, de:154.40, status:'encomenda', sabores:'cone', choco:true, destaque:'Mais pedida'},
+  {id:'cesta-celebra', cat:'cesta', nome:'Cesta Celebração', emoji:'🥂', img:'',
+   desc:'A mais completa, para brindar e impressionar.',
+   inclui:['1 Chocottone Recheado','5 cones trufados','1 espumante','1 chocolate especial','Embalagem de presente'],
+   preco:189.90, status:'encomenda', sabores:'cone', choco:true, oculto:true},   // oculto até fechar o custo do espumante e do chocolate
+  {id:'cesta-familia', cat:'cesta', nome:'Cesta Ceia em Família', emoji:'🎄', img:'',
+   desc:'Para dividir na ceia: tem doce para a família toda.',
+   inclui:['1 Chocottone Recheado (sabor à escolha)','10 cones trufados (sabores à escolha)','2 cookies recheados','Embalagem de presente'],
+   preco:229.90, de:256.70, status:'encomenda', sabores:'cone', choco:true},
+  {id:'cones5', nome:'Caixa com 5 Cones', emoji:'🍫', img:'',
+   desc:'Cones trufados recheados, em caixa de presente.',
+   preco:55.90, de:64.50, status:'pronta', sabores:'cone'},
+  {id:'cones10', nome:'Caixa com 10 Cones', emoji:'🍫', img:'',
+   desc:'Para dividir na ceia ou presentear em dobro.',
+   preco:109.90, de:129.00, status:'pronta', sabores:'cone'},
+  {id:'cookie', nome:'Cookie Recheado', emoji:'🍪', img:'',
+   desc:'Crocante por fora, cremoso por dentro. Assado na hora.',
+   preco:18.90, status:'pronta', sabores:'cookie', nota:'Kinder Bueno: + R$ 4,00'}
+];
+const EXTRA_KINDER = 4.00;
+
+// MONTE SUA CESTA — itens que a pessoa escolhe + embalagem de presente
+const MONTE = {
+  embalagem: 15.00,          // caixa/cesta, palha, laço e cartão (provisório)
+  minItens: 1,               // mínimo de itens (1 = sem mínimo)
+  status: 'encomenda',
+  itens: [
+    ...CHOCO.map((c,i)=>({id:'m-choco'+i, nome:'Chocottone '+c.nome, preco:c.preco, grupo:'Chocottone'})),
+    ...SABORES_CONE.map((s,i)=>({id:'m-cone'+i, nome:'Cone '+s, preco:12.90, grupo:'Cones trufados', cone:true})),
+    {id:'m-ck0', nome:'Cookie Tradicional', preco:18.90, grupo:'Cookies'},
+    {id:'m-ck1', nome:'Cookie Black Duo', preco:18.90, grupo:'Cookies'},
+    {id:'m-ck2', nome:'Cookie Kinder Bueno', preco:22.90, grupo:'Cookies'}
+  ]
+};
+const mq = {};
+// extras dentro das cestas prontas (preço avulso de cada item)
+const EXTRAS = [
+  ...CHOCO.map((c,i)=>({id:'x-choco'+i, nome:'Chocottone '+c.nome, preco:c.preco})),
+  ...SABORES_CONE.map((s,i)=>({id:'x-cone'+i, nome:'Cone '+s, preco:12.90})),
+  {id:'x-ck0', nome:'Cookie Tradicional', preco:18.90},
+  {id:'x-ck1', nome:'Cookie Black Duo', preco:18.90},
+  {id:'x-ck2', nome:'Cookie Kinder Bueno', preco:22.90}
+];
+const xq = {};   // xq[cestaId][extraId] = quantidade
+const extrasTotal = id => EXTRAS.reduce((s,e)=>s+((xq[id]||{})[e.id]||0)*e.preco,0);
+const extrasTxt = id => EXTRAS.filter(e=>(xq[id]||{})[e.id]).map(e=>`${xq[id][e.id]}× ${e.nome}`).join(', ');
+
+/* ============================================================ */
+const $ = s => document.querySelector(s);
+const brl = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const STATUS_TXT = {pronta:'🟢 Pronta entrega', encomenda:'🟡 Sob encomenda', esgotado:'🔴 Esgotado'};
+const qtd = {}; const sab = {}; const sabC = {}; let cart = [];
+const cestaPreco = p => p.preco + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nome) : 0);
+const cestaDe = p => p.de ? p.de + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nome) : 0) : 0;
+
+document.getElementById('prazoTxt').textContent = CONFIG.prazo;
+document.getElementById('minEmp').textContent = CONFIG.minEmpresa;
+
+function card(p){
+  const off = p.status === 'esgotado';
+  qtd[p.id] = qtd[p.id] || 1;
+  if(p.sabores && !sab[p.id]) sab[p.id] = p.sabores==='choco' ? CHOCO[0].nome : 'Sortidos';
+  const lista = p.sabores === 'cone' ? ['Sortidos', ...SABORES_CONE] : p.sabores === 'cookie' ? SABORES_COOKIE : null;
+  if(p.sabores === 'cookie' && sab[p.id] === 'Sortidos') sab[p.id] = 'Tradicional';
+  if(p.choco && !sabC[p.id]) sabC[p.id] = CHOCO[0].nome;
+  const chocoChips = p.sabores==='choco' ? `<p class="note" style="margin:0 0 6px;font-weight:600">Escolha o sabor:</p><div class="opts">${CHOCO.map(c=>`<button class="chip ${sab[p.id]===c.nome?'on':''}" data-sab="${p.id}" data-v="${c.nome}">${chocoLabel(c)}</button>`).join('')}</div>`
+    : p.choco ? `<p class="note" style="margin:0 0 6px;font-weight:600">Sabor do chocottone:</p><div class="opts">${CHOCO.map((c,i)=>`<button class="chip ${sabC[p.id]===c.nome?'on':''}" data-csab="${p.id}" data-v="${c.nome}">${chocoLabel(c)}${i?' +'+brlX(chocoExtra(c.nome)).replace('R$ ','R$'):''}</button>`).join('')}</div>` : '';
+  return `<div class="card ${off?'off':''}">
+    <div class="ph">${p.img?`<img src="${p.img}" alt="${p.nome}">`:p.emoji}
+      <span class="badge b-${p.status}">${STATUS_TXT[p.status]}</span>
+      ${p.destaque?`<span class="hl">${p.destaque}</span>`:''}</div>
+    <div class="cb">
+      <h3>${p.nome}</h3>
+      <p class="d">${p.desc}</p>
+      ${p.inclui?`<ul class="inc">${p.inclui.map(i=>`<li>${i}</li>`).join('')}</ul>`:''}
+      ${chocoChips}
+      ${lista?`${p.cat==='cesta'?'<p class="note" style="margin:0 0 6px;font-weight:600">Sabor dos cones:</p>':''}<div class="opts">${lista.map(s=>`<button class="chip ${sab[p.id]===s?'on':''}" data-sab="${p.id}" data-v="${s}">${s}</button>`).join('')}</div>`:''}
+      ${p.nota?`<p class="note" style="margin:-4px 0 10px">${p.nota}</p>`:''}
+      ${p.cat==='cesta' && !off ? `<button class="xbtn" data-xopen="${p.id}">＋ Adicionar mais itens nesta cesta</button>
+        <div class="xbox hide" id="xb-${p.id}">${EXTRAS.map(e=>`<div class="mrow"><div><div class="n">${e.nome}</div><div class="p">+ ${brl(e.preco)}</div></div>
+          <div class="step sm"><button data-xm="${p.id}|${e.id}">−</button><span id="xq-${p.id}-${e.id}">${(xq[p.id]||{})[e.id]||0}</span><button data-xp="${p.id}|${e.id}">+</button></div></div>`).join('')}
+          <div class="xsum" id="xs-${p.id}"></div></div>` : ''}
+      <div class="row">
+        <div class="price" id="pr-${p.id}">${priceHTML(p)}</div>
+        <div class="row" style="gap:8px">
+          <div class="step"><button data-m="${p.id}">−</button><span id="q-${p.id}">${qtd[p.id]}</span><button data-p="${p.id}">+</button></div>
+          <button class="add" data-add="${p.id}" ${off?'disabled':''}>${off?'Esgotado':'Adicionar'}</button>
+        </div>
+      </div>
+    </div></div>`;
+}
+function priceHTML(p){
+  if(p.sabores==='choco') return brl(unit(p, sab[p.id]));
+  if(p.cat==='cesta') return (p.de?`<s>${brl(cestaDe(p))}</s>`:'') + brl(cestaPreco(p));
+  return (p.de?`<s>${brl(p.de)}</s>`:'') + brl(p.preco);
+}
+const VIS = () => PRODUTOS.filter(p=>!p.oculto);
+function render(){
+  $('#listaCestas').innerHTML = VIS().filter(p=>p.cat==='cesta').map(card).join('');
+  $('#lista').innerHTML = VIS().filter(p=>p.cat!=='cesta').map(card).join('');
+  $('#empLista').innerHTML = [...EMP_CHOCO(), ...VIS().filter(p=>p.cat==='cesta'), ...VIS().filter(p=>p.cat!=='cesta' && p.id!=='cookie' && p.id!=='chocottone')].map(p=>{
+    const off = p.status==='esgotado';
+    return `<div class="card ${off?'off':''}">
+      <div class="ph">${p.img?`<img src="${p.img}" alt="${p.nome}">`:p.emoji}
+        <span class="badge b-${p.status}">${STATUS_TXT[p.status]}</span>
+        ${p.destaque?`<span class="hl">${p.destaque}</span>`:''}</div>
+      <div class="cb">
+        <h3>${p.nome}</h3>
+        <p class="d">${p.desc}</p>
+        ${p.inclui?`<ul class="inc">${p.inclui.map(i=>`<li>${i}</li>`).join('')}</ul>`:''}
+        ${p.choco?`<p class="note" style="margin:-4px 0 10px">Chocottone Ferrero Rocher: + ${brl(chocoExtra('Ferrero Rocher'))} · Kinder Bueno: + ${brl(chocoExtra('Kinder Bueno'))}. Diga o sabor nas observações.</p>`:''}
+        <div class="row">
+          <div><div class="price" style="font-size:17px" id="ep-${p.id}">${brl(p.preco)}</div><div class="note">preço unitário no varejo${p.choco?'<br>com chocottone tradicional':''}</div></div>
+          <div class="step"><button data-em="${p.id}" ${off?'disabled':''}>−</button><input type="number" min="0" step="1" inputmode="numeric" value="0" data-emp="${p.id}" ${off?'disabled':''} style="width:56px;border:0;background:none;text-align:center;font-weight:700;padding:8px 0"><button data-ep="${p.id}" ${off?'disabled':''}>+</button></div>
+        </div>
+        <div class="vtag wait" id="vt-${p.id}">A partir de ${CONFIG.minEmpresa} unidades, o preço desce</div>
+      </div></div>`;
+  }).join('');
+  document.querySelectorAll('.minE').forEach(e=>e.textContent=CONFIG.minEmpresa);
+}
+function unit(p, s){ if(p.sabores==='choco') return chocoPreco(s); return p.preco + (p.sabores==='cookie' && s==='Kinder Bueno' ? EXTRA_KINDER : 0); }
+// na aba empresa, cada sabor de chocottone vira uma linha própria
+const EMP_CHOCO = () => { const b = PRODUTOS.find(p=>p.id==='chocottone'); return b.oculto ? [] : CHOCO.map((c,i)=>({...b, id:'chocottone-'+i, nome:'Chocottone '+c.nome, desc:c.desc.charAt(0).toUpperCase()+c.desc.slice(1)+'.', inclui:null, preco:c.preco, destaque:i===0?b.destaque:(c.estrela?'⭐ Queridinho':'')})); };
+const empProd = id => PRODUTOS.find(x=>x.id===id) || EMP_CHOCO().find(x=>x.id===id);
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if(!t) return;
+  if(t.dataset.tab){
+    document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b===t));
+    $('#tab-voce').classList.toggle('hide', t.dataset.tab!=='voce');
+    $('#tab-empresa').classList.toggle('hide', t.dataset.tab!=='empresa');
+    updBar(); window.scrollTo({top: document.querySelector('.tabs').offsetTop, behavior:'smooth'});
+  }
+  if(t.dataset.ep||t.dataset.em){ const i=document.querySelector(`[data-emp="${t.dataset.ep||t.dataset.em}"]`); i.value=Math.max(0,(parseInt(i.value)||0)+(t.dataset.ep?1:-1)); volTag(i); }
+  if(t.dataset.p){ qtd[t.dataset.p]++; $('#q-'+t.dataset.p).textContent = qtd[t.dataset.p]; }
+  if(t.dataset.m){ qtd[t.dataset.m] = Math.max(1, qtd[t.dataset.m]-1); $('#q-'+t.dataset.m).textContent = qtd[t.dataset.m]; }
+  if(t.dataset.sab){ sab[t.dataset.sab] = t.dataset.v; t.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c===t)); const pp=PRODUTOS.find(x=>x.id===t.dataset.sab); if(pp && pp.sabores==='choco') $('#pr-'+pp.id).innerHTML=priceHTML(pp); }
+  if(t.dataset.csab){ sabC[t.dataset.csab] = t.dataset.v; t.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c===t)); const pp=PRODUTOS.find(x=>x.id===t.dataset.csab); $('#pr-'+pp.id).innerHTML=priceHTML(pp); const tot=extrasTotal(pp.id); $('#xs-'+pp.id).textContent = tot ? 'Extras: + '+brl(tot)+' · Cesta com extras: '+brl(cestaPreco(pp)+tot) : ''; }
+  if(t.dataset.xopen){ const b=$('#xb-'+t.dataset.xopen); b.classList.toggle('hide'); t.textContent = b.classList.contains('hide') ? '＋ Adicionar mais itens nesta cesta' : '− Fechar itens extras'; }
+  if(t.dataset.xp||t.dataset.xm){ const [cid,eid]=(t.dataset.xp||t.dataset.xm).split('|'); xq[cid]=xq[cid]||{};
+    xq[cid][eid]=Math.max(0,(xq[cid][eid]||0)+(t.dataset.xp?1:-1)); $('#xq-'+cid+'-'+eid).textContent=xq[cid][eid];
+    const tot=extrasTotal(cid); $('#xs-'+cid).textContent = tot ? 'Extras: + '+brl(tot)+' · Cesta com extras: '+brl(cestaPreco(PRODUTOS.find(x=>x.id===cid))+tot) : ''; }
+  if(t.dataset.add){
+    const p = PRODUTOS.find(x=>x.id===t.dataset.add); if(p.status==='esgotado') return;
+    let s = p.sabores ? sab[p.id] : '', u = p.cat==='cesta' ? cestaPreco(p) : unit(p,s);
+    if(p.cat==='cesta'){ const parts=[]; if(p.choco) parts.push('Chocottone '+sabC[p.id]); if(s) parts.push('Cones '+s); if(extrasTotal(p.id)){ parts.push('Extras na cesta: ' + extrasTxt(p.id)); u += extrasTotal(p.id); } s = parts.join(' · '); }
+    const ex = cart.find(c=>c.id===p.id && c.sab===s);
+    if(ex) ex.q += qtd[p.id]; else cart.push({id:p.id, nome:p.nome, sab:s, q:qtd[p.id], u, status:p.status});
+    qtd[p.id] = 1; $('#q-'+p.id).textContent = 1;
+    if(p.cat==='cesta' && xq[p.id]){ xq[p.id]={}; EXTRAS.forEach(e=>{ const el=$('#xq-'+p.id+'-'+e.id); if(el) el.textContent=0; }); $('#xs-'+p.id).textContent=''; }
+    t.textContent = 'Adicionado ✓'; setTimeout(()=>t.textContent='Adicionar', 1200);
+    updBar();
+  }
+  if(t.dataset.del!==undefined){ cart.splice(+t.dataset.del,1); updBar(); renderCart(); if(!cart.length) closeSheet(); }
+  if(t.closest('.seg') && t.dataset.v){
+    t.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b===t));
+    if(t.parentElement.id==='cEnt') $('#cEndBox').classList.toggle('hide', t.dataset.v!=='Entrega');
+  }
+});
+
+const total = () => cart.reduce((s,c)=>s+c.q*c.u, 0);
+function updBar(){
+  const n = cart.reduce((s,c)=>s+c.q,0);
+  $('#bar').classList.toggle('show', n>0 && !$('#tab-voce').classList.contains('hide'));
+  $('#barQ').textContent = n + (n===1?' item':' itens');
+  $('#barV').textContent = brl(total());
+}
+function renderCart(){
+  $('#itens').innerHTML = cart.map((c,i)=>`<div class="it"><div>${c.q}× ${c.nome}${c.sab?`<div class="s">${c.sab}</div>`:''}<div class="s">${STATUS_TXT[c.status]}</div></div>
+    <div style="text-align:right;white-space:nowrap">${brl(c.q*c.u)}<br><button data-del="${i}">remover</button></div></div>`).join('');
+  $('#tot').textContent = brl(total());
+  const temCesta = cart.some(c=>c.id==='monte'||c.id.startsWith('cesta'));
+  const temAvulso = cart.some(c=>!(c.id==='monte'||c.id.startsWith('cesta')));
+  $('#juntaBox').classList.toggle('hide', !(temCesta && temAvulso));
+}
+const openSheet = () => { renderCart(); $('#ov').classList.add('show'); $('#sheet').classList.add('show'); };
+const closeSheet = () => { $('#ov').classList.remove('show'); $('#sheet').classList.remove('show'); };
+$('#barBtn').onclick = openSheet; $('#close').onclick = closeSheet; $('#ov').onclick = closeSheet;
+
+const segVal = id => ($('#'+id+' button.on')||{}).dataset?.v || '';
+const dataBR = v => v ? v.split('-').reverse().join('/') : '';
+const openWA = txt => window.open('https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(txt), '_blank');
+function err(id, msg){ const el=$('#'+id); el.textContent=msg; el.style.display=msg?'block':'none'; }
+
+$('#cEnviar').onclick = () => {
+  const nome = $('#cNome').value.trim(), ent = segVal('cEnt'), end = $('#cEnd').value.trim(), data = $('#cData').value;
+  if(!nome) return err('cErr','Coloque seu nome.');
+  if(ent==='Entrega' && !end) return err('cErr','Coloque o endereço de entrega.');
+  if(!data) return err('cErr','Escolha a data.');
+  err('cErr','');
+  const linhas = cart.map(c=>`• ${c.q}× ${c.nome}${c.sab?` (${c.sab})`:''} — ${brl(c.q*c.u)}`).join('\n');
+  const txt = `🎄 *Pedido de Natal — Canudo di Cacau*\n\n${linhas}\n\n*Total dos produtos: ${brl(total())}*\n\n👤 ${nome}\n📦 ${ent}${ent==='Entrega'?`: ${end}`:''}\n📅 Para: ${dataBR(data)}\n💳 ${segVal('cPag')}${$('#cJunta').checked && !$('#juntaBox').classList.contains('hide') ? '\n🎁 Colocar os itens avulsos dentro da cesta (presente único)' : ''}${$('#cObs').value.trim()?`\n📝 ${$('#cObs').value.trim()}`:''}`;
+  openWA(txt);
+};
+
+$('#eEnviar').onclick = () => {
+  const itens = [...document.querySelectorAll('[data-emp]')].map(i=>({p:empProd(i.dataset.emp), q:parseInt(i.value)||0})).filter(x=>x.q>0);
+  const emp = $('#eEmp').value.trim(), nome = $('#eNome').value.trim(), data = $('#eData').value;
+  const pq = parseInt($('#ePQ').value)||0, ptxt = presTxt();
+  if(ptxt && !pq) return err('eErr','Diga quantos presentes personalizados você precisa.');
+  if(pq && !ptxt) return err('eErr','Escolha os itens do presente personalizado.');
+  const temPres = pq && ptxt;
+  if(!itens.length && !temPres) return err('eErr','Coloque a quantidade de pelo menos um item.');
+  if(!emp || !nome) return err('eErr','Preencha o nome da empresa e o seu nome.');
+  if(!data) return err('eErr','Escolha a data de entrega.');
+  err('eErr','');
+  const n = itens.reduce((s,x)=>s+x.q,0) + (temPres?pq:0);
+  const L = empLinhas(), totE = L.reduce((s,x)=>s+x.t,0);
+  const linhas = L.map(x=>`• ${x.q}× ${x.nome} — ${brl(x.u)} cada${x.d?` (−${pct(x.d)})`:''} = ${brl(x.t)}`);
+  const txt = `🏢 *Orçamento de Natal para empresa — Canudo di Cacau*\n\n${linhas.join('\n')}\n\n*Total estimado: ${brl(totE)}* (${n} unidades)\n\n🏷️ Empresa: ${emp}\n👤 Contato: ${nome}\n📅 Entrega: ${dataBR(data)}\n📍 ${$('#eBairro').value.trim()||'a combinar'}\n🧾 Nota fiscal: ${segVal('eNF')}${$('#eObs').value.trim()?`\n📝 ${$('#eObs').value.trim()}`:''}`;
+  openWA(txt);
+};
+
+const eq = {};
+function renderEMonte(){
+  $('#eMonte').innerHTML = EXTRAS.map(e=>`<div class="mrow"><div><div class="n">${e.nome}</div><div class="p">${brl(e.preco)} no varejo</div></div>
+    <div class="step sm"><button data-eqm="${e.id}">−</button><span id="eq-${e.id}">${eq[e.id]||0}</span><button data-eqp="${e.id}">+</button></div></div>`).join('');
+  updEMonte();
+}
+const presTxt = () => EXTRAS.filter(e=>eq[e.id]).map(e=>`${eq[e.id]}× ${e.nome}`).join(' + ');
+function updEMonte(){
+  const pq = parseInt($('#ePQ').value)||0, unit = EXTRAS.reduce((s,e)=>s+(eq[e.id]||0)*e.preco,0) + MONTE.embalagem, txt = presTxt();
+  $('#ePres').innerHTML = !txt ? 'Escolha os itens de cada presente.' :
+    `<div style="margin-bottom:6px"><b style="color:var(--d2)">Cada presente:</b> ${txt} + embalagem</div>
+     <div class="l"><span>Valor de varejo por presente</span><span>${brl(unit)}</span></div>
+     ${pq?(descDe(pq)?`<div class="l" style="color:var(--green)"><span>Com ${pq} presentes (−${pct(descDe(pq))})</span><span>${brl(precoVol(unit,pq))} cada</span></div>`:`<div class="l"><span>${proxFaixa(pq)?'Faltam '+(proxFaixa(pq).min-pq)+' para −'+pct(proxFaixa(pq).desc):''}</span><span></span></div>`)+`<div class="l tt"><span>${pq} presentes</span><span>${brl(precoVol(unit,pq)*pq)}</span></div>`:''}`;
+  updETot();
+}
+document.addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.eqp||b.dataset.eqm){ const id=b.dataset.eqp||b.dataset.eqm; eq[id]=Math.max(0,(eq[id]||0)+(b.dataset.eqp?1:-1)); $('#eq-'+id).textContent=eq[id]; updEMonte(); }
+  if(b.dataset.pq){ const i=$('#ePQ'); i.value=Math.max(0,(parseInt(i.value)||0)+(+b.dataset.pq)); updEMonte(); }
+});
+document.addEventListener('input', e=>{ if(e.target.id==='ePQ') updEMonte(); });
+
+const descDe = q => { let d=0; CONFIG.faixas.forEach(f=>{ if(q>=f.min) d=f.desc; }); return d; };
+const proxFaixa = q => CONFIG.faixas.find(f=>q<f.min);
+const pct = d => Math.round(d*100)+'%';
+const precoVol = (preco,q) => Math.round(preco*(1-descDe(q))*100)/100;
+function volTag(i){
+  const id=i.dataset.emp, q = parseInt(i.value)||0, el = document.getElementById('vt-'+id), p = empProd(id), d = descDe(q), nx = proxFaixa(q);
+  const u = precoVol(p.preco,q);
+  $('#ep-'+id).innerHTML = d ? `<s style="display:block;font-size:12px;color:var(--tx3);font-weight:500">${brl(p.preco)}</s>${brl(u)}` : brl(p.preco);
+  const dica = nx ? ` · com ${nx.min} sai ${brl(precoVol(p.preco,nx.min))} cada` : '';
+  if(d){ el.className='vtag'; el.textContent=`✓ −${pct(d)}: ${q} × ${brl(u)} = ${brl(u*q)}${dica}`; }
+  else if(q > 0){ el.className='vtag wait'; el.textContent=`${q} × ${brl(p.preco)} = ${brl(p.preco*q)} · faltam ${nx.min-q} para −${pct(nx.desc)}`; }
+  else { el.className='vtag wait'; el.textContent='A partir de '+CONFIG.minEmpresa+' unidades, o preço desce'; }
+  updETot();
+}
+function empLinhas(){
+  const L = [...document.querySelectorAll('[data-emp]')].map(i=>{ const p=empProd(i.dataset.emp), q=parseInt(i.value)||0, d=descDe(q), u=precoVol(p.preco,q); return {nome:p.nome, q, d, u, t:u*q, de:p.preco*q}; }).filter(x=>x.q>0);
+  const pq = parseInt($('#ePQ').value)||0, ptxt = presTxt();
+  if(pq && ptxt){ const base = EXTRAS.reduce((s,e)=>s+(eq[e.id]||0)*e.preco,0) + MONTE.embalagem, d=descDe(pq), u=precoVol(base,pq); L.push({nome:`Presente personalizado (${ptxt} + embalagem)`, q:pq, d, u, t:u*pq, de:base*pq}); }
+  return L;
+}
+function updETot(){
+  const L = empLinhas(), box=$('#eTotBox'); if(!box) return;
+  box.style.display = L.length ? 'block' : 'none';
+  const tot=L.reduce((s,x)=>s+x.t,0), de=L.reduce((s,x)=>s+x.de,0);
+  $('#eTot').innerHTML = L.map(x=>`<div class="l"><span>${x.q}× ${x.nome}${x.d?` <b style="color:var(--green)">−${pct(x.d)}</b>`:''}</span><span>${brl(x.t)}</span></div>`).join('')
+    + (de>tot?`<div class="l" style="color:var(--green)"><span>Você economiza</span><span>${brl(de-tot)}</span></div>`:'')
+    + `<div class="l tt"><span>Total estimado</span><span>${brl(tot)}</span></div>`;
+}
+document.addEventListener('input', e=>{ if(e.target.dataset && e.target.dataset.emp) volTag(e.target); });
+
+/* ---------- MONTE SUA CESTA ---------- */
+const nCones = () => MONTE.itens.filter(i=>i.cone).reduce((s,i)=>s+(mq[i.id]||0),0);
+const precoCone = n => n>=10 ? 10.99 : n>=5 ? 11.18 : 12.90;   // mesma lógica das caixas de 5 e 10
+function monteTotais(){
+  const nc = nCones(); let prod = 0;
+  MONTE.itens.forEach(i=>{ const q=mq[i.id]||0; prod += q*(i.cone?precoCone(nc):i.preco); });
+  const n = MONTE.itens.reduce((s,i)=>s+(mq[i.id]||0),0);
+  return {n, nc, prod, total: n ? prod + MONTE.embalagem : 0};
+}
+function renderMonte(){
+  const off = MONTE.status==='esgotado'; let g='';
+  $('#monte').innerHTML = `<span class="badge b-${MONTE.status}" style="position:static;display:inline-block;border:1px solid var(--cr2);margin-bottom:10px">${STATUS_TXT[MONTE.status]}</span>` +
+    MONTE.itens.map(i=>{ const h = i.grupo!==g ? `<div class="mg">${i.grupo}</div>` : ''; g=i.grupo;
+      return h+`<div class="mrow"><div><div class="n">${i.nome}</div><div class="p">${i.cone?'a partir de '+brl(10.99):brl(i.preco)}</div></div>
+      <div class="step sm"><button data-mm="${i.id}">−</button><span id="mq-${i.id}">${mq[i.id]||0}</span><button data-mp="${i.id}">+</button></div></div>`; }).join('') +
+    `<p class="note" style="margin-top:8px">Cones: ${brl(12.90)} cada · ${brl(11.18)} a partir de 5 · ${brl(10.99)} a partir de 10.</p>
+     <div class="mres" id="mres"></div>
+     <button class="cta" id="monteAdd" ${off?'disabled':''}>${off?'Esgotado':'Adicionar minha cesta ao pedido'}</button>
+     <div class="err" id="mErr"></div>`;
+  updMonte();
+}
+function updMonte(){
+  const t = monteTotais();
+  $('#mres').innerHTML = t.n ? `<div class="l"><span>${t.n} itens${t.nc?` (${t.nc} cones a ${brl(precoCone(t.nc))})`:''}</span><span>${brl(t.prod)}</span></div>
+    <div class="l"><span>Embalagem de presente</span><span>${brl(MONTE.embalagem)}</span></div>
+    <div class="l tt"><span>Sua cesta</span><span>${brl(t.total)}</span></div>` : 'A cesta já vem com embalagem de presente. É só adicionar os itens que quer dentro dela.';
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.mp){ mq[b.dataset.mp]=(mq[b.dataset.mp]||0)+1; $('#mq-'+b.dataset.mp).textContent=mq[b.dataset.mp]; updMonte(); err('mErr',''); }
+  if(b.dataset.mm){ mq[b.dataset.mm]=Math.max(0,(mq[b.dataset.mm]||0)-1); $('#mq-'+b.dataset.mm).textContent=mq[b.dataset.mm]; updMonte(); }
+  if(b.id==='monteAdd'){
+    const t = monteTotais();
+    if(t.n < MONTE.minItens) return err('mErr','Adicione pelo menos '+MONTE.minItens+(MONTE.minItens>1?' itens':' item')+' na cesta.');
+    const det = MONTE.itens.filter(i=>mq[i.id]).map(i=>`${mq[i.id]}× ${i.nome}`).join(', ');
+    cart.push({id:'monte', nome:'Cesta montada por você', sab:det+' + embalagem de presente', q:1, u:t.total, status:MONTE.status});
+    MONTE.itens.forEach(i=>mq[i.id]=0); renderMonte(); updBar();
+    b.textContent='Cesta adicionada ✓'; setTimeout(()=>{ const x=$('#monteAdd'); if(x) x.textContent='Adicionar minha cesta ao pedido'; },1400);
+  }
+});
+
+/* ---------- STATUS VIA FIRESTORE (opcional) ---------- */
+const FB_URL = () => `https://firestore.googleapis.com/v1/projects/${CONFIG.fbProject}/databases/(default)/documents/${CONFIG.fbDoc}?key=${CONFIG.fbKey}`;
+async function loadStatus(){
+  try{
+    const r = await fetch(FB_URL()); if(!r.ok) return;
+    const j = await r.json(); const f = (j.fields||{});
+    [...PRODUTOS, MONTE].forEach(p=>{ const v = f[p.id||'monte']?.stringValue; if(['pronta','encomenda','esgotado'].includes(v)) p.status = v; });
+    if(f.prazo?.stringValue){ CONFIG.prazo = f.prazo.stringValue; $('#prazoTxt').textContent = CONFIG.prazo; }
+    render(); renderMonte(); renderAdmin();
+  }catch(e){ /* sem conexão: usa o status do código */ }
+}
+function renderAdmin(){
+  MONTE.id = 'monte'; MONTE.nome = 'Monte sua cesta';
+  $('#admList').innerHTML = [...PRODUTOS, MONTE].map(p=>`<div class="ar"><span>${p.nome}</span><div class="sw">
+    ${['pronta','encomenda','esgotado'].map(s=>`<button class="${p.status===s?'on':''}" data-st="${p.id}" data-s="${s}">${STATUS_TXT[s].split(' ')[0]}</button>`).join('')}</div></div>`).join('')
+    + `<label>Texto do prazo</label><input id="admPrazo" value="${CONFIG.prazo}">`;
+}
+if(new URLSearchParams(location.search).has('admin')){
+  $('#adm').classList.add('show');
+  document.addEventListener('click', e=>{
+    const b = e.target.closest('[data-st]'); if(!b) return;
+    [...PRODUTOS, MONTE].find(p=>p.id===b.dataset.st).status = b.dataset.s;
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+  });
+  $('#admSave').onclick = async () => {
+    CONFIG.prazo = $('#admPrazo').value.trim() || CONFIG.prazo;
+    const fields = {prazo:{stringValue:CONFIG.prazo}};
+    [...PRODUTOS, MONTE].forEach(p=>fields[p.id] = {stringValue:p.status});
+    $('#admMsg').textContent = 'Salvando...';
+    try{
+      const r = await fetch(FB_URL(), {method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fields})});
+      $('#admMsg').textContent = r.ok ? '✅ Salvo! O site já mostra o status novo.' : '⚠️ Não salvou (erro '+r.status+').';
+    }catch(e){ $('#admMsg').textContent = '⚠️ Sem conexão. Tente de novo.'; }
+    $('#prazoTxt').textContent = CONFIG.prazo; render(); renderMonte();
+  };
+}
+
+render(); renderMonte(); renderEMonte(); renderAdmin(); loadStatus();
+</script>
+</body>
+</html>

@@ -639,7 +639,7 @@ console.log("🔥 Firebase conectado!");
   <!-- ══ REPOR ══ -->
   <div id="pg-repor" class="pg">
     <div class="fb"><div><div style="font-size:15px;font-weight:700">Quem está na hora de repor</div><div class="ts">Pelo intervalo que cada revendedor costuma levar entre um pedido e outro</div></div></div>
-    <div class="seg" id="rp-seg"><button class="btn bsm on" data-f="contatar" onclick="rpFiltro('contatar')">Para contatar</button><button class="btn bsm" data-f="parados" onclick="rpFiltro('parados')">Parados</button><button class="btn bsm" data-f="todos" onclick="rpFiltro('todos')">Todos</button></div>
+    <div class="seg" id="rp-seg"><button class="btn bsm on" data-f="contatar" onclick="rpFiltro('contatar')">Para contatar</button><button class="btn bsm" data-f="parados" onclick="rpFiltro('parados')">Parados</button><button class="btn bsm" data-f="ferias" onclick="rpFiltro('ferias')">🏖️ Férias</button><button class="btn bsm" data-f="todos" onclick="rpFiltro('todos')">Todos</button></div>
     <div id="rp-resumo" class="ts" style="margin-bottom:10px"></div>
     <div id="list-rp"></div>
   </div>
@@ -842,6 +842,7 @@ console.log("🔥 Firebase conectado!");
   <div class="fg"><label>Telefone / WhatsApp</label><input type="tel" id="cl-t" placeholder="(41) 99999-0000" inputmode="tel"></div>
   <div class="fg"><label>Região / Bairro</label><select id="cl-r"><option value="">Selecionar...</option></select></div>
   <div class="fg"><label>Endereço</label><input type="text" id="cl-e" placeholder="Rua, número, bairro..."></div>
+  <div class="fg" id="cl-f-box"><label>🏖️ Fechado para férias até</label><div style="display:flex;gap:8px"><input type="date" id="cl-f" style="flex:1"><button type="button" class="btn bsm" onclick="document.getElementById('cl-f').value=''">Limpar</button></div><div class="tsm" style="margin-top:4px">Enquanto estiver fechado, a aba Repor não acusa atraso. No dia da volta ele aparece como "hora de repor".</div></div>
   <button class="btn bp bw" onclick="saCl()" style="margin-bottom:10px">Salvar Cliente</button>
   <button class="btn bou bw" onclick="fM('cliente')">Cancelar</button>
 </div>
@@ -1504,8 +1505,8 @@ function aMC(id=null){
   document.getElementById('mc-t').textContent=id?'Editar Cliente':'Novo Cliente';
   const sl=document.getElementById('cl-r');
   sl.innerHTML='<option value="">Selecionar...</option>'+S.regioes.map(r=>`<option value="${r.nome}">${r.nome} (${fmt(r.valor)})</option>`).join('');
-  if(id){const c=S.clientes.find(x=>x.id===id);if(c){document.getElementById('cl-n').value=c.nome;document.getElementById('cl-t').value=c.tel;document.getElementById('cl-e').value=c.end;sl.value=c.regiao||'';}}
-  else{['cl-n','cl-t','cl-e'].forEach(i=>document.getElementById(i).value='');sl.value='';}
+  if(id){const c=S.clientes.find(x=>x.id===id);if(c){document.getElementById('cl-n').value=c.nome||'';document.getElementById('cl-t').value=c.tel||'';document.getElementById('cl-e').value=c.end||'';document.getElementById('cl-f').value=c.feriasAte||'';sl.value=c.regiao||'';}}
+  else{['cl-n','cl-t','cl-e','cl-f'].forEach(i=>document.getElementById(i).value='');sl.value='';}
   document.getElementById('ov-cliente').classList.add('open');
 }
 function aMR(){document.getElementById('rg-n').value='';document.getElementById('rg-v').value='';document.getElementById('ov-regiao').classList.add('open');}
@@ -1604,7 +1605,7 @@ function sP(){
 function dP(id){if(!confirm('Excluir este pedido?'))return;S._deletedIds=Array.from(new Set([...(S._deletedIds||[]),id]));S.pedidos=S.pedidos.filter(p=>p.id!==id);svS();rPD();rIG();rDash();rOp();toast('Pedido excluído')}
 function saCl(){
   const nm=document.getElementById('cl-n').value.trim();if(!nm){toast('Informe o nome');return}
-  const obj={nome:nm,tel:document.getElementById('cl-t').value.trim(),end:document.getElementById('cl-e').value.trim(),regiao:document.getElementById('cl-r').value};
+  const obj={nome:nm,tel:document.getElementById('cl-t').value.trim(),end:document.getElementById('cl-e').value.trim(),regiao:document.getElementById('cl-r').value,feriasAte:document.getElementById('cl-f').value||null};
   if(S.editCl){const c=S.clientes.find(x=>x.id===S.editCl);if(c)Object.assign(c,obj);}
   else S.clientes.push({id:uid(),...obj});
   svS();fM('cliente');rCL();if(document.getElementById('pg-repor').classList.contains('active'))rRP();atualizarBadges();toast('Cliente salvo! ✓');
@@ -1951,9 +1952,14 @@ function calcRepor(){
     const ciclo=datas.length>1?Math.max(7,Math.round(diasEntre(datas[0],ult)/(datas.length-1))):CICLO_PADRAO;
     const dias=diasEntre(ult,t);
     const media=Math.round(ps.reduce((a,p)=>a+(p.qtd||0),0)/datas.length);
-    const sit=dias>Math.max(ciclo*3,60)?'parado':dias>ciclo*1.2?'atrasado':dias>=ciclo-3?'hora':'emdia';
-    const contatado=!!(c.ultimoContato&&c.ultimoContato>=ult&&diasEntre(c.ultimoContato,t)<=7);
-    return {c,ult,ultQtd,ciclo,dias,media,sit,contatado,prox:somaDias(ult,ciclo),estimado:datas.length<2};
+    const fer=c.feriasAte||null;
+    let sit,prox=somaDias(ult,ciclo),voltou=false;
+    if(fer&&t<fer){sit='ferias';prox=fer;}
+    else if(fer&&fer>ult){voltou=true;prox=fer;const dv=diasEntre(fer,t);sit=dv>Math.max(ciclo*3,60)?'parado':dv>ciclo*1.2?'atrasado':'hora';}
+    else sit=dias>Math.max(ciclo*3,60)?'parado':dias>ciclo*1.2?'atrasado':dias>=ciclo-3?'hora':'emdia';
+    const ref=voltou?fer:ult;
+    const contatado=sit!=='ferias'&&!!(c.ultimoContato&&c.ultimoContato>=ref&&diasEntre(c.ultimoContato,t)<=7);
+    return {c,ult,ultQtd,ciclo,dias,media,sit,contatado,prox,fer,voltou,atraso:diasEntre(prox,t),estimado:datas.length<2};
   }).filter(Boolean);
 }
 function rpFiltro(f){RPF=f;document.querySelectorAll('#rp-seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));rRP();}
@@ -1967,27 +1973,30 @@ function rpWhats(id){
   window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function rpContatado(id){const c=S.clientes.find(x=>x.id===id);if(!c)return;c.ultimoContato=c.ultimoContato===today()?null:today();svS();rRP();atualizarBadges();}
+function rpFerias(id){aMC(id);setTimeout(()=>{const f=document.getElementById('cl-f');f.scrollIntoView({block:'center'});f.focus();},150);}
 function rpPedido(id){aMP('revenda');clPickEscolhe(id);}
 function rRP(){
   const el=document.getElementById('list-rp');if(!el)return;
-  const ordem={atrasado:0,hora:1,emdia:2,parado:3};
-  let lista=calcRepor().sort((a,b)=>(a.contatado-b.contatado)||(ordem[a.sit]-ordem[b.sit])||(a.sit==='hora'?(a.prox<b.prox?-1:1):(a.dias-a.ciclo)-(b.dias-b.ciclo)));
-  const nAt=lista.filter(r=>r.sit==='atrasado').length,nHr=lista.filter(r=>r.sit==='hora').length,nPa=lista.filter(r=>r.sit==='parado').length;
-  document.getElementById('rp-resumo').textContent=`${nAt} atrasado${nAt===1?'':'s'} · ${nHr} na hora de repor · ${lista.length-nAt-nHr-nPa} em dia · ${nPa} parado${nPa===1?'':'s'} há mais de 2 meses`;
+  const ordem={atrasado:0,hora:1,emdia:2,parado:3,ferias:4};
+  let lista=calcRepor().sort((a,b)=>(a.contatado-b.contatado)||(ordem[a.sit]-ordem[b.sit])||(a.sit==='hora'||a.sit==='ferias'?(a.prox<b.prox?-1:1):b.atraso-a.atraso));
+  const nAt=lista.filter(r=>r.sit==='atrasado').length,nHr=lista.filter(r=>r.sit==='hora').length,nPa=lista.filter(r=>r.sit==='parado').length,nFe=lista.filter(r=>r.sit==='ferias').length;
+  document.getElementById('rp-resumo').textContent=`${nAt} atrasado${nAt===1?'':'s'} · ${nHr} na hora de repor · ${lista.length-nAt-nHr-nPa-nFe} em dia · ${nPa} parado${nPa===1?'':'s'} há mais de 2 meses`+(nFe?` · ${nFe} em férias`:'');
   if(RPF==='contatar')lista=lista.filter(r=>r.sit==='atrasado'||r.sit==='hora');
   else if(RPF==='parados')lista=lista.filter(r=>r.sit==='parado');
+  else if(RPF==='ferias')lista=lista.filter(r=>r.sit==='ferias');
   const dm=d=>d.slice(8,10)+'/'+d.slice(5,7);
   const esc=t=>String(t||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   el.innerHTML=lista.length?lista.map(r=>{
-    const bd=r.contatado?'<span class="badge bsi">✓ Contatado</span>':r.sit==='atrasado'?`<span class="badge bre">Atrasado ${r.dias-r.ciclo}d</span>`:r.sit==='hora'?'<span class="badge bam2">Hora de repor</span>':r.sit==='parado'?`<span class="badge bsi">Parado há ${r.dias}d</span>`:'<span class="badge bgr3">Em dia</span>';
+    const bd=r.contatado?'<span class="badge bsi">✓ Contatado</span>':r.sit==='ferias'?`<span class="badge bpu">🏖️ Férias até ${dm(r.fer)}</span>`:r.sit==='atrasado'?`<span class="badge bre">Atrasado ${r.atraso}d</span>`:r.sit==='hora'?'<span class="badge bam2">Hora de repor</span>':r.sit==='parado'?`<span class="badge bsi">Parado há ${r.dias}d</span>`:'<span class="badge bgr3">Em dia</span>';
     const temTel=!!telWa(r.c.tel);
     return`<div class="li"${r.contatado?' style="opacity:.6"':''}><div class="li-h"><div class="li-nm">${esc(r.c.nome)}</div>${bd}</div>
       <div class="li-r"><span class="lbl">Último pedido</span><span class="val">${dm(r.ult)} · ${r.dias} dias atrás</span></div>
       <div class="li-r"><span class="lbl">Costuma pedir a cada</span><span class="val">${r.ciclo} dias${r.estimado?' (estimado)':''}</span></div>
       <div class="li-r"><span class="lbl">Quantidade</span><span class="val">${r.ultQtd} un. no último · média ${r.media}</span></div>
+      ${r.voltou?`<div class="li-r"><span class="lbl">Voltou das férias</span><span class="val">${dm(r.fer)}</span></div>`:''}
       ${r.c.ultimoContato?`<div class="li-r"><span class="lbl">Último contato</span><span class="val">${dm(r.c.ultimoContato)}</span></div>`:''}
-      <div class="li-acts"><button class="btn bsm" style="flex:1;${temTel?'background:var(--gr);border-color:var(--gr);color:#fff':''}" onclick="rpWhats(${r.c.id})">${temTel?'📱 WhatsApp':'📱 Cadastrar telefone'}</button><button class="btn bsm" style="flex:1" onclick="rpPedido(${r.c.id})">+ Pedido</button><button class="btn bsm" style="flex:1" onclick="rpContatado(${r.c.id})">${r.contatado?'Desfazer':'Já falei'}</button></div></div>`;
-  }).join(''):`<div class="empty"><div class="ico">✅</div><p>${RPF==='contatar'?'Ninguém para contatar agora':RPF==='parados'?'Nenhum revendedor parado — os que você inativou não aparecem aqui':'Nenhum revendedor com pedido'}</p></div>`;
+      <div class="li-acts"><button class="btn bsm" style="flex:1;${temTel?'background:var(--gr);border-color:var(--gr);color:#fff':''}" onclick="rpWhats(${r.c.id})">${temTel?'📱 WhatsApp':'📱 Cadastrar telefone'}</button><button class="btn bsm" style="flex:1" onclick="rpPedido(${r.c.id})">+ Pedido</button><button class="btn bsm" style="flex:1" onclick="rpContatado(${r.c.id})">${r.contatado?'Desfazer':'Já falei'}</button><button class="btn bsm" style="flex:1" onclick="rpFerias(${r.c.id})">🏖️ ${r.sit==='ferias'?'Mudar férias':'Férias'}</button></div></div>`;
+  }).join(''):`<div class="empty"><div class="ico">✅</div><p>${RPF==='contatar'?'Ninguém para contatar agora':RPF==='ferias'?'Nenhum revendedor em férias. Use o botão 🏖️ Férias para marcar quem vai fechar':RPF==='parados'?'Nenhum revendedor parado — os que você inativou não aparecem aqui':'Nenhum revendedor com pedido'}</p></div>`;
 }
 
 // ── BUSCA DE CLIENTE NO PEDIDO (funciona no celular) ──
@@ -2026,7 +2035,7 @@ function rCL(){
   document.getElementById('list-cl').innerHTML=list.length?list.map(c=>{
     const vol=volCl(c.id,mes);const md=medal(vol);const tel=c.tel.replace(/\D/g,'');
     const ina=c.ativo===false;
-    return`<div class="li${ina?' inativo':''}"><div class="li-h"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><div class="av">${c.nome.substring(0,2).toUpperCase()}</div><div style="min-width:0"><div class="li-nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nome}${ina?'<span class="tag-in">Inativo</span>':''}</div><div class="ts">${c.regiao||'Sem região'}</div></div></div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div>${c.end?`<div class="li-sb">${c.end}</div>`:''}<div class="li-r"><span class="lbl">WhatsApp</span><a href="https://wa.me/55${tel}" target="_blank" style="color:var(--gr);font-weight:600;font-size:13px">📱 ${c.tel}</a></div><div class="li-r"><span class="lbl">Volume (mês)</span><span class="val" style="color:var(--pu);font-weight:700">${fmtN(vol)} un.</span></div><div class="li-acts"><button class="btn bsm" style="flex:1" onclick="aMC(${c.id})">Editar</button><button class="btn bsm" style="flex:1" onclick="tgAtivoCl(${c.id})">${ina?'Reativar':'Inativar'}</button><button class="btn bsm bex" style="flex:1" onclick="dCl(${c.id})">Excluir</button></div></div>`;
+    return`<div class="li${ina?' inativo':''}"><div class="li-h"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><div class="av">${c.nome.substring(0,2).toUpperCase()}</div><div style="min-width:0"><div class="li-nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nome}${ina?'<span class="tag-in">Inativo</span>':''}${!ina&&c.feriasAte&&c.feriasAte>today()?`<span class="tag-in">🏖️ até ${c.feriasAte.slice(8,10)}/${c.feriasAte.slice(5,7)}</span>`:''}</div><div class="ts">${c.regiao||'Sem região'}</div></div></div>${md?`<span class="badge ${md.c}">${md.i}</span>`:''}</div>${c.end?`<div class="li-sb">${c.end}</div>`:''}<div class="li-r"><span class="lbl">WhatsApp</span><a href="https://wa.me/55${tel}" target="_blank" style="color:var(--gr);font-weight:600;font-size:13px">📱 ${c.tel}</a></div><div class="li-r"><span class="lbl">Volume (mês)</span><span class="val" style="color:var(--pu);font-weight:700">${fmtN(vol)} un.</span></div><div class="li-acts"><button class="btn bsm" style="flex:1" onclick="aMC(${c.id})">Editar</button><button class="btn bsm" style="flex:1" onclick="tgAtivoCl(${c.id})">${ina?'Reativar':'Inativar'}</button><button class="btn bsm bex" style="flex:1" onclick="dCl(${c.id})">Excluir</button></div></div>`;
   }).join(''):'<div class="empty"><div class="ico">👥</div><p>Nenhum cliente cadastrado</p></div>';
 }
 

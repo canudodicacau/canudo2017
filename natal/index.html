@@ -177,7 +177,7 @@ footer a{color:var(--d4)}
   <h1>Natal com sabor de <em>chocolate de verdade</em></h1>
   <p>Chocottone recheado, cestas e cones trufados feitos à mão em Curitiba. Para presentear quem você ama e a sua equipe.</p>
   <div class="prazo">🎄 <span id="prazoTxt">Produção limitada · encomende com antecedência</span></div>
-  <div><span class="parc" id="parcTxt">💳 Parcelamos no cartão</span></div>
+  <div><span class="parc" id="parcTxt">💳 Parcele em até 3x sem juros</span></div>
   <div class="cont" id="contador"></div>
   <div class="proofs"><span><b>+7 anos</b> fazendo chocottone</span><span><b>+1.000</b> chocottones vendidos</span></div>
 </header>
@@ -197,7 +197,7 @@ footer a{color:var(--d4)}
     <div class="trust">
       <div><b>🚚 Entregas</b><span id="entTxt">de 30/11 a 22/12</span>, motoboy ou retirada no Tarumã</div>
       <div><b>🎁 É presente?</b>Mandamos com cartão escrito à mão, direto para quem vai ganhar</div>
-      <div><b>💳 Pagamento</b>50% na encomenda · parcelamos no cartão</div>
+      <div><b>💳 Pagamento</b>50% na encomenda · até 3x sem juros</div>
       <div><b>🍫 Feito na hora</b>Produção fresca para a data do seu pedido</div>
     </div>
     <h2 class="sec-t">Cardápio de Natal</h2>
@@ -225,7 +225,7 @@ footer a{color:var(--d4)}
     <details><summary>Quanto tempo dura o chocottone?</summary><p>O ideal é consumir em até 3 dias. Na geladeira, dura até 7 dias. Usamos ingredientes frescos e de qualidade, então quanto antes, mais saboroso.</p></details>
     <details><summary>Quando vocês entregam?</summary><p>De 30/11 a 22/12. Você escolhe a data no pedido. Entregamos por motoboy em Curitiba e região (taxa conforme o bairro), ou você retira na fábrica, no Tarumã, avisando antes.</p></details>
     <details><summary>Posso mandar direto para quem vai ganhar?</summary><p>Pode. No pedido, marque "É presente", escreva a mensagem do cartão e coloque o nome e o endereço de quem vai receber. A gente escreve o cartão à mão e entrega embalado para presente.</p></details>
-    <details><summary>Como funciona o pagamento?</summary><p>Para confirmar a encomenda, pedimos 50% do valor. Aceitamos Pix e cartão, e parcelamos as suas compras no cartão.</p></details>
+    <details><summary>Como funciona o pagamento?</summary><p>Para confirmar a encomenda, pedimos 50% do valor. Aceitamos Pix e cartão, em até 3x sem juros. Acima de 3x, com os juros da operadora.</p></details>
     <details><summary>Posso escolher os sabores?</summary><p>Sim. Você escolhe o sabor do chocottone (Tradicional, Ferrero Rocher ou Kinder Bueno) e os sabores dos cones, nas cestas e nas caixas.</p></details>
     <details><summary>Vocês fazem para empresas?</summary><p>Fazemos, com preço menor a partir de 5 unidades. Use a aba "Para sua empresa" para montar o orçamento. Pedidos de empresas até 12/12.</p></details>
   </section>
@@ -293,7 +293,7 @@ footer a{color:var(--d4)}
 
 <!-- BARRA DO PEDIDO -->
 <div class="bar" id="bar">
-  <div><div class="t"><span id="barQ">0 itens</span> · parcelamos no cartão</div><div class="v" id="barV">R$ 0,00</div></div>
+  <div><div class="t"><span id="barQ">0 itens</span> · até 3x sem juros</div><div class="v" id="barV">R$ 0,00</div></div>
   <button id="barBtn">Ver pedido</button>
 </div>
 
@@ -303,7 +303,7 @@ footer a{color:var(--d4)}
   <div class="sh-h"><h2>Seu pedido</h2><button class="x" id="close">✕</button></div>
   <div id="itens"></div>
   <div class="tot"><span>Total dos produtos</span><span id="tot">R$ 0,00</span></div>
-  <p class="note" style="color:var(--green);font-weight:600">💳 Pague no Pix ou parcele no cartão</p>
+  <p class="note" style="color:var(--green);font-weight:600">💳 Pague no Pix ou em até 3x sem juros no cartão</p>
   <p class="note">Taxa de entrega calculada pelo WhatsApp, conforme o bairro. Para confirmar, pedimos 50% na encomenda.</p>
   <div id="upsell"></div>
 
@@ -325,7 +325,7 @@ footer a{color:var(--d4)}
   <label>Para quando?</label><input id="cData" type="date">
   <p class="note" style="margin-top:4px">Entregas de 30/11 a 22/12.</p>
   <label>Pagamento</label>
-  <div class="seg" id="cPag"><button data-v="Pix" class="on">Pix</button><button data-v="Cartão">Cartão (parcelado)</button></div>
+  <div class="seg" id="cPag"><button data-v="Pix" class="on">Pix</button><button data-v="Cartão (até 3x sem juros)">Cartão (até 3x)</button></div>
   <label>Observações</label><textarea id="cObs" rows="2" placeholder="Ex.: sabores preferidos, horário para entregar..."></textarea>
   <button class="cta" id="cEnviar">Enviar pedido no WhatsApp</button>
   <div class="err" id="cErr"></div>
@@ -342,7 +342,7 @@ const CONFIG = {
   prazoData: '2026-12-25',      // contador "faltam X dias para o Natal"
   entregaDe: '2026-11-30', entregaAte: '2026-12-22',
   empresaAte: '2026-12-12',
-  parcelamento: 'Parcelamos no cartão',   // ex.: 'Parcele em até 3x sem juros'
+  parcelamento: 'Parcele em até 3x sem juros',   // ex.: 'Parcele em até 3x sem juros'
   minEmpresa: 5,
   // DESCONTO POR VOLUME (aba empresa) — por item, conforme a quantidade daquele item
   faixas: [ {min:5, desc:0.05}, {min:10, desc:0.08}, {min:20, desc:0.10}, {min:50, desc:0.15} ],
@@ -472,7 +472,7 @@ function card(p){
         <div class="xbox hide" id="xb-${p.id}">${EXTRAS.map(e=>`<div class="mrow"><div><div class="n">${e.nome}</div><div class="p">+ ${brl(e.preco)}</div></div>
           <div class="step sm"><button data-xm="${p.id}|${e.id}">−</button><span id="xq-${p.id}-${e.id}">${(xq[p.id]||{})[e.id]||0}</span><button data-xp="${p.id}|${e.id}">+</button></div></div>`).join('')}
           <div class="xsum" id="xs-${p.id}"></div></div>` : ''}
-      ${p.cat==='cesta'||p.id==='chocottone'?'<p class="note" style="margin:-2px 0 8px;color:var(--green);font-weight:600">💳 Parcelamos no cartão</p>':''}
+      ${p.cat==='cesta'||p.id==='chocottone'?'<p class="note" style="margin:-2px 0 8px;color:var(--green);font-weight:600">💳 Em até 3x sem juros</p>':''}
       <div class="row">
         <div class="price" id="pr-${p.id}">${priceHTML(p)}</div>
         <div class="row" style="gap:8px">

@@ -142,6 +142,7 @@ footer a{color:var(--d4)}
 .chk input{width:18px;height:18px;margin-top:1px;accent-color:var(--d3);flex:none}
 .proofs{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:14px;font-size:12.5px;color:var(--gold3)}
 .proofs b{color:var(--wh)}
+.parc{position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:10px;background:linear-gradient(135deg,#c9913a,#e4b96a);color:#180904;font-weight:700;font-size:14.5px;padding:9px 16px;border-radius:99px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 .cont{position:relative;margin-top:10px;font-size:13px;color:var(--cr2)}
 .cont b{color:var(--gold2);font-size:15px}
 .trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 14px}
@@ -176,8 +177,9 @@ footer a{color:var(--d4)}
   <h1>Natal com sabor de <em>chocolate de verdade</em></h1>
   <p>Chocottone recheado, cestas e cones trufados feitos à mão em Curitiba. Para presentear quem você ama e a sua equipe.</p>
   <div class="prazo">🎄 <span id="prazoTxt">Produção limitada · encomende com antecedência</span></div>
+  <div><span class="parc" id="parcTxt">💳 Parcelamos no cartão</span></div>
   <div class="cont" id="contador"></div>
-  <div class="proofs"><span><b>+7 anos</b> fazendo chocottone</span><span><b>+1.000</b> chocottones vendidos</span><span>💳 <b>Parcelamos</b> no cartão</span></div>
+  <div class="proofs"><span><b>+7 anos</b> fazendo chocottone</span><span><b>+1.000</b> chocottones vendidos</span></div>
 </header>
 
 <nav class="tabs">
@@ -340,6 +342,7 @@ const CONFIG = {
   prazoData: '2026-12-25',      // contador "faltam X dias para o Natal"
   entregaDe: '2026-11-30', entregaAte: '2026-12-22',
   empresaAte: '2026-12-12',
+  parcelamento: 'Parcelamos no cartão',   // ex.: 'Parcele em até 3x sem juros'
   minEmpresa: 5,
   // DESCONTO POR VOLUME (aba empresa) — por item, conforme a quantidade daquele item
   faixas: [ {min:5, desc:0.05}, {min:10, desc:0.08}, {min:20, desc:0.10}, {min:50, desc:0.15} ],
@@ -430,6 +433,7 @@ const cestaPreco = p => p.preco + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nom
 const cestaDe = p => p.de ? p.de + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nome) : 0) : 0;
 
 document.getElementById('prazoTxt').textContent = CONFIG.prazo;
+document.getElementById('parcTxt').textContent = '💳 ' + CONFIG.parcelamento;
 ['cData','eData'].forEach(id=>{ const el=document.getElementById(id); el.min=CONFIG.entregaDe; el.max=CONFIG.entregaAte; });
 function contador(){
   const hoje = new Date(); const h = new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());

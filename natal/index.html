@@ -175,7 +175,7 @@ footer a{color:var(--d4)}
   <span class="tag">Natal 2026 · Edição artesanal</span>
   <h1>Natal com sabor de <em>chocolate de verdade</em></h1>
   <p>Chocottone recheado, cestas e cones trufados feitos à mão em Curitiba. Para presentear quem você ama e a sua equipe.</p>
-  <div class="prazo">🎄 <span id="prazoTxt">Encomendas até 18/12</span></div>
+  <div class="prazo">🎄 <span id="prazoTxt">Produção limitada · encomende com antecedência</span></div>
   <div class="cont" id="contador"></div>
   <div class="proofs"><span><b>+7 anos</b> fazendo chocottone</span><span><b>+1.000</b> chocottones vendidos</span><span>💳 <b>Parcelamos</b> no cartão</span></div>
 </header>
@@ -291,7 +291,7 @@ footer a{color:var(--d4)}
 
 <!-- BARRA DO PEDIDO -->
 <div class="bar" id="bar">
-  <div><div class="t" id="barQ">0 itens</div><div class="v" id="barV">R$ 0,00</div></div>
+  <div><div class="t"><span id="barQ">0 itens</span> · parcelamos no cartão</div><div class="v" id="barV">R$ 0,00</div></div>
   <button id="barBtn">Ver pedido</button>
 </div>
 
@@ -301,6 +301,7 @@ footer a{color:var(--d4)}
   <div class="sh-h"><h2>Seu pedido</h2><button class="x" id="close">✕</button></div>
   <div id="itens"></div>
   <div class="tot"><span>Total dos produtos</span><span id="tot">R$ 0,00</span></div>
+  <p class="note" style="color:var(--green);font-weight:600">💳 Pague no Pix ou parcele no cartão</p>
   <p class="note">Taxa de entrega calculada pelo WhatsApp, conforme o bairro. Para confirmar, pedimos 50% na encomenda.</p>
   <div id="upsell"></div>
 
@@ -335,8 +336,8 @@ footer a{color:var(--d4)}
    ============================================================ */
 const CONFIG = {
   whatsapp: '5541997514973',
-  prazo: 'Encomendas até 18/12',
-  prazoData: '2026-12-18',      // contador "faltam X dias para encomendar"
+  prazo: 'Produção limitada · encomende com antecedência',
+  prazoData: '2026-12-25',      // contador "faltam X dias para o Natal"
   entregaDe: '2026-11-30', entregaAte: '2026-12-22',
   empresaAte: '2026-12-12',
   minEmpresa: 5,
@@ -434,7 +435,7 @@ function contador(){
   const hoje = new Date(); const h = new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
   const [y,m,d] = CONFIG.prazoData.split('-').map(Number); const dias = Math.round((new Date(y,m-1,d)-h)/864e5);
   const el = document.getElementById('contador');
-  el.innerHTML = dias>1 ? `⏳ Faltam <b>${dias} dias</b> para encomendar` : dias===1 ? '⏳ <b>Último dia amanhã</b> para encomendar' : dias===0 ? '⏳ <b>Último dia</b> para encomendar' : '';
+  el.innerHTML = dias>1 ? `⏳ Faltam <b>${dias} dias</b> para o Natal` : dias===1 ? '⏳ <b>Amanhã é Natal!</b>' : '';
 }
 contador();
 document.addEventListener('change', e=>{
@@ -467,6 +468,7 @@ function card(p){
         <div class="xbox hide" id="xb-${p.id}">${EXTRAS.map(e=>`<div class="mrow"><div><div class="n">${e.nome}</div><div class="p">+ ${brl(e.preco)}</div></div>
           <div class="step sm"><button data-xm="${p.id}|${e.id}">−</button><span id="xq-${p.id}-${e.id}">${(xq[p.id]||{})[e.id]||0}</span><button data-xp="${p.id}|${e.id}">+</button></div></div>`).join('')}
           <div class="xsum" id="xs-${p.id}"></div></div>` : ''}
+      ${p.cat==='cesta'||p.id==='chocottone'?'<p class="note" style="margin:-2px 0 8px;color:var(--green);font-weight:600">💳 Parcelamos no cartão</p>':''}
       <div class="row">
         <div class="price" id="pr-${p.id}">${priceHTML(p)}</div>
         <div class="row" style="gap:8px">

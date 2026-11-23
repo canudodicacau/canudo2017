@@ -140,6 +140,23 @@ footer a{color:var(--d4)}
 .mres .tt{font-weight:700;font-size:17px;color:var(--d2);border-top:1px solid var(--cr3);padding-top:8px;margin-top:6px}
 .chk{display:flex;gap:10px;align-items:flex-start;background:var(--wh);border:1.5px solid var(--cr3);border-radius:12px;padding:11px 12px;margin-top:12px;font-size:13.5px;color:var(--tx2);cursor:pointer}
 .chk input{width:18px;height:18px;margin-top:1px;accent-color:var(--d3);flex:none}
+.proofs{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:14px;font-size:12.5px;color:var(--gold3)}
+.proofs b{color:var(--wh)}
+.cont{position:relative;margin-top:10px;font-size:13px;color:var(--cr2)}
+.cont b{color:var(--gold2);font-size:15px}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 14px}
+.trust div{background:var(--wh);border:1px solid var(--cr2);border-radius:14px;padding:10px 12px;font-size:12.5px;color:var(--tx2)}
+.trust b{display:block;font-size:13.5px;color:var(--d2)}
+.giftbox{background:var(--wh);border:1.5px solid var(--cr3);border-radius:12px;padding:4px 12px 12px;margin-top:10px}
+.upsell{background:linear-gradient(135deg,#fff3d6,var(--cr2));border:1.5px dashed var(--gold);border-radius:14px;padding:12px 13px;margin:10px 0 4px;font-size:13.5px;color:var(--tx2)}
+.upsell b{color:var(--d2)}
+.upsell button{margin-top:8px;width:100%;background:var(--d2);color:var(--gold3);font-weight:700;font-size:14px;padding:11px;border-radius:11px}
+.faq details{background:var(--wh);border:1px solid var(--cr2);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.faq summary{font-weight:600;color:var(--d2);font-size:14.5px;cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:'+';float:right;color:var(--gold);font-weight:700}
+.faq details[open] summary:after{content:'−'}
+.faq p{font-size:13.5px;color:var(--tx2);margin-top:8px}
 </style>
 </head>
 <body>
@@ -159,6 +176,8 @@ footer a{color:var(--d4)}
   <h1>Natal com sabor de <em>chocolate de verdade</em></h1>
   <p>Chocottone recheado, cestas e cones trufados feitos à mão em Curitiba. Para presentear quem você ama e a sua equipe.</p>
   <div class="prazo">🎄 <span id="prazoTxt">Encomendas até 18/12</span></div>
+  <div class="cont" id="contador"></div>
+  <div class="proofs"><span><b>+7 anos</b> fazendo chocottone</span><span><b>+1.000</b> chocottones vendidos</span><span>💳 <b>Parcelamos</b> no cartão</span></div>
 </header>
 
 <nav class="tabs">
@@ -172,6 +191,12 @@ footer a{color:var(--d4)}
     <div class="vol">
       <div class="vol-t">🎄 Presente bom é presente que se come</div>
       <div class="vol-s">Tudo feito à mão, em pequenas fornadas, com chocolate de verdade. Escolha um mimo, leve uma cesta pronta ou monte o presente do seu jeito.</div>
+    </div>
+    <div class="trust">
+      <div><b>🚚 Entregas</b><span id="entTxt">de 30/11 a 22/12</span>, motoboy ou retirada no Tarumã</div>
+      <div><b>🎁 É presente?</b>Mandamos com cartão escrito à mão, direto para quem vai ganhar</div>
+      <div><b>💳 Pagamento</b>50% na encomenda · parcelamos no cartão</div>
+      <div><b>🍫 Feito na hora</b>Produção fresca para a data do seu pedido</div>
     </div>
     <h2 class="sec-t">Cardápio de Natal</h2>
     <p class="sec-s">Para a sua ceia, para a sobremesa da família ou para aquele mimo de última hora.</p>
@@ -187,6 +212,16 @@ footer a{color:var(--d4)}
     <p class="sec-s">Você escolhe cada detalhe, a gente embala com carinho. Ideal para quem conhece bem o gosto de quem vai ganhar.</p>
     <div class="box" id="monte"></div>
   </section>
+  <section class="faq">
+    <h2 class="sec-t">Dúvidas frequentes</h2>
+    <p class="sec-s">Se ficar alguma, chama a gente no WhatsApp.</p>
+    <details><summary>Quanto tempo dura o chocottone?</summary><p>O ideal é consumir em até 3 dias. Na geladeira, dura até 7 dias. Usamos ingredientes frescos e de qualidade, então quanto antes, mais saboroso.</p></details>
+    <details><summary>Quando vocês entregam?</summary><p>De 30/11 a 22/12. Você escolhe a data no pedido. Entregamos por motoboy em Curitiba e região (taxa conforme o bairro), ou você retira na fábrica, no Tarumã, avisando antes.</p></details>
+    <details><summary>Posso mandar direto para quem vai ganhar?</summary><p>Pode. No pedido, marque "É presente", escreva a mensagem do cartão e coloque o nome e o endereço de quem vai receber. A gente escreve o cartão à mão e entrega embalado para presente.</p></details>
+    <details><summary>Como funciona o pagamento?</summary><p>Para confirmar a encomenda, pedimos 50% do valor. Aceitamos Pix e cartão, e parcelamos as suas compras no cartão.</p></details>
+    <details><summary>Posso escolher os sabores?</summary><p>Sim. Você escolhe o sabor do chocottone (Tradicional, Ferrero Rocher ou Kinder Bueno) e os sabores dos cones, nas cestas e nas caixas.</p></details>
+    <details><summary>Vocês fazem para empresas?</summary><p>Fazemos, com preço menor a partir de 5 unidades. Use a aba "Para sua empresa" para montar o orçamento. Pedidos de empresas até 12/12.</p></details>
+  </section>
 </main>
 
 <!-- PARA SUA EMPRESA -->
@@ -194,6 +229,7 @@ footer a{color:var(--d4)}
   <section>
     <h2 class="sec-t">Presentes para a equipe e clientes</h2>
     <p class="sec-s">Diga o que precisa e a data. Respondemos com o orçamento no mesmo dia.</p>
+    <div class="prazo" style="margin:0 0 14px;color:var(--d3);background:#fff3d6;border-color:var(--gold)">📅 <span>Pedidos de empresas até <b id="empPrazoTxt">12/12</b> · entregas até 22/12</span></div>
     <div class="ben">
       <div><b>Quanto mais, melhor</b>A partir de <span id="minEmp">5</span> unidades, o preço de cada item desce</div>
       <div><b>Entrega no endereço</b>Tudo entregue de uma vez, em Curitiba e região</div>
@@ -260,17 +296,29 @@ footer a{color:var(--d4)}
   <div class="sh-h"><h2>Seu pedido</h2><button class="x" id="close">✕</button></div>
   <div id="itens"></div>
   <div class="tot"><span>Total dos produtos</span><span id="tot">R$ 0,00</span></div>
-  <p class="note">Taxa de entrega calculada pelo WhatsApp, conforme o bairro.</p>
+  <p class="note">Taxa de entrega calculada pelo WhatsApp, conforme o bairro. Para confirmar, pedimos 50% na encomenda.</p>
+  <div id="upsell"></div>
 
   <label class="chk hide" id="juntaBox"><input type="checkbox" id="cJunta"><span>Colocar os itens avulsos <b>dentro da cesta</b>, como presente único</span></label>
   <label>Seu nome</label><input id="cNome" placeholder="Como podemos te chamar?">
   <label>Como prefere receber?</label>
   <div class="seg" id="cEnt"><button data-v="Entrega" class="on">Entrega</button><button data-v="Retirada no Tarumã">Retirada</button></div>
   <div id="cEndBox"><label>Bairro / endereço</label><input id="cEnd" placeholder="Rua, número e bairro"></div>
+  <label class="chk"><input type="checkbox" id="cPres"><span><b>🎁 É presente</b>: quero cartão escrito à mão</span></label>
+  <div class="giftbox hide" id="presBox">
+    <label>Mensagem do cartão</label><textarea id="cMsg" rows="3" maxlength="240" placeholder="Ex.: Feliz Natal, mãe! Com todo o carinho, Ana"></textarea>
+    <label class="chk" style="margin-top:10px"><input type="checkbox" id="cDireto"><span>Entregar direto para quem vai ganhar</span></label>
+    <div class="hide" id="diretoBox">
+      <label>Nome de quem vai receber</label><input id="cPNome" placeholder="Nome do presenteado">
+      <label>Telefone de quem vai receber</label><input id="cPTel" type="tel" inputmode="tel" placeholder="Para o motoboy combinar a entrega">
+      <p class="note" style="margin-top:6px">O endereço de entrega abaixo deve ser o de quem vai receber.</p>
+    </div>
+  </div>
   <label>Para quando?</label><input id="cData" type="date">
+  <p class="note" style="margin-top:4px">Entregas de 30/11 a 22/12.</p>
   <label>Pagamento</label>
-  <div class="seg" id="cPag"><button data-v="Pix" class="on">Pix</button><button data-v="Cartão">Cartão</button></div>
-  <label>Observações</label><textarea id="cObs" rows="2" placeholder="Ex.: é presente, sabores preferidos..."></textarea>
+  <div class="seg" id="cPag"><button data-v="Pix" class="on">Pix</button><button data-v="Cartão">Cartão (parcelado)</button></div>
+  <label>Observações</label><textarea id="cObs" rows="2" placeholder="Ex.: sabores preferidos, horário para entregar..."></textarea>
   <button class="cta" id="cEnviar">Enviar pedido no WhatsApp</button>
   <div class="err" id="cErr"></div>
 </div>
@@ -283,6 +331,9 @@ footer a{color:var(--d4)}
 const CONFIG = {
   whatsapp: '5541997514973',
   prazo: 'Encomendas até 18/12',
+  prazoData: '2026-12-18',      // contador "faltam X dias para encomendar"
+  entregaDe: '2026-11-30', entregaAte: '2026-12-22',
+  empresaAte: '2026-12-12',
   minEmpresa: 5,
   // DESCONTO POR VOLUME (aba empresa) — por item, conforme a quantidade daquele item
   faixas: [ {min:5, desc:0.05}, {min:10, desc:0.08}, {min:20, desc:0.10}, {min:50, desc:0.15} ],
@@ -373,6 +424,18 @@ const cestaPreco = p => p.preco + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nom
 const cestaDe = p => p.de ? p.de + (p.choco ? chocoExtra(sabC[p.id]||CHOCO[0].nome) : 0) : 0;
 
 document.getElementById('prazoTxt').textContent = CONFIG.prazo;
+['cData','eData'].forEach(id=>{ const el=document.getElementById(id); el.min=CONFIG.entregaDe; el.max=CONFIG.entregaAte; });
+function contador(){
+  const hoje = new Date(); const h = new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
+  const [y,m,d] = CONFIG.prazoData.split('-').map(Number); const dias = Math.round((new Date(y,m-1,d)-h)/864e5);
+  const el = document.getElementById('contador');
+  el.innerHTML = dias>1 ? `⏳ Faltam <b>${dias} dias</b> para encomendar` : dias===1 ? '⏳ <b>Último dia amanhã</b> para encomendar' : dias===0 ? '⏳ <b>Último dia</b> para encomendar' : '';
+}
+contador();
+document.addEventListener('change', e=>{
+  if(e.target.id==='cPres') $('#presBox').classList.toggle('hide', !e.target.checked);
+  if(e.target.id==='cDireto') $('#diretoBox').classList.toggle('hide', !e.target.checked);
+});
 document.getElementById('minEmp').textContent = CONFIG.minEmpresa;
 
 function card(p){
@@ -488,10 +551,29 @@ function renderCart(){
   $('#itens').innerHTML = cart.map((c,i)=>`<div class="it"><div>${c.q}× ${c.nome}${c.sab?`<div class="s">${c.sab}</div>`:''}<div class="s">${STATUS_TXT[c.status]}</div></div>
     <div style="text-align:right;white-space:nowrap">${brl(c.q*c.u)}<br><button data-del="${i}">remover</button></div></div>`).join('');
   $('#tot').textContent = brl(total());
+  renderUpsell();
   const temCesta = cart.some(c=>c.id==='monte'||c.id.startsWith('cesta'));
   const temAvulso = cart.some(c=>!(c.id==='monte'||c.id.startsWith('cesta')));
   $('#juntaBox').classList.toggle('hide', !(temCesta && temAvulso));
 }
+// OFERTA: chocottone avulso vira Noite Feliz (+5 cones e embalagem)
+function renderUpsell(){
+  const box = $('#upsell'); if(!box) return;
+  const noite = PRODUTOS.find(p=>p.id==='cesta-noite'), ch = cart.find(c=>c.id==='chocottone');
+  if(!ch || !noite || noite.status==='esgotado'){ box.innerHTML=''; return; }
+  const extra = noite.preco - CHOCO[0].preco;
+  box.innerHTML = `<div class="upsell">🎁 <b>Transforme seu chocottone em presente:</b> adicione 5 cones trufados e a embalagem da <b>Cesta Noite Feliz</b> por só <b>+ ${brl(extra)}</b>.<button data-up="1">Quero a Noite Feliz</button></div>`;
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-up]'); if(!b) return;
+  const i = cart.findIndex(c=>c.id==='chocottone'); if(i<0) return;
+  const ch = cart[i], sabor = ch.sab || CHOCO[0].nome, noite = PRODUTOS.find(p=>p.id==='cesta-noite');
+  if(ch.q>1) ch.q--; else cart.splice(i,1);
+  const s = 'Chocottone '+sabor+' · Cones Sortidos', u = noite.preco + chocoExtra(sabor);
+  const ex = cart.find(c=>c.id==='cesta-noite' && c.sab===s);
+  if(ex) ex.q++; else cart.push({id:'cesta-noite', nome:noite.nome, sab:s, q:1, u, status:noite.status});
+  updBar(); renderCart();
+});
 const openSheet = () => { renderCart(); $('#ov').classList.add('show'); $('#sheet').classList.add('show'); };
 const closeSheet = () => { $('#ov').classList.remove('show'); $('#sheet').classList.remove('show'); };
 $('#barBtn').onclick = openSheet; $('#close').onclick = closeSheet; $('#ov').onclick = closeSheet;
@@ -503,12 +585,17 @@ function err(id, msg){ const el=$('#'+id); el.textContent=msg; el.style.display=
 
 $('#cEnviar').onclick = () => {
   const nome = $('#cNome').value.trim(), ent = segVal('cEnt'), end = $('#cEnd').value.trim(), data = $('#cData').value;
+  const pres = $('#cPres').checked, msg = $('#cMsg').value.trim(), direto = pres && $('#cDireto').checked, pNome = $('#cPNome').value.trim(), pTel = $('#cPTel').value.trim();
   if(!nome) return err('cErr','Coloque seu nome.');
+  if(direto && !pNome) return err('cErr','Coloque o nome de quem vai receber o presente.');
+  if(direto && ent!=='Entrega') return err('cErr','Para entregar direto ao presenteado, escolha "Entrega".');
   if(ent==='Entrega' && !end) return err('cErr','Coloque o endereço de entrega.');
   if(!data) return err('cErr','Escolha a data.');
+  if(data < CONFIG.entregaDe || data > CONFIG.entregaAte) return err('cErr','As entregas de Natal são de '+dataBR(CONFIG.entregaDe)+' a '+dataBR(CONFIG.entregaAte)+'.');
   err('cErr','');
+  const presTxtW = pres ? `\n🎁 *É presente*${msg?`\n💌 Cartão: "${msg}"`:''}${direto?`\n📍 Entregar para: ${pNome}${pTel?` · ${pTel}`:''}`:''}` : '';
   const linhas = cart.map(c=>`• ${c.q}× ${c.nome}${c.sab?` (${c.sab})`:''} — ${brl(c.q*c.u)}`).join('\n');
-  const txt = `🎄 *Pedido de Natal — Canudo di Cacau*\n\n${linhas}\n\n*Total dos produtos: ${brl(total())}*\n\n👤 ${nome}\n📦 ${ent}${ent==='Entrega'?`: ${end}`:''}\n📅 Para: ${dataBR(data)}\n💳 ${segVal('cPag')}${$('#cJunta').checked && !$('#juntaBox').classList.contains('hide') ? '\n🎁 Colocar os itens avulsos dentro da cesta (presente único)' : ''}${$('#cObs').value.trim()?`\n📝 ${$('#cObs').value.trim()}`:''}`;
+  const txt = `🎄 *Pedido de Natal — Canudo di Cacau*\n\n${linhas}\n\n*Total dos produtos: ${brl(total())}*\n\n💰 Sinal de 50%: ${brl(total()/2)}\n\n👤 ${nome}${presTxtW}\n📦 ${ent}${ent==='Entrega'?`: ${end}`:''}\n📅 Para: ${dataBR(data)}\n💳 ${segVal('cPag')}${$('#cJunta').checked && !$('#juntaBox').classList.contains('hide') ? '\n🎁 Colocar os itens avulsos dentro da cesta (presente único)' : ''}${$('#cObs').value.trim()?`\n📝 ${$('#cObs').value.trim()}`:''}`;
   openWA(txt);
 };
 
@@ -522,6 +609,7 @@ $('#eEnviar').onclick = () => {
   if(!itens.length && !temPres) return err('eErr','Coloque a quantidade de pelo menos um item.');
   if(!emp || !nome) return err('eErr','Preencha o nome da empresa e o seu nome.');
   if(!data) return err('eErr','Escolha a data de entrega.');
+  if(data < CONFIG.entregaDe || data > CONFIG.entregaAte) return err('eErr','As entregas de Natal são de '+dataBR(CONFIG.entregaDe)+' a '+dataBR(CONFIG.entregaAte)+'.');
   err('eErr','');
   const n = itens.reduce((s,x)=>s+x.q,0) + (temPres?pq:0);
   const L = empLinhas(), totE = L.reduce((s,x)=>s+x.t,0);

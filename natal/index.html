@@ -189,7 +189,7 @@ footer a{color:var(--d4)}
 <main id="tab-voce">
   <section>
     <div class="vol">
-      <div class="vol-t">🎄 Presente bom é presente que se come</div>
+      <div class="vol-t">🎄 Presente bom é com sabor de Natal</div>
       <div class="vol-s">Tudo feito à mão, em pequenas fornadas, com chocolate de verdade. Escolha um mimo, leve uma cesta pronta ou monte o presente do seu jeito.</div>
     </div>
     <div class="trust">
@@ -206,6 +206,11 @@ footer a{color:var(--d4)}
     <h2 class="sec-t">Cestas prontas</h2>
     <p class="sec-s">Escolheu, chegou embrulhada para presente. E se quiser, dá para colocar mais itens dentro.</p>
     <div id="listaCestas"></div>
+  </section>
+  <section>
+    <h2 class="sec-t">Cones trufados e cookies</h2>
+    <p class="sec-s">Para completar a ceia, adoçar a família ou presentear em quantidade.</p>
+    <div id="listaExtras"></div>
   </section>
   <section id="monteSec">
     <h2 class="sec-t">Monte a sua cesta</h2>
@@ -358,7 +363,7 @@ const chocoLabel = c => c.nome + (c.estrela?' ⭐':'');
 
 const PRODUTOS = [
   {id:'chocottone', nome:'Chocottone Recheado', emoji:'🎄', img:'',
-   desc:'Massa macia de chocolate com 300 g de recheio e cobertura de chocolate. Feito à mão, em pequenas fornadas.',
+   desc:'Chocottone de 800 g, com massa macia de chocolate, muito recheio e cobertura de chocolate. Feito à mão, em pequenas fornadas.',
    inclui:CHOCO.map(c=>`<b>${chocoLabel(c)}</b> · ${brlX(c.preco)}: ${c.desc}`),
    preco:89.90, status:'encomenda', destaque:'Novidade', sabores:'choco'},
   {id:'cesta-mimo', cat:'cesta', nome:'Cesta Doce Mimo', emoji:'🎀', img:'',
@@ -479,7 +484,8 @@ function priceHTML(p){
 const VIS = () => PRODUTOS.filter(p=>!p.oculto);
 function render(){
   $('#listaCestas').innerHTML = VIS().filter(p=>p.cat==='cesta').map(card).join('');
-  $('#lista').innerHTML = VIS().filter(p=>p.cat!=='cesta').map(card).join('');
+  $('#lista').innerHTML = VIS().filter(p=>p.id==='chocottone').map(card).join('');
+  $('#listaExtras').innerHTML = VIS().filter(p=>p.cat!=='cesta' && p.id!=='chocottone').map(card).join('');
   $('#empLista').innerHTML = [...EMP_CHOCO(), ...VIS().filter(p=>p.cat==='cesta'), ...VIS().filter(p=>p.cat!=='cesta' && p.id!=='cookie' && p.id!=='chocottone')].map(p=>{
     const off = p.status==='esgotado';
     return `<div class="card ${off?'off':''}">
